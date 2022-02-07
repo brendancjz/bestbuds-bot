@@ -76,11 +76,18 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 message.setText(startMsg);
                 executeMessage(message);
                 return;
-
             }
 
-            if (text.startsWith("/addNewMember")) {
-                if (text.equals("/addNewMember")) { //Bad command
+            if (text.startsWith("/help")) {
+                System.out.println("=== Start Event Called === ");
+
+                message.setText(generateHelp());
+                executeMessage(message);
+                return;
+            }
+
+            if (text.startsWith("/subscribe")) {
+                if (text.equals("/subscribe")) { //Bad command
                     missingArgumentsMessage(message);
                     return;
                 }
@@ -94,21 +101,24 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     if (validateDate(date) && !psql.isUserRegistered(chatId)) {
                         psql.addNewUser(chatId, firstName, date);
                         message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
-
+                        executeMessage(message);
+                        
                         scheduleBirthdayMessage(chatId);
                     } else if (psql.isUserRegistered(chatId)) {
                         message.setText("You have already been registered.");
+
+                        executeMessage(message);
                     } else {
-                        message.setText("Sorry, wrong date format. Try again with dd-MM-yyyy.");
+                        wrongDateFormatMessage(message);
                     }
 
-                    executeMessage(message);
+
                 } else {
                     missingArgumentsMessage(message);
                 }
 
-            } else if (text.startsWith("/updateDOB")) {
-                if (text.equals("/updateDOB")) { //Bad command
+            } else if (text.startsWith("/update_dob")) {
+                if (text.equals("/update_dob")) { //Bad command
                     missingArgumentsMessage(message);
                     return;
                 }
@@ -120,14 +130,14 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     message.setText("Thanks! Your changed D.O.B is " + date + ".");
 
                     executeMessage(message);
-                } else if (!validateDate(date) && psql.isUserRegistered(chatId)){
+                } else if (!validateDate(date) && psql.isUserRegistered(chatId)) {
                     wrongDateFormatMessage(message);
                 } else {
                     notRegisteredMessage(message);
                 }
 
-            } else if (text.startsWith("/updateName")) {
-                if (text.equals("/updateName")) { //Bad command
+            } else if (text.startsWith("/update_name")) {
+                if (text.equals("/update_name")) { //Bad command
                     missingArgumentsMessage(message);
                     return;
                 }
@@ -153,7 +163,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 message.setText("Your name is " + firstName);
 
                 executeMessage(message);
-            }  else {
+            } else {
                 message.setText("Invalid Command.");
 
                 executeMessage(message);
@@ -173,7 +183,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
     }
 
     private void wrongDateFormatMessage(SendMessage message) {
-        message.setText("Wrong date format. Try again with dd/MM/yyyy");
+        message.setText("Wrong date format. Try again with dd-MM-yyyy");
         executeMessage(message);
     }
 
@@ -218,5 +228,22 @@ public class BirthdayBot extends TelegramLongPollingBot {
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return intro;
+    }
+
+    private String generateHelp() {
+        String help = "";
+
+        help += "<b>Help</b> \n\n";
+        help += "<em>Commands:</em>\n";
+        help += "/subscribe <FIRST_NAME> <D.O.B {dd/MM/yyyy}>\n";
+        help += "/update_dob <D.O.B {dd-MM-yyyy}>\n";
+        help += "/update_name <FIRST_NAME>\n\n";
+        help += "<em>Example:</em>\n";
+        help += "/subscribe Brendan 01-01-1999\n";
+        help += "/update_dob 12-05-1999\n";
+        help += "/update_name Bren\n\n";
+
+
+        return help;
     }
 }
