@@ -20,7 +20,7 @@ public class PSQL {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             System.out.println("Code runs until here.");
             preparedStatement.setInt(1, chatId);
-            preparedStatement.setDate(2, Date.valueOf(date));
+            preparedStatement.setString(2, date);
             System.out.println("Code runs here.");
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
