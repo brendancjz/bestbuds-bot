@@ -92,13 +92,18 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     String firstName = arr[1];
                     String date = arr[2];
 
-                    if (validateDate(date)) {
+                    if (validateDate(date) && !psql.isUserRegistered(chatId)) {
                         psql.addNewUser(chatId, firstName, date);
+                        message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
 
                         scheduleBirthdayMessage(chatId);
+                    } else  if (psql.isUserRegistered(chatId)) {
+                        message.setText("You have already been registered.");
+                    } else {
+                        message.setText("Sorry, wrong date format. Try again with dd-MM-yyyy.");
                     }
 
-                    message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
+
                 } else {
                     message.setText("Sorry, wrong format.\nTry again with /NEW <FIRST_NAME> <DOB>");
                 }
