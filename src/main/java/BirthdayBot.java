@@ -3,29 +3,23 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.print.attribute.URISyntax;
-import javax.swing.text.DateFormatter;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class BirthdayBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "sf_bday_bot";
+        return System.getenv("BOT_USERNAME");
     }
 
     @Override
     public String getBotToken() {
-        return "5131673643:AAGhxUIkrAhT8yzrJj7EnWZZOwiEsroRqA0";
+        return System.getenv("BOT_TOKEN");
     }
 
     @Override
@@ -80,10 +74,15 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 }
 
                 message.setText(startMsg);
+                executeMessage(message);
+                return;
 
-            } else if (text.startsWith("/NEW")) {
-                if (text.equals("/NEW")) { //Bad command
-                    text += " BadCommand";
+            }
+
+            if (text.startsWith("/addNewMember")) {
+                if (text.equals("/addNewMember")) { //Bad command
+                    missingArgumentsMessage(message);
+                    return;
                 }
 
                 String[] arr = text.split(" ");
@@ -97,54 +96,98 @@ public class BirthdayBot extends TelegramLongPollingBot {
                         message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
 
                         scheduleBirthdayMessage(chatId);
-                    } else  if (psql.isUserRegistered(chatId)) {
+                    } else if (psql.isUserRegistered(chatId)) {
                         message.setText("You have already been registered.");
                     } else {
                         message.setText("Sorry, wrong date format. Try again with dd-MM-yyyy.");
                     }
 
-
+                    executeMessage(message);
                 } else {
-                    message.setText("Sorry, wrong format.\nTry again with /NEW <FIRST_NAME> <DOB>");
+                    missingArgumentsMessage(message);
                 }
 
+            } else if (text.startsWith("/updateDOB")) {
+                if (text.equals("/updateDOB")) { //Bad command
+                    missingArgumentsMessage(message);
+                    return;
+                }
 
-            } else if (text.startsWith("/DOB")) {
-                String date = text.substring(5);
+                String date = text.substring(10);
 
                 if (validateDate(date) && psql.isUserRegistered(chatId)) {
                     psql.updateUserDOB(chatId, date);
                     message.setText("Thanks! Your changed D.O.B is " + date + ".");
+
+                    executeMessage(message);
+                } else if (!validateDate(date) && psql.isUserRegistered(chatId)){
+                    wrongDateFormatMessage(message);
                 } else {
-                    message.setText("Sorry, wrong format.\nTry again with /DOB dd/MM/yyyy!");
+                    notRegisteredMessage(message);
                 }
 
-            } else if (text.startsWith("/NAME")) {
-                String firstName = text.substring(6);
+            } else if (text.startsWith("/updateName")) {
+                if (text.equals("/updateName")) { //Bad command
+                    missingArgumentsMessage(message);
+                    return;
+                }
 
-                firstName = firstName.trim();
+                String firstName = text.substring(11).trim();
+
                 if (psql.isUserRegistered(chatId)) {
                     psql.updateUserName(chatId, firstName);
                     message.setText("Thanks! Your changed name is " + firstName + ".");
+
+                    executeMessage(message);
                 } else {
-                    message.setText("Sorry, you have not been registered. Try /NEW <FIRST_NAME> <DOB>");
+                    notRegisteredMessage(message);
                 }
 
             } else if (text.startsWith("/getDOB")) {
                 String date = psql.getUserDOB(chatId);
                 message.setText("Your D.O.B is " + date);
-            } else {
+
+                executeMessage(message);
+            } else if (text.startsWith("/getName")) {
+                String firstName = psql.getUserName(chatId);
+                message.setText("Your name is " + firstName);
+
+                executeMessage(message);
+            }  else {
                 message.setText("Invalid Command.");
 
+                executeMessage(message);
             }
 
 
-            execute(message);
-        } catch (SQLException | TelegramApiException | ParseException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
 
 
+    }
+
+    private void notRegisteredMessage(SendMessage message) {
+        message.setText("You're not registered yet.");
+        executeMessage(message);
+    }
+
+    private void wrongDateFormatMessage(SendMessage message) {
+        message.setText("Wrong date format. Try again with dd/MM/yyyy");
+        executeMessage(message);
+    }
+
+    private void missingArgumentsMessage(SendMessage message) {
+        message.setText("Bad command. Missing arguments.");
+        executeMessage(message);
+    }
+
+    private void executeMessage(SendMessage message) {
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 
     private void scheduleBirthdayMessage(int chatId) {

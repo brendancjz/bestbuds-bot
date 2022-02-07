@@ -72,6 +72,22 @@ public class PSQL {
         return statement.executeQuery();
     }
 
+    public String getUserName(int chatId) throws SQLException {
+        System.out.println("-- Getting User Name State --");
+
+        String name = null;
+
+        //Selecting User from Users table.
+        ResultSet resultSet = getUsersDataResultSet(chatId);
+        while (resultSet.next()) {
+            name = resultSet.getString("name");
+            System.out.println("User's name is " + name);
+        }
+
+
+        return name;
+    }
+
     public String getUserDOB(int chatId) throws SQLException {
         System.out.println("-- Getting User DOB State --");
 
@@ -120,5 +136,4 @@ public class PSQL {
         }
 
     }
-
 }
