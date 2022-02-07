@@ -82,15 +82,21 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 message.setText(startMsg);
 
             } else if (text.startsWith("/NEW")) {
+                if (text.equals("/NEW")) { //Bad command
+                    text += " BadCommand";
+                }
+
                 String[] arr = text.split(" ");
 
                 if (arr.length == 3) {
                     String firstName = arr[1];
                     String date = arr[2];
 
-                    psql.addNewUser(chatId, firstName, date);
+                    if (validateDate(date)) {
+                        psql.addNewUser(chatId, firstName, date);
 
-                    scheduleBirthdayMessage(chatId);
+                        scheduleBirthdayMessage(chatId);
+                    }
 
                     message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
                 } else {
@@ -106,6 +112,17 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     message.setText("Thanks! Your changed D.O.B is " + date + ".");
                 } else {
                     message.setText("Sorry, wrong format.\nTry again with /DOB dd/MM/yyyy!");
+                }
+
+            } else if (text.startsWith("/NAME")) {
+                String firstName = text.substring(6);
+
+                firstName = firstName.trim();
+                if (psql.isUserRegistered(chatId)) {
+                    psql.updateUserName(chatId, firstName);
+                    message.setText("Thanks! Your changed name is " + firstName + ".");
+                } else {
+                    message.setText("Sorry, you have not been registered. Try /NEW <FIRST_NAME> <DOB>");
                 }
 
             } else if (text.startsWith("/getDOB")) {

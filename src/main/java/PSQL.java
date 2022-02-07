@@ -49,6 +49,20 @@ public class PSQL {
         }
     }
 
+    public void updateUserName(int chatId, String firstName) throws SQLException {
+        String sql = "UPDATE users SET name=? WHERE chat_id=? ";
+        PreparedStatement statement= connection.prepareStatement(sql);
+        statement.setString(1, firstName);
+        statement.setInt(2, chatId);
+        int rowsInserted = statement.executeUpdate();
+
+        if ((rowsInserted > 0)) {
+            System.out.println("[Name] Update query successful.");
+        } else {
+            System.out.println("[Name] Update query failed.");
+        }
+    }
+
     private ResultSet getUsersDataResultSet(int chatId) throws SQLException {
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Users WHERE chat_id = ?";
@@ -106,6 +120,5 @@ public class PSQL {
         }
 
     }
-
 
 }
