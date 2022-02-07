@@ -81,7 +81,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
             if (text.startsWith("/help")) {
                 System.out.println("=== Help Event Called === ");
 
-                message.setText(generateHelp());
+                message.setText(generateIntro("Brendan"));
                 executeMessage(message);
                 return;
             }
