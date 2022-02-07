@@ -81,17 +81,31 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
                 message.setText(startMsg);
 
-            } else if (text.startsWith("/addDOB")) {
+            } else if (text.startsWith("/NEW")) {
+                String[] arr = text.split(" ");
+
+                if (arr.length == 3) {
+                    String firstName = arr[1];
+                    String date = arr[2];
+
+                    psql.addNewUser(chatId, firstName, date);
+
+                    scheduleBirthdayMessage(chatId);
+
+                    message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
+                } else {
+                    message.setText("Sorry, wrong format.\nTry again with /NEW <FIRST_NAME> <DOB>");
+                }
+
+
+            } else if (text.startsWith("/DOB")) {
                 String date = text.substring(8);
 
-                if (validateDate(date) && !psql.isUserRegistered(chatId)) {
-                    psql.addNewUser(chatId, text);
-                    message.setText("Thanks! Your D.O.B is " + date);
-                } else if (validateDate(date) && psql.isUserRegistered(chatId)) {
+                if (validateDate(date) && psql.isUserRegistered(chatId)) {
                     psql.updateUserDOB(chatId, date);
-                    message.setText("Thanks! Your changed D.O.B is " + date);
+                    message.setText("Thanks! Your changed D.O.B is " + date + ".");
                 } else {
-                    message.setText("Sorry, wrong format.\nTry again with dd/MM/yyyy!");
+                    message.setText("Sorry, wrong format.\nTry again with /DOB dd/MM/yyyy!");
                 }
 
             } else if (text.startsWith("/getDOB")) {
@@ -109,6 +123,10 @@ public class BirthdayBot extends TelegramLongPollingBot {
         }
 
 
+    }
+
+    private void scheduleBirthdayMessage(int chatId) {
+        //TODO: The scheduling
     }
 
     public boolean validateDate(String date) {

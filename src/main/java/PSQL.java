@@ -10,17 +10,18 @@ public class PSQL {
         this.connection = getConnection();
     }
 
-    public void addNewUser(int chatId, String date) throws SQLException, ParseException {
+    public void addNewUser(int chatId, String firstName, String date) throws SQLException, ParseException {
         boolean userExists = isUserRegistered(chatId);
 
         if (!userExists) {
             System.out.println("This user is not registered yet.");
 
-            String sql = "INSERT INTO Users (chat_id, dob) VALUES (?, ?)";
+            String sql = "INSERT INTO Users (chat_id, name, dob) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             System.out.println("Code runs until here.");
             preparedStatement.setInt(1, chatId);
-            preparedStatement.setString(2, date);
+            preparedStatement.setString(2, firstName);
+            preparedStatement.setString(3, date);
             System.out.println("Code runs here.");
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
