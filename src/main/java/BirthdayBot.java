@@ -3,6 +3,13 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import javax.print.attribute.URISyntax;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class BirthdayBot extends TelegramLongPollingBot {
 
     @Override
@@ -40,25 +47,43 @@ public class BirthdayBot extends TelegramLongPollingBot {
     }
 
     private void personalChatMessage(SendMessage message, Update update, int chatId) {
-        String name = update.getMessage().getChat().getFirstName();
-        String text = update.getMessage().getText();
-
-        //Universal Commands. No need to update Query and check User.
-        if (text.startsWith("/start")) {
-            System.out.println("=== Start Event Called === ");
-            message.setText(generateIntro(name));
-        } else {
-            message.setText("Echo: " + name + " said " + text);
-        }
-
-
-
         try {
+            String name = update.getMessage().getChat().getFirstName();
+            String text = update.getMessage().getText();
+
+            //Universal Commands. No need to update Query and check User.
+            if (text.startsWith("/start")) {
+                System.out.println("=== Start Event Called === ");
+
+                String startMsg = generateIntro(name);
+                PSQL psql = new PSQL();
+
+                if (!psql.isUserRegistered(chatId)) {
+                    startMsg += " <em>It looks like you are already registered in the database!</em>";
+                }
+
+                psql.closeConnection();
+
+                message.setText(startMsg);
+
+            } else {
+
+                if (text.startsWith("/addDOB")) {
+                    text = text.substring(8);
+                    message.setText("Text: " + text);
+                } else {
+                    message.setText("Echo: " + name + " said " + text);
+                }
+            }
+
             execute(message);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        } catch (SQLException | URISyntaxException | TelegramApiException throwables) {
+            throwables.printStackTrace();
         }
+
+
     }
+
     public static String generateIntro(String name) {
         String intro = "<b>Start</b> \n\n";
 
