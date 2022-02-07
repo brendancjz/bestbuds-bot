@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class BirthdayBot extends TelegramLongPollingBot {
 
@@ -50,15 +51,16 @@ public class BirthdayBot extends TelegramLongPollingBot {
         try {
             String name = update.getMessage().getChat().getFirstName();
             String text = update.getMessage().getText();
+            PSQL psql = new PSQL();
 
             //Universal Commands. No need to update Query and check User.
             if (text.startsWith("/start")) {
                 System.out.println("=== Start Event Called === ");
 
                 String startMsg = generateIntro(name);
-                PSQL psql = new PSQL();
 
-                if (!psql.isUserRegistered(chatId)) {
+
+                if (psql.isUserRegistered(chatId)) {
                     startMsg += " <em>It looks like you are already registered in the database!</em>";
                 }
 
@@ -70,14 +72,16 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
                 if (text.startsWith("/addDOB")) {
                     text = text.substring(8);
-                    message.setText("Text: " + text);
+                    
+                    psql.addNewUser(chatId, text);
+                    message.setText("Successfully added DOB.");
                 } else {
                     message.setText("Echo: " + name + " said " + text);
                 }
             }
 
             execute(message);
-        } catch (SQLException | URISyntaxException | TelegramApiException throwables) {
+        } catch (SQLException | URISyntaxException | TelegramApiException | ParseException throwables) {
             throwables.printStackTrace();
         }
 
