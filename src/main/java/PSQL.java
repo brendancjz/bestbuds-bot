@@ -21,7 +21,7 @@ public class PSQL {
             String sql = "INSERT INTO Users (chat_id, dob) VALUES (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, chatId);
-            preparedStatement.setDate(2, (Date) new SimpleDateFormat("dd/MM/yyyy").parse(date));
+            preparedStatement.setDate(2, Date.valueOf(date));
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
