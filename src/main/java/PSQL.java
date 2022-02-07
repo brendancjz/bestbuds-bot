@@ -2,8 +2,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 
 public class PSQL {
     private final Connection connection;
@@ -22,7 +20,7 @@ public class PSQL {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, chatId);
             preparedStatement.setDate(2, Date.valueOf(date));
-
+            System.out.println("Code runs here.");
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Successful registration.");
