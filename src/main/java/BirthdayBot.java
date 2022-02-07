@@ -72,7 +72,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
                 if (text.startsWith("/addDOB")) {
                     text = text.substring(8);
-                    
+
                     psql.addNewUser(chatId, text);
                     message.setText("Successfully added DOB.");
                 } else {
@@ -82,6 +82,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
             execute(message);
         } catch (SQLException | URISyntaxException | TelegramApiException | ParseException throwables) {
+            System.out.println("Something happened");
             throwables.printStackTrace();
         }
 

@@ -18,8 +18,6 @@ public class PSQL {
         if (!userExists) {
             System.out.println("This user is not registered yet.");
 
-            int userId = 0;
-
             String sql = "INSERT INTO Users (chat_id, date_of_birth) VALUES (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, chatId);
