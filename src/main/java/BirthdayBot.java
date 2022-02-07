@@ -235,8 +235,8 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
         help += "<b>Help</b> \n\n";
         help += "<em>Commands: </em>\n";
-        help += "/subscribe <FIRST_NAME> <D.O.B {dd/MM/yyyy}>\n";
-        help += "/update_dob <D.O.B {dd-MM-yyyy}>\n";
+        help += "/subscribe <FIRST_NAME> <D.O.B dd-MM-yyyy>\n";
+        help += "/update_dob <D.O.B dd-MM-yyyy>\n";
         help += "/update_name <FIRST_NAME>\n\n";
         help += "<em>Example:</em>\n";
         help += "/subscribe Brendan 01-01-1999\n";
