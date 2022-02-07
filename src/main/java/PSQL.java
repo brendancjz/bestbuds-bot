@@ -18,6 +18,7 @@ public class PSQL {
 
             String sql = "INSERT INTO Users (chat_id, dob) VALUES (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            System.out.println("Code runs until here.");
             preparedStatement.setInt(1, chatId);
             preparedStatement.setDate(2, Date.valueOf(date));
             System.out.println("Code runs here.");
