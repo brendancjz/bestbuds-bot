@@ -99,7 +99,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
 
             } else if (text.startsWith("/DOB")) {
-                String date = text.substring(8);
+                String date = text.substring(5);
 
                 if (validateDate(date) && psql.isUserRegistered(chatId)) {
                     psql.updateUserDOB(chatId, date);
