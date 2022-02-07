@@ -48,7 +48,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
             System.out.println("=== Start Event Called === ");
             message.setText(generateIntro(name));
         } else {
-            message.setText("Echo: " + name + " said " + text);
+            message.setText("Echo: " + name + " says " + text);
         }
 
 
