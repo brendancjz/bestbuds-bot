@@ -90,6 +90,8 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 } else if (validateDate(date) && psql.isUserRegistered(chatId)) {
                     psql.updateUserDOB(chatId, text);
                     message.setText("Thanks! Your changed D.O.B is " + date);
+                } else {
+                    message.setText("Sorry, wrong format. Try again with dd/MM/yyyy!");
                 }
 
             } else if (text.startsWith("/getDOB")) {
@@ -97,7 +99,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 message.setText("Your D.O.B is " + date);
             } else {
                 message.setText("Echo: " + name + " said " + text);
-                
+
             }
 
 
@@ -110,9 +112,10 @@ public class BirthdayBot extends TelegramLongPollingBot {
     }
 
     public boolean validateDate(String date) {
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yyyy");
+
         try {
-            Date d = dateFormat.parse(date);
+            Date d = dateFormat1.parse(date);
         } catch (ParseException e) {
             return false;
         }
