@@ -79,7 +79,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
             }
 
             if (text.startsWith("/help")) {
-                System.out.println("=== Start Event Called === ");
+                System.out.println("=== Help Event Called === ");
 
                 message.setText(generateHelp());
                 executeMessage(message);
@@ -102,7 +102,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
                         psql.addNewUser(chatId, firstName, date);
                         message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
                         executeMessage(message);
-                        
+
                         scheduleBirthdayMessage(chatId);
                     } else if (psql.isUserRegistered(chatId)) {
                         message.setText("You have already been registered.");
