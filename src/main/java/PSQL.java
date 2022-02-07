@@ -34,6 +34,20 @@ public class PSQL {
 
     }
 
+    public void updateUserDOB(int chatId, String text) throws SQLException {
+        String sql = "UPDATE users SET dob=? WHERE chat_id=? ";
+        PreparedStatement statement= connection.prepareStatement(sql);
+        statement.setString(1, text);
+        statement.setInt(2, chatId);
+        int rowsInserted = statement.executeUpdate();
+
+        if ((rowsInserted > 0)) {
+            System.out.println("[DOB] Update query successful.");
+        } else {
+            System.out.println("[DOB] Update query failed.");
+        }
+    }
+
     private ResultSet getUsersDataResultSet(int chatId) throws SQLException {
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Users WHERE chat_id = ?";
@@ -41,6 +55,22 @@ public class PSQL {
         statement.setInt(1, chatId);
 
         return statement.executeQuery();
+    }
+
+    public String getUserDOB(int chatId) throws SQLException {
+        System.out.println("-- Getting User DOB State --");
+
+        String dob = null;
+
+        //Selecting User from Users table.
+        ResultSet resultSet = getUsersDataResultSet(chatId);
+        while (resultSet.next()) {
+            dob = resultSet.getString("dob");
+            System.out.println("User's dob is " + dob);
+        }
+
+
+        return dob;
     }
 
     public boolean isUserRegistered(int chatId) throws SQLException {
@@ -55,6 +85,7 @@ public class PSQL {
 
         return userExists;
     }
+
 
     private static Connection getConnection() throws URISyntaxException, SQLException {
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -74,4 +105,6 @@ public class PSQL {
         }
 
     }
+
+
 }
