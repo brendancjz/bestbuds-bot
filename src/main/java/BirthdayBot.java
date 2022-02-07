@@ -230,7 +230,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
         return intro;
     }
 
-    private String generateHelp() {
+    public static String generateHelp() {
         String help = "";
 
         help += "<b>Help</b> \n\n";
@@ -242,7 +242,6 @@ public class BirthdayBot extends TelegramLongPollingBot {
         help += "/subscribe Brendan 01-01-1999\n";
         help += "/update_dob 12-05-1999\n";
         help += "/update_name Bren\n\n";
-
 
         return help;
     }
