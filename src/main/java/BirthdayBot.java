@@ -88,17 +88,17 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     psql.addNewUser(chatId, text);
                     message.setText("Thanks! Your D.O.B is " + date);
                 } else if (validateDate(date) && psql.isUserRegistered(chatId)) {
-                    psql.updateUserDOB(chatId, text);
+                    psql.updateUserDOB(chatId, date);
                     message.setText("Thanks! Your changed D.O.B is " + date);
                 } else {
-                    message.setText("Sorry, wrong format. Try again with dd/MM/yyyy!");
+                    message.setText("Sorry, wrong format.\nTry again with dd/MM/yyyy!");
                 }
 
             } else if (text.startsWith("/getDOB")) {
                 String date = psql.getUserDOB(chatId);
                 message.setText("Your D.O.B is " + date);
             } else {
-                message.setText("Echo: " + name + " said " + text);
+                message.setText("Invalid Command.");
 
             }
 
