@@ -1,6 +1,7 @@
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -49,7 +50,22 @@ public class HappyBirthdayTimer {
         int secNow = dateNow.getSecond();
         System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
 
+        LocalDateTime closestBirthdate;
 
-        return null;
+        if (isBeforeBirthdate(day, month, dayOfMonthNow, monthNow)) { //Before timing
+            closestBirthdate = LocalDateTime.of(yearNow, month, day, 0, 0, 0);
+            System.out.println("It has not passed the timing. Setting timer for later: " + closestBirthdate.toString());
+        } else {
+            closestBirthdate = LocalDateTime.of(yearNow, month, day, 0, 0, 0).plusYears(1);
+            System.out.println("It has not passed the timing. Setting timer for later: " + closestBirthdate.toString());
+        }
+
+        return Date.from(closestBirthdate.atZone(ZoneId.systemDefault()).toInstant());
     }
+
+    private boolean isBeforeBirthdate(int day, int month, int dayOfMonthNow, int monthNow) {
+        return (monthNow < month) || (monthNow == month && dayOfMonthNow < day);
+    }
+
+
 }
