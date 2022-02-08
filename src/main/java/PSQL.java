@@ -2,6 +2,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 public class PSQL {
     private final Connection connection;
@@ -102,6 +103,21 @@ public class PSQL {
 
 
         return dob;
+    }
+
+    public ArrayList<String> getAllChatId() throws SQLException {
+        String sql = "SELECT * from Users";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+
+        ArrayList<String> chatIds = new ArrayList<>();
+        while(resultSet.next()) {
+            int chatId = resultSet.getInt("chat_id");
+            chatIds.add(Integer.toString(chatId));
+
+        }
+
+        return chatIds;
     }
 
     public boolean isUserRegistered(int chatId) throws SQLException {

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class BirthdayBot extends TelegramLongPollingBot {
@@ -123,7 +124,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     return;
                 }
 
-                String date = text.substring(10);
+                String date = text.substring(12).trim();
 
                 if (validateDate(date) && psql.isUserRegistered(chatId)) {
                     psql.updateUserDOB(chatId, date);
@@ -142,7 +143,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     return;
                 }
 
-                String firstName = text.substring(11).trim();
+                String firstName = text.substring(13).trim();
 
                 if (psql.isUserRegistered(chatId)) {
                     psql.updateUserName(chatId, firstName);
@@ -235,14 +236,30 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
         help += "<b>Help</b> \n\n";
         help += "<em>Commands: </em>\n";
-        help += "/subscribe FIRST_NAME D.O.B (dd-MM-yyyy)\n";
-        help += "/update_dob D.O.B (dd-MM-yyyy)\n";
-        help += "/update_name FIRST_NAME\n\n";
+        help += "/subscribe {FIRST_NAME} {D.O.B (dd-MM-yyyy)}\n";
+        help += "/update_dob {D.O.B (dd-MM-yyyy)}\n";
+        help += "/update_name {FIRST_NAME}\n\n";
         help += "<em>Example:</em>\n";
         help += "/subscribe Brendan 01-01-1999\n";
         help += "/update_dob 12-05-1999\n";
         help += "/update_name Bren\n\n";
 
         return help;
+    }
+
+    public void runScheduleHappyBirthdayMessage(int chatId) {
+        try {
+            PSQL psql = new PSQL();
+
+            SendMessage message = new SendMessage();
+            message.setChatId("" + chatId);
+
+            message.setText("Happy Birthday!");
+
+            execute(message);
+            psql.closeConnection();
+        } catch (URISyntaxException | SQLException | TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
