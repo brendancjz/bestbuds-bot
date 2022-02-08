@@ -1,5 +1,6 @@
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -39,7 +40,15 @@ public class HappyBirthdayTimer {
         int day = Integer.parseInt(birthdateArr[0]);
         int month = Integer.parseInt(birthdateArr[1]);
 
-        System.out.println("DAY: " + day + "    MONTH: " + month);
+        LocalDateTime dateNow = LocalDateTime.now();
+        int yearNow = dateNow.getYear();
+        int monthNow = dateNow.getMonthValue();
+        int dayOfMonthNow = dateNow.getDayOfMonth();
+        int hourNow = dateNow.getHour();
+        int minNow = dateNow.getMinute();
+        int secNow = dateNow.getSecond();
+        System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
+
 
         return null;
     }
