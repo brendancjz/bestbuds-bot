@@ -1,6 +1,7 @@
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 
 public class HappyBirthdayTimer {
@@ -15,6 +16,7 @@ public class HappyBirthdayTimer {
     }
 
     public void start() throws URISyntaxException, SQLException {
+        System.out.println("HappyBirthdayTimer has started...");
         PSQL psql = new PSQL();
         ArrayList<String> chatIds = psql.getAllChatId();
 
@@ -24,7 +26,21 @@ public class HappyBirthdayTimer {
 
             //Get DOB
             String dob = psql.getUserDOB(chatId);
-            System.out.println("DOB for Id: " + chatId + " is " + dob);
+            //System.out.println("DOB for Id: " + chatId + " is " + dob);
+
+            scheduleOnBirthdate(dob);
+            //timer.schedule(task, );
         }
+    }
+
+    private Date scheduleOnBirthdate(String dob) {
+        String[] birthdateArr = dob.split("-");
+
+        int day = Integer.parseInt(birthdateArr[0]);
+        int month = Integer.parseInt(birthdateArr[1]);
+
+        System.out.println("DAY: " + day + "    MONTH: " + month);
+
+        return null;
     }
 }
