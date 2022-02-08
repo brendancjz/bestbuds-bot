@@ -31,8 +31,26 @@ public class HappyBirthdayTimer {
             //System.out.println("DOB for Id: " + chatId + " is " + dob);
 
             scheduleOnBirthdate(dob);
-            //timer.schedule(task, scheduleOnBirthdate(dob));
+            timer.schedule(task, scheduleOnBirthdate(dob));
         }
+
+        psql.closeConnection();
+    }
+
+    public void startForUser(int chatId) throws URISyntaxException, SQLException {
+        System.out.println("HappyBirthdayTimer has started...");
+
+        PSQL psql = new PSQL();
+
+        SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(bot, chatId);
+
+        //Get DOB
+        String dob = psql.getUserDOB(chatId);
+        //System.out.println("DOB for Id: " + chatId + " is " + dob);
+
+        scheduleOnBirthdate(dob);
+        timer.schedule(task, scheduleOnBirthdate(dob));
+        psql.closeConnection();
     }
 
     private Date scheduleOnBirthdate(String dob) {
@@ -48,7 +66,7 @@ public class HappyBirthdayTimer {
         int hourNow = dateNow.getHour();
         int minNow = dateNow.getMinute();
         int secNow = dateNow.getSecond();
-        System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
+        //System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
 
         LocalDateTime closestBirthdate;
 
@@ -57,7 +75,7 @@ public class HappyBirthdayTimer {
             System.out.println("It has not passed the timing. Setting timer for later: " + closestBirthdate.toString());
         } else {
             closestBirthdate = LocalDateTime.of(yearNow, month, day, 0, 0, 0).plusYears(1);
-            System.out.println("It has not passed the timing. Setting timer for later: " + closestBirthdate.toString());
+            System.out.println("It passed the timing. Setting timer for later: " + closestBirthdate.toString());
         }
 
         return Date.from(closestBirthdate.atZone(ZoneId.systemDefault()).toInstant());

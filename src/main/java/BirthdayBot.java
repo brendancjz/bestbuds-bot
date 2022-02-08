@@ -171,7 +171,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
             }
 
 
-        } catch (SQLException | ParseException throwables) {
+        } catch (SQLException | ParseException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
 
@@ -201,8 +201,11 @@ public class BirthdayBot extends TelegramLongPollingBot {
         }
     }
 
-    private void scheduleBirthdayMessage(int chatId) {
+    private void scheduleBirthdayMessage(int chatId) throws URISyntaxException, SQLException {
         //TODO: The scheduling
+        //Send Happy Birthday
+        HappyBirthdayTimer timer = new HappyBirthdayTimer(this);
+        timer.startForUser(chatId);
     }
 
     public boolean validateDate(String date) {
