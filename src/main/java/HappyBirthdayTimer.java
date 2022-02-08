@@ -29,8 +29,7 @@ public class HappyBirthdayTimer {
             //Get DOB
             String dob = psql.getUserDOB(chatId);
             //System.out.println("DOB for Id: " + chatId + " is " + dob);
-
-            scheduleOnBirthdate(dob);
+            
             timer.schedule(task, scheduleOnBirthdate(dob));
         }
 
