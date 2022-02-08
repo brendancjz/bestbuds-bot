@@ -31,7 +31,7 @@ public class HappyBirthdayTimer {
             //System.out.println("DOB for Id: " + chatId + " is " + dob);
 
             scheduleOnBirthdate(dob);
-            //timer.schedule(task, );
+            //timer.schedule(task, scheduleOnBirthdate(dob));
         }
     }
 
