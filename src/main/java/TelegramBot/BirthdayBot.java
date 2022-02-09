@@ -1,3 +1,8 @@
+package TelegramBot;
+
+import Command.*;
+import PSQL.*;
+import Timer.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -8,7 +13,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class BirthdayBot extends TelegramLongPollingBot {
@@ -64,10 +68,13 @@ public class BirthdayBot extends TelegramLongPollingBot {
             String name = update.getMessage().getChat().getFirstName();
             String text = update.getMessage().getText();
 
-
+            Command command = null;
             //Universal Commands. No need to update Query and check User.
             if (text.startsWith("/start")) {
                 System.out.println("=== Start Event Called === ");
+
+                command = new StartCommand(this, update);
+                command.runCommand();
 
                 String startMsg = generateIntro(name);
                 if (psql.isUserRegistered(chatId)) {
@@ -171,7 +178,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
             }
 
 
-        } catch (SQLException | ParseException | URISyntaxException throwables) {
+        } catch (SQLException | ParseException | URISyntaxException | TelegramApiException throwables) {
             throwables.printStackTrace();
         }
 
@@ -227,8 +234,8 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 "! Welcome to StickyFaith Birthday Bot.\n\n";
         intro += "This bot stores everyone's birthday and encourages you to send a birthday wish to some whoever's birthday is around the corner.\n\n";
         intro += "Type /help to see what this bot can do.\n\n" +
-                "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
-                "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
+                "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL.PSQL is reliable and " +
+                "your data is stored in PSQL.PSQL's encrypted databases, so nothing to worry about!\n\n";
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return intro;
@@ -264,5 +271,10 @@ public class BirthdayBot extends TelegramLongPollingBot {
         } catch (URISyntaxException | SQLException | TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    private Command getCommand(String text) {
+        return null;
+
     }
 }

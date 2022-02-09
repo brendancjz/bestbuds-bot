@@ -1,3 +1,7 @@
+package Timer;
+
+import TelegramBot.BirthdayBot;
+
 import java.util.TimerTask;
 
 public class SendHappyBirthdayMessageTask extends TimerTask {

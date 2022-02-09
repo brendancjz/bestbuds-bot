@@ -1,3 +1,5 @@
+package PSQL;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -19,11 +21,11 @@ public class PSQL {
 
             String sql = "INSERT INTO Users (chat_id, name, dob) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            System.out.println("Code runs until here.");
+
             preparedStatement.setInt(1, chatId);
             preparedStatement.setString(2, firstName);
             preparedStatement.setString(3, date);
-            System.out.println("Code runs here.");
+
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Successful registration.");

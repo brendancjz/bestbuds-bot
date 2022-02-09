@@ -1,3 +1,8 @@
+package Timer;
+
+import PSQL.PSQL;
+import TelegramBot.BirthdayBot;
+
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -18,7 +23,7 @@ public class HappyBirthdayTimer {
     }
 
     public void start() throws URISyntaxException, SQLException {
-        System.out.println("HappyBirthdayTimer has started...");
+        System.out.println("Timer.HappyBirthdayTimer has started...");
         PSQL psql = new PSQL();
         ArrayList<String> chatIds = psql.getAllChatId();
 
@@ -29,7 +34,7 @@ public class HappyBirthdayTimer {
             //Get DOB
             String dob = psql.getUserDOB(chatId);
             //System.out.println("DOB for Id: " + chatId + " is " + dob);
-            
+
             timer.schedule(task, scheduleOnBirthdate(dob));
         }
 
@@ -37,7 +42,7 @@ public class HappyBirthdayTimer {
     }
 
     public void startForUser(int chatId) throws URISyntaxException, SQLException {
-        System.out.println("HappyBirthdayTimer has started...");
+        System.out.println("Timer.HappyBirthdayTimer has started...");
 
         PSQL psql = new PSQL();
 
