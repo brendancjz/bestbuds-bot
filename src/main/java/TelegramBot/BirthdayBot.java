@@ -73,8 +73,8 @@ public class BirthdayBot extends TelegramLongPollingBot {
             if (text.startsWith("/start")) {
                 System.out.println("=== Start Event Called === ");
 
-                command = new StartCommand(this, update);
-                command.runCommand();
+//                command = new StartCommand(this, update);
+//                command.runCommand();
 
                 String startMsg = generateIntro(name);
                 if (psql.isUserRegistered(chatId)) {
@@ -178,7 +178,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
             }
 
 
-        } catch (SQLException | ParseException | URISyntaxException | TelegramApiException throwables) {
+        } catch (SQLException | ParseException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
 

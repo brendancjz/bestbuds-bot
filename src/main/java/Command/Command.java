@@ -20,8 +20,8 @@ public class Command {
         this.psql = new PSQL();
     }
 
-    public Long getChatId() {
-        return this.update.getMessage().getChatId();
+    public Integer getChatId() {
+        return Integer.parseInt(this.update.getMessage().getChatId().toString());
     }
 
     public String getFistName() {
@@ -44,7 +44,7 @@ public class Command {
         return this.psql;
     }
 
-    public void runCommand() throws TelegramApiException {
+    public void runCommand() {
         System.out.println("Command runCommand()");
     }
 }
