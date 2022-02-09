@@ -2,9 +2,7 @@ package Command;
 
 import PSQL.PSQL;
 import TelegramBot.BirthdayBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -14,10 +12,10 @@ public class Command {
     private final PSQL psql;
     private final Update update;
 
-    public Command(BirthdayBot bot, Update update) throws URISyntaxException, SQLException {
+    public Command(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         this.bot = bot;
         this.update = update;
-        this.psql = new PSQL();
+        this.psql = psql;
     }
 
     public Integer getChatId() {

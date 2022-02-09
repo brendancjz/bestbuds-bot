@@ -10,8 +10,8 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class StartCommand extends Command {
-    public StartCommand(BirthdayBot bot, Update update) throws URISyntaxException, SQLException {
-        super(bot, update);
+    public StartCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+        super(bot, update, psql);
 
     }
 
@@ -21,11 +21,8 @@ public class StartCommand extends Command {
             System.out.println("StartCommand.runCommand()");
 
             SendMessage message = new SendMessage();
-
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
-
-            message.setText("StartCommand.runCommand()");
 
             String startMsg = generateIntro(super.getFistName());
 

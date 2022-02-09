@@ -65,56 +65,29 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
     private void personalChatMessage(SendMessage message, Update update, int chatId, PSQL psql) {
         try {
-            String name = update.getMessage().getChat().getFirstName();
             String text = update.getMessage().getText();
 
-            Command command = null;
+            Command command;
             //Universal Commands. No need to update Query and check User.
             if (text.startsWith("/start")) {
                 System.out.println("=== Start Event Called === ");
-                command = new StartCommand(this, update);
+                command = new StartCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
 
             if (text.startsWith("/help")) {
                 System.out.println("=== Help Event Called === ");
-                command = new HelpCommand(this, update);
+                command = new HelpCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
 
             if (text.startsWith("/subscribe")) {
-                if (text.equals("/subscribe")) { //Bad command
-                    missingArgumentsMessage(message);
-                    return;
-                }
-
-                String[] arr = text.split(" ");
-
-                if (arr.length == 3) {
-                    String firstName = arr[1];
-                    String date = arr[2];
-
-                    if (validateDate(date) && !psql.isUserRegistered(chatId)) {
-                        psql.addNewUser(chatId, firstName, date);
-                        message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
-                        executeMessage(message);
-
-                        scheduleBirthdayMessage(chatId);
-                    } else if (psql.isUserRegistered(chatId)) {
-                        message.setText("You have already been registered.");
-
-                        executeMessage(message);
-                    } else {
-                        wrongDateFormatMessage(message);
-                    }
-
-
-                } else {
-                    missingArgumentsMessage(message);
-                }
-
+                System.out.println("=== Subscribe Event Called === ");
+                command = new SubscribeCommand(this, update, psql);
+                command.runCommand();
+                return;
             }
             else if (text.startsWith("/update_dob")) {
                 if (text.equals("/update_dob")) { //Bad command
@@ -172,7 +145,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
             }
 
 
-        } catch (SQLException | ParseException | URISyntaxException throwables) {
+        } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
 
@@ -200,13 +173,6 @@ public class BirthdayBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    private void scheduleBirthdayMessage(int chatId) throws URISyntaxException, SQLException {
-        //TODO: The scheduling
-        //Send Happy Birthday
-        HappyBirthdayTimer timer = new HappyBirthdayTimer(this);
-        timer.startForUser(chatId);
     }
 
     public boolean validateDate(String date) {

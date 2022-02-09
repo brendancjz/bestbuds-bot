@@ -10,8 +10,8 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class HelpCommand extends Command {
-    public HelpCommand(BirthdayBot bot, Update update) throws URISyntaxException, SQLException {
-        super(bot, update);
+    public HelpCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+        super(bot, update, psql);
 
     }
 
