@@ -9,8 +9,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
-public class UpdateDOBCommand extends Command {
-    public UpdateDOBCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+public class UpdateNameCommand extends Command {
+    public UpdateNameCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
 
     }
@@ -18,7 +18,7 @@ public class UpdateDOBCommand extends Command {
     @Override
     public void runCommand() {
         try {
-            System.out.println("UpdateDOBCommand.runCommand()");
+            System.out.println("UpdateNameCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText();
             int chatId = Integer.parseInt(super.getUpdate().getMessage().getChatId().toString());
 
@@ -26,20 +26,17 @@ public class UpdateDOBCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-            if (text.equals("/update_dob")) { //Bad command
+            if (text.equals("/update_name")) { //Bad command
                 missingArgumentsMessage(message);
                 return;
             }
 
-            String date = text.substring(12).trim();
+            String firstName = text.substring(13).trim();
 
-            if (validateDate(date) && super.getPSQL().isUserRegistered(chatId)) {
-                super.getPSQL().updateUserDOB(chatId, date);
-                message.setText("Thanks! Your changed D.O.B is " + date + ".");
+            if (super.getPSQL().isUserRegistered(chatId)) {
+                super.getPSQL().updateUserName(chatId, firstName);
+                message.setText("Thanks! Your changed name is " + firstName + ".");
                 super.getBot().execute(message);
-
-            } else if (!validateDate(date) && super.getPSQL().isUserRegistered(chatId)) {
-                wrongDateFormatMessage(message);
 
             } else {
                 notRegisteredMessage(message);

@@ -9,10 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class SubscribeCommand extends Command {
     public SubscribeCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {

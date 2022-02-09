@@ -94,22 +94,9 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 command.runCommand();
             }
             else if (text.startsWith("/update_name")) {
-                if (text.equals("/update_name")) { //Bad command
-                    missingArgumentsMessage(message);
-                    return;
-                }
-
-                String firstName = text.substring(13).trim();
-
-                if (psql.isUserRegistered(chatId)) {
-                    psql.updateUserName(chatId, firstName);
-                    message.setText("Thanks! Your changed name is " + firstName + ".");
-
-                    executeMessage(message);
-                } else {
-                    notRegisteredMessage(message);
-                }
-
+                System.out.println("=== Update Name Event Called === ");
+                command = new UpdateNameCommand(this, update, psql);
+                command.runCommand();
             }
             else if (text.startsWith("/getDOB")) {
                 String date = psql.getUserDOB(chatId);
