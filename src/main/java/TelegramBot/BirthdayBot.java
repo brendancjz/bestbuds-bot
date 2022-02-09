@@ -101,41 +101,19 @@ public class BirthdayBot extends TelegramLongPollingBot {
             else if (text.startsWith("/getDOB")) {
                 String date = psql.getUserDOB(chatId);
                 message.setText("Your D.O.B is " + date);
-
                 executeMessage(message);
             }
             else if (text.startsWith("/getName")) {
                 String firstName = psql.getUserName(chatId);
                 message.setText("Your name is " + firstName);
-
                 executeMessage(message);
             } else {
                 message.setText("Invalid Command.");
-
                 executeMessage(message);
             }
-
-
         } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
-
-
-    }
-
-    private void notRegisteredMessage(SendMessage message) {
-        message.setText("You're not registered yet.");
-        executeMessage(message);
-    }
-
-    private void wrongDateFormatMessage(SendMessage message) {
-        message.setText("Wrong date format. Try again with dd-MM-yyyy");
-        executeMessage(message);
-    }
-
-    private void missingArgumentsMessage(SendMessage message) {
-        message.setText("Bad command. Missing arguments.");
-        executeMessage(message);
     }
 
     private void executeMessage(SendMessage message) {
@@ -145,20 +123,6 @@ public class BirthdayBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
-    public boolean validateDate(String date) {
-        DateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yyyy");
-
-        try {
-            Date d = dateFormat1.parse(date);
-        } catch (ParseException e) {
-            return false;
-        }
-        return true;
-
-    }
-
-
 
     public void runScheduleHappyBirthdayMessage(int chatId) {
         try {
@@ -174,10 +138,5 @@ public class BirthdayBot extends TelegramLongPollingBot {
         } catch (URISyntaxException | SQLException | TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    private Command getCommand(String text) {
-        return null;
-
     }
 }
