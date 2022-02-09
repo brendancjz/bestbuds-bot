@@ -73,8 +73,8 @@ public class BirthdayBot extends TelegramLongPollingBot {
             if (text.startsWith("/start")) {
                 System.out.println("=== Start Event Called === ");
 
-//                command = new StartCommand(this, update);
-//                command.runCommand();
+                command = new StartCommand(this, update);
+                command.runCommand();
 
                 String startMsg = generateIntro(name);
                 if (psql.isUserRegistered(chatId)) {
@@ -125,7 +125,8 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     missingArgumentsMessage(message);
                 }
 
-            } else if (text.startsWith("/update_dob")) {
+            }
+            else if (text.startsWith("/update_dob")) {
                 if (text.equals("/update_dob")) { //Bad command
                     missingArgumentsMessage(message);
                     return;
@@ -144,7 +145,8 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     notRegisteredMessage(message);
                 }
 
-            } else if (text.startsWith("/update_name")) {
+            }
+            else if (text.startsWith("/update_name")) {
                 if (text.equals("/update_name")) { //Bad command
                     missingArgumentsMessage(message);
                     return;
@@ -161,12 +163,14 @@ public class BirthdayBot extends TelegramLongPollingBot {
                     notRegisteredMessage(message);
                 }
 
-            } else if (text.startsWith("/getDOB")) {
+            }
+            else if (text.startsWith("/getDOB")) {
                 String date = psql.getUserDOB(chatId);
                 message.setText("Your D.O.B is " + date);
 
                 executeMessage(message);
-            } else if (text.startsWith("/getName")) {
+            }
+            else if (text.startsWith("/getName")) {
                 String firstName = psql.getUserName(chatId);
                 message.setText("Your name is " + firstName);
 
