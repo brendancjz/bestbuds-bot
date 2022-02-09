@@ -1,1 +1,1 @@
-"# stickyfaith-birthday-bot" 
+"# the-birthday-bot" 
