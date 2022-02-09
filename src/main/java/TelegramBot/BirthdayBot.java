@@ -87,27 +87,11 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 System.out.println("=== Subscribe Event Called === ");
                 command = new SubscribeCommand(this, update, psql);
                 command.runCommand();
-                return;
             }
             else if (text.startsWith("/update_dob")) {
-                if (text.equals("/update_dob")) { //Bad command
-                    missingArgumentsMessage(message);
-                    return;
-                }
-
-                String date = text.substring(12).trim();
-
-                if (validateDate(date) && psql.isUserRegistered(chatId)) {
-                    psql.updateUserDOB(chatId, date);
-                    message.setText("Thanks! Your changed D.O.B is " + date + ".");
-
-                    executeMessage(message);
-                } else if (!validateDate(date) && psql.isUserRegistered(chatId)) {
-                    wrongDateFormatMessage(message);
-                } else {
-                    notRegisteredMessage(message);
-                }
-
+                System.out.println("=== Update DOB Event Called === ");
+                command = new UpdateDOBCommand(this, update, psql);
+                command.runCommand();
             }
             else if (text.startsWith("/update_name")) {
                 if (text.equals("/update_name")) { //Bad command

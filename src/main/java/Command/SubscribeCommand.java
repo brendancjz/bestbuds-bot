@@ -49,7 +49,7 @@ public class SubscribeCommand extends Command {
 
                     scheduleBirthdayMessage(chatId);
                 } else if (super.getPSQL().isUserRegistered(chatId)) {
-                    message.setText("You have already been registered.");
+                    message.setText("You are already registered.");
 
                     super.getBot().execute(message);
                 } else {
@@ -70,33 +70,6 @@ public class SubscribeCommand extends Command {
         //Send Happy Birthday
         HappyBirthdayTimer timer = new HappyBirthdayTimer(super.getBot());
         timer.startForUser(chatId);
-    }
-
-    private void notRegisteredMessage(SendMessage message) throws TelegramApiException {
-        message.setText("You're not registered yet.");
-        super.getBot().execute(message);
-    }
-
-    private void wrongDateFormatMessage(SendMessage message) throws TelegramApiException {
-        message.setText("Wrong date format. Try again with dd-MM-yyyy");
-        super.getBot().execute(message);
-    }
-
-    private void missingArgumentsMessage(SendMessage message) throws TelegramApiException {
-        message.setText("Bad command. Missing arguments.");
-        super.getBot().execute(message);
-    }
-
-    public boolean validateDate(String date) {
-        DateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yyyy");
-
-        try {
-            Date d = dateFormat1.parse(date);
-        } catch (ParseException e) {
-            return false;
-        }
-        return true;
-
     }
 }
 
