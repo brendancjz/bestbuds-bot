@@ -72,25 +72,15 @@ public class BirthdayBot extends TelegramLongPollingBot {
             //Universal Commands. No need to update Query and check User.
             if (text.startsWith("/start")) {
                 System.out.println("=== Start Event Called === ");
-
                 command = new StartCommand(this, update);
                 command.runCommand();
-
-                String startMsg = generateIntro(name);
-                if (psql.isUserRegistered(chatId)) {
-                    startMsg += " <em>It looks like you are already registered in the database!</em>";
-                }
-
-                message.setText(startMsg);
-                executeMessage(message);
                 return;
             }
 
             if (text.startsWith("/help")) {
                 System.out.println("=== Help Event Called === ");
-
-                message.setText(generateHelp());
-                executeMessage(message);
+                command = new HelpCommand(this, update);
+                command.runCommand();
                 return;
             }
 
@@ -231,35 +221,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
 
     }
 
-    public static String generateIntro(String name) {
-        String intro = "<b>Start</b> \n\n";
 
-        intro += "Hi " + name +
-                "! Welcome to StickyFaith Birthday Bot.\n\n";
-        intro += "This bot stores everyone's birthday and encourages you to send a birthday wish to some whoever's birthday is around the corner.\n\n";
-        intro += "Type /help to see what this bot can do.\n\n" +
-                "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL.PSQL is reliable and " +
-                "your data is stored in PSQL.PSQL's encrypted databases, so nothing to worry about!\n\n";
-        intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
-
-        return intro;
-    }
-
-    public static String generateHelp() {
-        String help = "";
-
-        help += "<b>Help</b> \n\n";
-        help += "<em>Commands: </em>\n";
-        help += "/subscribe {FIRST_NAME} {D.O.B (dd-MM-yyyy)}\n";
-        help += "/update_dob {D.O.B (dd-MM-yyyy)}\n";
-        help += "/update_name {FIRST_NAME}\n\n";
-        help += "<em>Example:</em>\n";
-        help += "/subscribe Brendan 01-01-1999\n";
-        help += "/update_dob 12-05-1999\n";
-        help += "/update_name Bren\n\n";
-
-        return help;
-    }
 
     public void runScheduleHappyBirthdayMessage(int chatId) {
         try {
