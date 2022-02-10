@@ -7,10 +7,6 @@ CREATE TABLE Groups (
     created_on DATE NOT NULL
 );
 
-CREATE TABLE Messages (
-    message_id SERIAL PRIMARY KEY,
-);
-
 CREATE TABLE Users (
   chat_id INT PRIMARY KEY,
   group_id INT NOT NULL,
@@ -19,8 +15,18 @@ CREATE TABLE Users (
   code VARCHAR(10) UNIQUE NOT NULL,
   joined_on DATE NOT NULL,
 
+  FOREIGN KEY (group_id) REFERENCES Groups (group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+);
 
-  FOREIGN KEY (group_id) REFERENCES Groups ON DELETE CASCADE ON UPDATE CASCADE,
+CREATE TABLE Messages (
+    message_id SERIAL PRIMARY KEY,
+    user_code_from VARCHAR(10) NOT NULL,
+    user_code_to VARCHAR(10) NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    message_sent BOOL NOT NULL,
+
+    FOREIGN KEY (user_code_from) REFERENCES Users (code) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (user_code_to) REFERENCES Users (code) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 To "reset" database (clear all rows)
