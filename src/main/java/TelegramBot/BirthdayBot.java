@@ -108,7 +108,7 @@ public class BirthdayBot extends TelegramLongPollingBot {
                 message.setText("Your name is " + firstName);
                 executeMessage(message);
             } else {
-                message.setText("Invalid Command.");
+                message.setText("Invalid Command: " + text);
                 executeMessage(message);
             }
         } catch (SQLException | URISyntaxException throwables) {

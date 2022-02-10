@@ -1,12 +1,28 @@
 Copy paste for easy creation of tables in db
-Users:
-CREATE TABLE users (
-user_id SERIAL PRIMARY KEY,
-chat_id INT NOT NULL,
-name VARCHAR(50) NOT NULL,
-dob VARCHAR(50) NOT NULL) ;
+
+CREATE TABLE Groups (
+    group_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    code VARCHAR(10) NOT NULL,
+    created_on DATE NOT NULL
+);
+
+CREATE TABLE Messages (
+    message_id SERIAL PRIMARY KEY,
+);
+
+CREATE TABLE Users (
+  chat_id INT PRIMARY KEY,
+  group_id INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  dob DATE,
+  code VARCHAR(10) UNIQUE NOT NULL,
+  joined_on DATE NOT NULL,
+
+
+  FOREIGN KEY (group_id) REFERENCES Groups ON DELETE CASCADE ON UPDATE CASCADE,
+);
 
 To "reset" database (clear all rows)
-delete from entries;
-delete from users;
-delete from financials;
+delete from Groups;
+delete from Users;
