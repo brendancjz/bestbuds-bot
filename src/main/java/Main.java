@@ -13,7 +13,7 @@ public class Main {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             BirthdayBot birthdayBot = new BirthdayBot();
             telegramBotsApi.registerBot(birthdayBot); //botSession has started.
- 
+
             //Send Happy Birthday
             HappyBirthdayTimer timer = new HappyBirthdayTimer(birthdayBot);
             timer.start();
