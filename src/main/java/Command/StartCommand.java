@@ -29,7 +29,12 @@ public class StartCommand extends Command {
             if (super.getPSQL().isUserRegistered(super.getChatId())) {
                 startMsg += " <em>It looks like you are already registered in the database!</em>";
             }
-
+            startMsg += " ``` _     _     _\n" +
+                    "| |   | |   | |\n" +
+                    "| |__ | |__ | |__\n" +
+                    "|  _ \\|  _ \\|  _ \\\n" +
+                    "| (_) | (_) | (_) |\n" +
+                    "|____/|____/|____/``` ";
             message.setText(startMsg);
             super.getBot().execute(message);
 
@@ -44,11 +49,11 @@ public class StartCommand extends Command {
         String intro = "<b>Start</b> \n\n";
 
         intro += "Hi " + name +
-                "! Welcome to StickyFaith Birthday Bot.\n\n";
+                "! Welcome to Best Buds Bot.\n\n";
         intro += "This bot stores everyone's birthday and encourages you to send a birthday wish to some whoever's birthday is around the corner.\n\n";
         intro += "Type /help to see what this bot can do.\n\n" +
                 "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL.PSQL is reliable and " +
-                "your data is stored in PSQL.PSQL's encrypted databases, so nothing to worry about!\n\n";
+                "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return intro;

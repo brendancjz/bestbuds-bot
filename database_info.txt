@@ -1,28 +1,41 @@
 Copy paste for easy creation of tables in db
 
+DROP TABLE IF EXISTS Messages;
+DROP TABLE IF EXISTS GroupUsers;
+DROP TABLE IF EXISTS Groups;
+DROP TABLE IF EXISTS Users;
+
+
 CREATE TABLE Groups (
     group_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    code VARCHAR(10) NOT NULL,
+    name TEXT NOT NULL,
+    code TEXT NOT NULL,
+    createdBy TEXT NOT NULL,
     created_on DATE NOT NULL
 );
 
 CREATE TABLE Users (
   chat_id INT PRIMARY KEY,
-  group_id INT NOT NULL,
-  name VARCHAR(50) NOT NULL,
+  name TEXT NOT NULL,
   dob DATE,
-  code VARCHAR(10) UNIQUE NOT NULL,
-  joined_on DATE NOT NULL,
+  code TEXT NOT NULL UNIQUE,
+  joined_on DATE NOT NULL
+);
 
-  FOREIGN KEY (group_id) REFERENCES Groups (group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CREATE TABLE GroupUsers (
+    group_id INT NOT NULL,
+    chat_id INT NOT NULL,
+
+    PRIMARY KEY(group_id, chat_id),
+    FOREIGN KEY (group_id) REFERENCES Groups (group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (chat_id) REFERENCES Users (chat_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Messages (
     message_id SERIAL PRIMARY KEY,
-    user_code_from VARCHAR(10) NOT NULL,
-    user_code_to VARCHAR(10) NOT NULL,
-    message VARCHAR(255) NOT NULL,
+    user_code_from TEXT NOT NULL,
+    user_code_to TEXT NOT NULL,
+    message TEXT NOT NULL,
     message_sent BOOL NOT NULL,
 
     FOREIGN KEY (user_code_from) REFERENCES Users (code) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -30,5 +43,7 @@ CREATE TABLE Messages (
 );
 
 To "reset" database (clear all rows)
+delete from Messages;
+delete from GroupUsers;
 delete from Groups;
 delete from Users;
