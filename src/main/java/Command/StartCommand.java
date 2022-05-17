@@ -29,12 +29,13 @@ public class StartCommand extends Command {
             if (super.getPSQL().isUserRegistered(super.getChatId())) {
                 startMsg += " <em>It looks like you are already registered in the database!</em>";
             }
-            startMsg += " ``` _     _     _\n" +
+
+            startMsg += "<pre> _     _     _\n" +
                     "| |   | |   | |\n" +
                     "| |__ | |__ | |__\n" +
                     "|  _ \\|  _ \\|  _ \\\n" +
                     "| (_) | (_) | (_) |\n" +
-                    "|____/|____/|____/``` ";
+                    "|____/|____/|____/</pre>";
             message.setText(startMsg);
             super.getBot().execute(message);
 
