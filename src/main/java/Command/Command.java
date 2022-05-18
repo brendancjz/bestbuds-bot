@@ -87,4 +87,17 @@ public class Command {
                 "| (_) | (_) | (_) |\n" +
                 "|____/|____/|____/</pre>\n\n";
     }
+
+    public String generateBotDescription() {
+        String desc = "";
+        desc += "<u>What can this bot do?</u>\n";
+        desc += "BestBuds Bot helps to remember all your friends birthdays! \uD83C\uDF89 \uD83C\uDF82 " +
+                "It will remind you to send a birthday wish to them nearing their birthday and it will " +
+                "collate all your birthday wishes too! To be started, update your personal details and " +
+                "join a BestBuds group with your friend group! \uD83C\uDFE0\n\n";
+        desc += "<u>No BestBuds Group?</u>\n";
+        desc += "No worries, create a BestBuds Group. You will be the owner of the group. Enter /subscribe for more information.";
+
+        return desc;
+    }
 }

@@ -40,13 +40,7 @@ public class HelpCommand extends Command {
 
         help += "<b>Help</b>\n";
         help += this.generateBBB();
-        help += "<u>What can this bot do?</u>\n";
-        help += "BestBuds Bot helps to remember all your friends birthdays! \uD83C\uDF89 \uD83C\uDF82 " +
-                "It will remind you to send a birthday wish to them nearing their birthday and it will " +
-                "collate all your birthday wishes too! To be started, update your personal details and " +
-                "join a BestBuds group with your friend group! \uD83C\uDFE0\n\n";
-        help += "<u>No BestBuds Group?</u>\n";
-        help += "No worries, create a BestBuds Group. You will be the owner of the group. Enter /subscribe for more information.";
+        help += this.generateBotDescription();
 
 //        help += "<em>Commands: </em>\n";
 //        help += "/subscribe {FIRST_NAME} {D.O.B (dd-MM-yyyy)}\n";
