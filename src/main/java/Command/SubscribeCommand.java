@@ -73,11 +73,13 @@ public class SubscribeCommand extends Command {
         String instruction = "";
 
         instruction += "<b>Subscribe</b> \n\n";
-        instruction += "You can create or join a BestBuds group.\n\n";
-        instruction += "<em>Joining a BestBuds Group</em>\n";
-        instruction += "<pre>    /join &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em>Creating a BestBuds Group</em>\n";
-        instruction += "<pre>    /create &lt;group_name&gt;</pre>\n\n";
+        instruction += "You can create or join a BestBuds group. " +
+                "A BestBuds Group contains all your friends in your friend group. " +
+                "Tap on the command below to copy text.\n\n";
+        instruction += "<em>Join a BestBuds Group</em>\n";
+        instruction += "<pre>  /join &lt;group_code&gt;</pre>\n\n";
+        instruction += "<em>Create a BestBuds Group</em>\n";
+        instruction += "<pre>  /create &lt;group_name&gt;</pre>\n\n";
 
         return instruction;
     }
