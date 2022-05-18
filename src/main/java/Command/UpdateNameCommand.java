@@ -1,7 +1,7 @@
 package Command;
 
 import PSQL.PSQL;
-import TelegramBot.BirthdayBot;
+import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class UpdateNameCommand extends Command {
-    public UpdateNameCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+    public UpdateNameCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
 
     }

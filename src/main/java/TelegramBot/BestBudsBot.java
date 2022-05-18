@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BirthdayBot extends TelegramLongPollingBot {
+public class BestBudsBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {

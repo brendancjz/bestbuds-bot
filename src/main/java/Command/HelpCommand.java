@@ -1,7 +1,7 @@
 package Command;
 
 import PSQL.PSQL;
-import TelegramBot.BirthdayBot;
+import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class HelpCommand extends Command {
-    public HelpCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+    public HelpCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
 
     }
@@ -49,19 +49,5 @@ public class HelpCommand extends Command {
         help += "/update_name Bren\n\n";
 
         return help;
-    }
-
-    private String generateIntro(String name) {
-        String intro = "<b>Start</b> \n\n";
-
-        intro += "Hi " + name +
-                "! Welcome to StickyFaith Birthday Bot.\n\n";
-        intro += "This bot stores everyone's birthday and encourages you to send a birthday wish to some whoever's birthday is around the corner.\n\n";
-        intro += "Type /help to see what this bot can do.\n\n" +
-                "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL.PSQL is reliable and " +
-                "your data is stored in PSQL.PSQL's encrypted databases, so nothing to worry about!\n\n";
-        intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
-
-        return intro;
     }
 }

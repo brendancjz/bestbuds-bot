@@ -1,7 +1,7 @@
 package Command;
 
 import PSQL.PSQL;
-import TelegramBot.BirthdayBot;
+import TelegramBot.BestBudsBot;
 import Timer.HappyBirthdayTimer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public class SubscribeCommand extends Command {
-    public SubscribeCommand(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+    public SubscribeCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
 
     }
@@ -28,8 +28,15 @@ public class SubscribeCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-            if (text.equals("/subscribe")) { //Bad command
-                missingArgumentsMessage(message);
+//            if (text.equals("/subscribe")) { //Bad command
+//                missingArgumentsMessage(message);
+//                return;
+//            }
+
+            if (text.equals("/subscribe")) { //Instructions to create or join a Group
+
+                message.setText(generateSubscribeInstruction());
+                super.getBot().execute(message);
                 return;
             }
 
@@ -60,6 +67,15 @@ public class SubscribeCommand extends Command {
         }
 
 
+    }
+
+    private String generateSubscribeInstruction() {
+        String instruction = "";
+
+        instruction += "<b>Subscribe</b> \n\n";
+        instruction += "<em>You can create or join a BestBuds group. </em>\n";
+
+        return instruction;
     }
 
     private void scheduleBirthdayMessage(int chatId) throws URISyntaxException, SQLException {

@@ -1,7 +1,7 @@
 package Command;
 
 import PSQL.PSQL;
-import TelegramBot.BirthdayBot;
+import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -14,11 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Command {
-    private final BirthdayBot bot;
+    private final BestBudsBot bot;
     private final PSQL psql;
     private final Update update;
 
-    public Command(BirthdayBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+    public Command(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         this.bot = bot;
         this.update = update;
         this.psql = psql;
@@ -40,7 +40,7 @@ public class Command {
         return this.update;
     }
 
-    public BirthdayBot getBot() {
+    public BestBudsBot getBot() {
         return this.bot;
     }
 

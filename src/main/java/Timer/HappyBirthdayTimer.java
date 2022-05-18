@@ -1,7 +1,7 @@
 package Timer;
 
 import PSQL.PSQL;
-import TelegramBot.BirthdayBot;
+import TelegramBot.BestBudsBot;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -14,12 +14,12 @@ import java.util.Timer;
 public class HappyBirthdayTimer {
     private final PSQL psql;
     private final Timer timer;
-    private final BirthdayBot bot;
+    private final BestBudsBot bot;
 
-    public HappyBirthdayTimer(BirthdayBot birthdayBot) throws URISyntaxException, SQLException {
+    public HappyBirthdayTimer(BestBudsBot bestBudsBot) throws URISyntaxException, SQLException {
         this.timer = new Timer();
         this.psql = new PSQL();
-        this.bot = birthdayBot;
+        this.bot = bestBudsBot;
     }
 
     public void start() throws URISyntaxException, SQLException {

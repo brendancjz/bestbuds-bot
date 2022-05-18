@@ -1,14 +1,14 @@
 package Timer;
 
-import TelegramBot.BirthdayBot;
+import TelegramBot.BestBudsBot;
 
 import java.util.TimerTask;
 
 public class SendHappyBirthdayMessageTask extends TimerTask {
-    private final BirthdayBot bot;
+    private final BestBudsBot bot;
     private final int chatId;
 
-    public SendHappyBirthdayMessageTask(BirthdayBot bot, int chatId) {
+    public SendHappyBirthdayMessageTask(BestBudsBot bot, int chatId) {
         super();
         this.bot = bot;
         this.chatId = chatId;

@@ -1,4 +1,4 @@
-import TelegramBot.BirthdayBot;
+import TelegramBot.BestBudsBot;
 import Timer.HappyBirthdayTimer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -11,11 +11,11 @@ public class Main {
     public static void main(String[] args ) {
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            BirthdayBot birthdayBot = new BirthdayBot();
-            telegramBotsApi.registerBot(birthdayBot); //botSession has started.
+            BestBudsBot bestBudsBot = new BestBudsBot();
+            telegramBotsApi.registerBot(bestBudsBot); //botSession has started.
 
             //Send Happy Birthday
-            HappyBirthdayTimer timer = new HappyBirthdayTimer(birthdayBot);
+            HappyBirthdayTimer timer = new HappyBirthdayTimer(bestBudsBot);
             timer.start();
         } catch (TelegramApiException | SQLException | URISyntaxException e) {
             e.printStackTrace();
