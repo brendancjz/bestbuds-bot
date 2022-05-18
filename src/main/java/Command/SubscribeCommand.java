@@ -73,7 +73,9 @@ public class SubscribeCommand extends Command {
         String instruction = "";
 
         instruction += "<b>Subscribe</b> \n\n";
-        instruction += "<em>You can create or join a BestBuds group. </em>\n";
+        instruction += "You can create or join a BestBuds group.\n\n";
+        instruction += "<em>Joining a BestBuds Group</em>\n";
+        instruction += "Use this command to join: /join &lt;group_code&gt;\n\n";
 
         return instruction;
     }
