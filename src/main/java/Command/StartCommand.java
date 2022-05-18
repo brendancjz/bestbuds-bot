@@ -56,13 +56,4 @@ public class StartCommand extends Command {
 
         return intro;
     }
-
-    private String generateBBB() {
-        return  "<pre> _     _     _\n" +
-                "| |   | |   | |\n" +
-                "| |__ | |__ | |__\n" +
-                "|  _ \\|  _ \\|  _ \\\n" +
-                "| (_) | (_) | (_) |\n" +
-                "|____/|____/|____/</pre>\n\n";
-    }
 }
