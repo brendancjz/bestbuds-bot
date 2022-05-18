@@ -40,7 +40,10 @@ public class HelpCommand extends Command {
 
         help += "<b>Help</b>\n";
         help += this.generateBBB();
+        help += "<u>What can this bot do?</u>\n";
         help += this.generateBotDescription();
+        help += "<u>No BestBuds Group?</u>\n";
+        help += "No worries, create a BestBuds Group. You will be the owner of the group. Enter /subscribe for more information.";
 
 //        help += "<em>Commands: </em>\n";
 //        help += "/subscribe {FIRST_NAME} {D.O.B (dd-MM-yyyy)}\n";
