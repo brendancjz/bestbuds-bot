@@ -41,7 +41,7 @@ public class StartCommand extends Command {
     }
 
     private String generateIntro(String name) {
-        String intro = "<b>Start</b> \n\n";
+        String intro = "<b>Start</b>\n";
 
         intro += this.generateBBB();
 

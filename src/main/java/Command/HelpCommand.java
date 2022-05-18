@@ -38,7 +38,7 @@ public class HelpCommand extends Command {
     private String generateHelp() {
         String help = "";
 
-        help += "<b>Help</b> \n\n";
+        help += "<b>Help</b>\n";
         help += this.generateBBB();
         help += "<u>What can this bot do?</u>\n";
         help += "BestBuds Bot helps to remember all your friends birthdays! \uD83C\uDF89 \uD83C\uDF82 " +
@@ -56,7 +56,7 @@ public class HelpCommand extends Command {
 //        help += "/subscribe Brendan 01-01-1999\n";
 //        help += "/update_dob 12-05-1999\n";
 //        help += "/update_name Bren\n\n";
-        
+
         return help;
     }
 }
