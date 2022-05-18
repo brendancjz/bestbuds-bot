@@ -75,9 +75,9 @@ public class SubscribeCommand extends Command {
         instruction += "<b>Subscribe</b> \n\n";
         instruction += "You can create or join a BestBuds group.\n\n";
         instruction += "<em>Joining a BestBuds Group</em>\n";
-        instruction += "    /join &lt;group_code&gt;\n\n";
+        instruction += "    /join <pre>&lt;group_code&gt;</pre>\n\n";
         instruction += "<em>Creating a BestBuds Group</em>\n";
-        instruction += "    /create &lt;group_name&gt;\n\n";
+        instruction += "    /create <pre>&lt;group_name&gt;</pre>\n\n";
 
         return instruction;
     }
