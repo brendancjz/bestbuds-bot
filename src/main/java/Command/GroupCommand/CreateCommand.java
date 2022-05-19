@@ -42,9 +42,9 @@ public class CreateCommand extends Command {
             }
 
 
-            String groupCode = arr[1];
+            String groupName = arr[1];
 
-            message.setText("Group Code: " + groupCode);
+            message.setText("Group Name: " + groupName);
             super.getBot().execute(message);
 
         } catch (TelegramApiException throwables) {

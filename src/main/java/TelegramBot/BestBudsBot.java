@@ -1,6 +1,7 @@
 package TelegramBot;
 
 import Command.*;
+import Command.GroupCommand.CreateCommand;
 import Command.GroupCommand.SubscribeCommand;
 import PSQL.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -82,6 +83,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             if (text.startsWith("/subscribe")) {
                 System.out.println("=== Subscribe Event Called === ");
                 command = new SubscribeCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/create")) {
+                System.out.println("=== Create Event Called === ");
+                command = new CreateCommand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/update_dob")) {
