@@ -68,7 +68,7 @@ public class Command {
     }
 
     public void invalidMessage(SendMessage message, String text) throws TelegramApiException {
-        message.setText("Bad Command: " + text + " . Enter /help for assistance.");
+        message.setText("Bad Command: " + text + ". Enter /help for assistance.");
         this.bot.execute(message);
     }
 
