@@ -48,18 +48,25 @@ public class StartCommand extends Command {
         try {
             System.out.println("StartCommand.runCallback()");
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
+            System.out.println("Hello?2");
             String callData = super.getUpdate().getCallbackQuery().getData();
+            System.out.println("Hello?3");
 
             EditMessageText newMessage = new EditMessageText();
+            System.out.println("Hello?4");
             newMessage.setChatId(super.getChatId().toString());
+            System.out.println("Hello?5");
             newMessage.setMessageId(messageId);
+            System.out.println("Hello?6");
             newMessage.enableHtml(true);
+            System.out.println("Hello?7");
 
             newMessage.setText("Next Page: " + callData);
             System.out.println("Hello?");
             System.out.println("Execute: " + super.getBot().execute(newMessage));
 
         } catch (TelegramApiException e) {
+            System.out.println("Hello?1");
             e.printStackTrace();
         }
 
