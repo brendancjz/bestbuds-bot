@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 public class SubscribeCommand extends Command {
     public SubscribeCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
@@ -28,41 +27,38 @@ public class SubscribeCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-//            if (text.equals("/subscribe")) { //Bad command
-//                missingArgumentsMessage(message);
-//                return;
-//            }
-
             if (text.equals("/subscribe")) { //Instructions to create or join a Group
 
                 message.setText(generateSubscribeInstruction());
                 super.getBot().execute(message);
-                return;
-            }
 
-            String[] arr = text.split(" ");
-
-            if (arr.length == 3) {
-                String firstName = arr[1];
-                String date = arr[2];
-
-                if (validateDate(date) && !super.getPSQL().isUserRegistered(chatId)) {
-                    super.getPSQL().addNewUser(chatId, firstName, date);
-                    message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
-                    super.getBot().execute(message);
-
-                    scheduleBirthdayMessage(chatId);
-                } else if (super.getPSQL().isUserRegistered(chatId)) {
-                    message.setText("You are already registered.");
-
-                    super.getBot().execute(message);
-                } else {
-                    wrongDateFormatMessage(message);
-                }
             } else {
-                missingArgumentsMessage(message);
+                invalidMessage(message);
             }
-        } catch (SQLException | TelegramApiException | ParseException | URISyntaxException throwables) {
+
+//            String[] arr = text.split(" ");
+//
+//            if (arr.length == 3) {
+//                String firstName = arr[1];
+//                String date = arr[2];
+//
+//                if (validateDate(date) && !super.getPSQL().isUserRegistered(chatId)) {
+//                    super.getPSQL().addNewUser(chatId, firstName, date);
+//                    message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
+//                    super.getBot().execute(message);
+//
+//                    scheduleBirthdayMessage(chatId);
+//                } else if (super.getPSQL().isUserRegistered(chatId)) {
+//                    message.setText("You are already registered.");
+//
+//                    super.getBot().execute(message);
+//                } else {
+//                    wrongDateFormatMessage(message);
+//                }
+//            } else {
+//                missingArgumentsMessage(message);
+//            }
+        } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
 

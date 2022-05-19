@@ -67,6 +67,11 @@ public class Command {
         this.bot.execute(message);
     }
 
+    public void invalidMessage(SendMessage message) throws TelegramApiException {
+        message.setText("Bad command. Enter /help for assistance.");
+        this.bot.execute(message);
+    }
+
     public boolean validateDate(String date) {
         DateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yyyy");
 
