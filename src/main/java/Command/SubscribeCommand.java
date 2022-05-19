@@ -79,7 +79,7 @@ public class SubscribeCommand extends Command {
                 "You will be notified when a friend's birthday is around the corner.\n\n";
         instruction += "Subscribe to a BestBuds group by creating or joining one. Tap on the command below to copy text.\n\n\n";
         instruction += "<b>BestBuds Group Commands</b> \n\n";
-        instruction += "<em>Join a BestBuds Group<</em>\n";
+        instruction += "<em>Join a BestBuds Group</em>\n";
         instruction += "<pre>  /join &lt;group_code&gt;</pre>\n\n";
         instruction += "<em>Create a BestBuds Group</em>\n";
         instruction += "<pre>  /create &lt;group_name&gt;</pre>\n\n";
