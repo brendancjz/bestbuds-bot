@@ -52,8 +52,6 @@ public class StartCommand extends Command {
             Integer chatId = Integer.parseInt(super.getUpdate().getCallbackQuery().getMessage().getChatId().toString());
 
             EditMessageText newMessage = new EditMessageText();
-            System.out.println(super.getChatId());
-            System.out.println("callback chatId" + chatId);
             newMessage.setChatId(chatId.toString());
             System.out.println("Hello?5");
             newMessage.setMessageId(messageId);
