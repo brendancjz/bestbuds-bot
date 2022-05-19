@@ -78,17 +78,26 @@ public class BestBudsBot extends TelegramLongPollingBot {
             EditMessageText newMessage = new EditMessageText();
             newMessage.setChatId(chatId.toString());
             newMessage.setMessageId(messageId);
-            newMessage.setText("Hello world: " + callData);
-            execute(newMessage);
+            newMessage.enableHtml(true);
 
-            SendMessage message = new SendMessage();
-            message.setChatId(chatId.toString());
-            message.setText("Hello world");
-            execute(message);
+
+//            SendMessage message = new SendMessage();
+//            message.setChatId(chatId.toString());
+//            message.setText("Hello world");
+//            execute(message);
+
+            if (callData.startsWith("confirmation")) {
+                newMessage.setText("Hello world: " + callData);
+                execute(newMessage);
+                return;
+            } else if (callData.startsWith("continue_next")) {
+                newMessage.setText("Next Page: " + callData);
+                execute(newMessage);
+                return;
+            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
     }
 
 
