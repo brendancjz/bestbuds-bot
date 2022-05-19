@@ -3,6 +3,7 @@ package Command;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.KeyboardMarkup;
@@ -37,6 +38,26 @@ public class StartCommand extends Command {
 
         } catch (SQLException | TelegramApiException throwables) {
             throwables.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void runCallback(String callData) {
+        try {
+            Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
+
+            EditMessageText newMessage = new EditMessageText();
+            newMessage.setChatId(super.getChatId().toString());
+            newMessage.setMessageId(messageId);
+            newMessage.enableHtml(true);
+
+            newMessage.setText("Next Page: " + callData);
+            super.getBot().execute(newMessage);
+
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
 
 

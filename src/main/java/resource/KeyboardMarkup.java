@@ -100,7 +100,7 @@ public class KeyboardMarkup {
 
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         button1.setText("CONTINUE TO NEXT PAGE");
-        button1.setCallbackData("continue_next");
+        button1.setCallbackData("start_page_2");
         row.add(button1);
 
         keyboard.add(row);

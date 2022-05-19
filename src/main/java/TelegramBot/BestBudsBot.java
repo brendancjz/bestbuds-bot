@@ -80,6 +80,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
             newMessage.setMessageId(messageId);
             newMessage.enableHtml(true);
 
+            Command command;
 
 //            SendMessage message = new SendMessage();
 //            message.setChatId(chatId.toString());
@@ -90,12 +91,15 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 newMessage.setText("Hello world: " + callData);
                 execute(newMessage);
                 return;
-            } else if (callData.startsWith("continue_next")) {
-                newMessage.setText("Next Page: " + callData);
-                execute(newMessage);
+            } else if (callData.startsWith("start_page")) {
+
+                System.out.println("=== Start Event Called === ");
+                command = new StartCommand(this, update, psql);
+                command.runCallback(callData);
                 return;
+
             }
-        } catch (TelegramApiException e) {
+        } catch (TelegramApiException | SQLException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
