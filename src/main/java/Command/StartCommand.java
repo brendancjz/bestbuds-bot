@@ -56,6 +56,7 @@ public class StartCommand extends Command {
             newMessage.enableHtml(true);
 
             newMessage.setText("Next Page: " + callData);
+            System.out.println("Hello?");
             System.out.println("Execute: " + super.getBot().execute(newMessage));
 
         } catch (TelegramApiException e) {
