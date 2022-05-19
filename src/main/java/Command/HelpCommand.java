@@ -41,15 +41,15 @@ public class HelpCommand extends Command {
         help += "<b>Help</b>\n";
         help += this.generateBBB();
         help += "For BestBuds Group use cases, check out /subscribe for more information.\n\n";
-        help += "For User use cases, check out /profile for more information.\n\n";
+        help += "For User use cases, check out /profile for more information.\n\n\n";
         help += "<b>FAQ</b>\n\n";
         help += "<u>What can this bot do?</u>\n";
         help += this.generateBotDescription();
         help += "<u>What should I do when starting the bot?</u>\n";
         help += "Thank you for using this bot! First, you should input your personal details. Next, you should join or create a " +
-                "BestBuds Group. Finally, await for birthday wish requests or your birthday messages. Enter /profile for more information.";
+                "BestBuds Group. Finally, await for birthday wish requests or your birthday messages. Enter /profile for more information.\n\n";
         help += "<u>No BestBuds Group?</u>\n";
-        help += "No worries, create a BestBuds Group. You will be the owner of the group. Enter /subscribe for more information.";
+        help += "No worries, create a BestBuds Group. You will be the owner of the group. Enter /subscribe for more information.\n\n";
 
 //        help += "<em>Commands: </em>\n";
 //        help += "/subscribe {FIRST_NAME} {D.O.B (dd-MM-yyyy)}\n";
