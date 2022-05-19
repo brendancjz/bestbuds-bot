@@ -95,7 +95,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 System.out.println("=== Start Event Called === ");
                 command = new StartCommand(this, update, psql);
-                command.runCallback(callData);
+                command.runCallback();
                 return;
 
             }

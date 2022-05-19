@@ -104,7 +104,7 @@ public class Command {
         return desc;
     }
 
-    public void runCallback(String callData) {
+    public void runCallback() {
         System.out.println("Command runCallback()");
     }
 }
