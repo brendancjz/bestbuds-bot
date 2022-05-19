@@ -48,6 +48,7 @@ public class StartCommand extends Command {
         try {
             System.out.println("StartCommand.runCallback()");
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
+            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
             String callData = super.getUpdate().getCallbackQuery().getData();
             Integer chatId = Integer.parseInt(super.getUpdate().getCallbackQuery().getMessage().getChatId().toString());
 
@@ -58,11 +59,11 @@ public class StartCommand extends Command {
 
             Integer currentPageNumber = Integer.parseInt(callData.split("_")[2]);
             System.out.println("Page " + currentPageNumber);
-            
+
             if (currentPageNumber == 1) {
                 newMessage.setReplyMarkup(KeyboardMarkup.continueKB());
 
-                newMessage.setText(generateIntro(super.getFirstName()));
+                newMessage.setText(generateIntro(firstName));
             } else if (currentPageNumber == 2) {
                 newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(currentPageNumber));
 
