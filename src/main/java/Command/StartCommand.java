@@ -67,7 +67,7 @@ public class StartCommand extends Command {
             } else if (currentPageNumber == 2) {
                 newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(currentPageNumber));
 
-                newMessage.setText("Get Started -- Page 2");
+                newMessage.setText(generateGetStarted());
             } else if (currentPageNumber == 3) {
                 newMessage.setReplyMarkup(KeyboardMarkup.backKB(currentPageNumber));
                 newMessage.setText("Get Started -- Page 3");
