@@ -99,4 +99,26 @@ public class StartCommand extends Command {
 
         return intro;
     }
+    
+    private String generateGetStarted() {
+        String info = "<b>Get Started</b>\n";
+
+        info += this.generateBBB();
+        info += "<b>Update your Personal Details</b>\n";
+        info += " - First Name";
+        info += " - Date of Birth";
+        info += " - One Line Self Description";
+        info += " Enter /profile for more information.\n\n";
+        info += "<b>Create or Join a BestBuds Group</b>\n";
+        info += " - Group Name";
+        info += " - Group Code";
+        info += " Enter /subscribe for more information.\n\n";
+        info += this.generateBotDescription();
+        info += "<b>Send and Receive Birthday Messages from your BestBuds Group(s)</b>\n\n\n";
+        info += "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
+                "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
+        info += "<em>You have established a connection with the server. This connection is 24/7.</em>";
+
+        return info;
+    }
 }
