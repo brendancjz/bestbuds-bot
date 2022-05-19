@@ -79,18 +79,18 @@ public class SubscribeCommand extends Command {
                 "You will be notified when a friend's birthday is around the corner.\n\n";
         instruction += "Subscribe to a BestBuds group by creating or joining one. Tap on the command below to copy text.\n\n\n";
         instruction += "<b>BestBuds Group Commands</b> \n\n";
-        instruction += "<em><b>Join a BestBuds Group</b></em>\n";
+        instruction += "<em>Join a BestBuds Group<</em>\n";
         instruction += "<pre>  /join &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em><b>Create a BestBuds Group</b></em>\n";
+        instruction += "<em>Create a BestBuds Group</em>\n";
         instruction += "<pre>  /create &lt;group_name&gt;</pre>\n\n";
-        instruction += "<em><b>Leave a BestBuds Group</b></em>\n";
+        instruction += "<em>Leave a BestBuds Group</em>\n";
         instruction += "<pre>  /exit &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em><b>View all BestBuds in BestBuds Group</b></em>\n";
+        instruction += "<em>View all BestBuds in BestBuds Group</em>\n";
         instruction += "<pre>  /view_bestbuds &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em><b>View BestBuds Group Details</b></em>\n";
+        instruction += "<em>View BestBuds Group Details</em>\n";
         instruction += "<pre>  /view_group &lt;group_code&gt;</pre>\n\n\n";
         instruction += "<b>BestBuds Group Commands</b> \n\n";
-        instruction += "<em><b>Remove a BestBud</b></em>\n";
+        instruction += "<em>Remove a BestBud</em>\n";
         instruction += "<pre>  /remove  &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
 
         return instruction;
