@@ -75,14 +75,15 @@ public class KeyboardMarkup {
 
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
 
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText("YES");
-        button.setCallbackData("confirmation_YES");
-        row.add(button);
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("YES");
+        button1.setCallbackData("confirmation_YES");
+        row.add(button1);
 
-        button.setText("NO");
-        button.setCallbackData("confirmation_NO");
-        row.add(button);
+        InlineKeyboardButton button2 = new InlineKeyboardButton();
+        button2.setText("NO");
+        button2.setCallbackData("confirmation_NO");
+        row.add(button2);
         keyboard.add(row);
 
         InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
