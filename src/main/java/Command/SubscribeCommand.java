@@ -74,7 +74,7 @@ public class SubscribeCommand extends Command {
 
         instruction += "<b>Subscribe</b> \n\n";
         instruction += "<u>What is a BestBuds Group?</u>\n";
-        instruction += "BestBuds Group contains all your friends in your friend group.\uD83C\uDFE0\n " +
+        instruction += "BestBuds Group contains all your friends in your friend group. \uD83C\uDFE0\n " +
                 "In this group, you can view all your friends birthdays and other non-sensitive information. " +
                 "You will be notified when a friend's birthday is around the corner.\n\n";
         instruction += "Subscribe to a BestBuds group by creating or joining one. Tap on the command below to copy text.\n\n";
