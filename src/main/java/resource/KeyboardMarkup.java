@@ -92,6 +92,25 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
+    public static InlineKeyboardMarkup continueKB() {
+
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("CONTINUE TO NEXT PAGE");
+        button1.setCallbackData("continue_next");
+        row.add(button1);
+
+        keyboard.add(row);
+
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+        inlineKeyboard.setKeyboard(keyboard);
+        return inlineKeyboard;
+    }
+
+    //KeyboardMarkUps
     public static InlineKeyboardMarkup financeKB(YearMonth prevMonth, YearMonth currMonth, YearMonth nextMonth) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
