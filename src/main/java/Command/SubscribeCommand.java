@@ -33,7 +33,7 @@ public class SubscribeCommand extends Command {
                 super.getBot().execute(message);
 
             } else {
-                invalidMessage(message);
+                invalidMessage(message, text);
             }
 
 //            String[] arr = text.split(" ");

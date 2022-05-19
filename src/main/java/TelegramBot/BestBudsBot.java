@@ -108,7 +108,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 message.setText("Your name is " + firstName);
                 executeMessage(message);
             } else {
-                message.setText("Invalid Command: " + text);
+                message.setText("Bad Command: " + text + " . Enter /help for assistance.");
                 executeMessage(message);
             }
         } catch (SQLException | URISyntaxException throwables) {
