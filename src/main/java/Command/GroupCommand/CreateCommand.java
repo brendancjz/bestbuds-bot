@@ -6,6 +6,7 @@ import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -28,6 +29,7 @@ public class CreateCommand extends Command {
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(false);
+            message.setReplyMarkup(KeyboardMarkup.confirmationKB());
 
             if (text.equals("/create")) { //Bad command. Missing arguments
                 missingArgumentsMessage(message);
@@ -49,7 +51,7 @@ public class CreateCommand extends Command {
             //TODO Use Callback to confirm the group name and creation of group
             //TODO add this new group into the db
             //TODO add the user into this db. If user, not register, register the man in there.
-            
+
             super.getBot().execute(message);
 
         } catch (TelegramApiException throwables) {

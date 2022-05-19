@@ -6,6 +6,7 @@ import Command.GroupCommand.SubscribeCommand;
 import PSQL.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -33,13 +34,28 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 message.setChatId(update.getMessage().getChatId().toString());
                 message.enableHtml(true);
 
-                int chatId = Integer.parseInt(update.getMessage().getChatId().toString());
+                Integer chatId = Integer.parseInt(update.getMessage().getChatId().toString());
                 PSQL psql = new PSQL();
+
                 //Personal Chats have positive chatId while Group Chats have negative chatId
                 if (chatId > 0) {
                     personalChatMessage(message, update, chatId, psql);
                 } else {
                     groupChatMessage(message);
+                }
+
+                psql.closeConnection();
+            } else if (update.hasCallbackQuery()) {
+
+                Integer chatId = Integer.parseInt(update.getCallbackQuery().getMessage().getChatId().toString());
+                PSQL psql = new PSQL();
+
+                if (chatId > 0) {
+                    System.out.println("In personalChatCallback");
+                    personalChatCallback(update, chatId, psql);
+                } else {
+                    System.out.println("In groupChatCallback");
+                    groupChatCallback(update, chatId, psql);
                 }
 
                 psql.closeConnection();
@@ -49,6 +65,32 @@ public class BestBudsBot extends TelegramLongPollingBot {
         }
 
     }
+
+    private void groupChatCallback(Update update, Integer chatId, PSQL psql) {
+    }
+
+    private void personalChatCallback(Update update, Integer chatId, PSQL psql) {
+        try {
+            String callData = update.getCallbackQuery().getData();
+            String prevMessage = update.getCallbackQuery().getMessage().getText();
+            Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+
+            EditMessageText newMessage = new EditMessageText();
+            newMessage.setChatId(chatId.toString());
+            newMessage.setMessageId(messageId);
+            newMessage.setText("Hello world: " + callData);
+            execute(newMessage);
+
+            SendMessage message = new SendMessage();
+            message.setChatId(chatId.toString());
+            message.setText("Hello world");
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private void groupChatMessage(SendMessage message) {
         try {
