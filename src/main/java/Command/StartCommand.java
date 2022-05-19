@@ -24,7 +24,7 @@ public class StartCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-            String startMsg = generateIntro(super.getFistName());
+            String startMsg = generateIntro(super.getFirstName());
 
             if (super.getPSQL().isUserRegistered(super.getChatId())) {
                 startMsg += " <em>It looks like you are already registered in the database!</em>";
@@ -47,8 +47,9 @@ public class StartCommand extends Command {
 
         intro += "Hi " + name +
                 "! Welcome to Best Buds Bot.\n\n";
+        intro += "<u>What can this bot do?</u>\n";
         intro += this.generateBotDescription();
-        intro += "Type /help for more information!\n\n" +
+        intro += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n" +
                 "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL.PSQL is reliable and " +
                 "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
