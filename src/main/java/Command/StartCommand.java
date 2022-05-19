@@ -57,7 +57,8 @@ public class StartCommand extends Command {
             newMessage.enableHtml(true);
 
             Integer currentPageNumber = Integer.parseInt(callData.split("_")[2]);
-
+            System.out.println("Page " + currentPageNumber);
+            
             if (currentPageNumber == 1) {
                 newMessage.setReplyMarkup(KeyboardMarkup.continueKB());
 
