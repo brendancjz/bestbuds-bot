@@ -48,13 +48,13 @@ public class StartCommand extends Command {
         try {
             System.out.println("StartCommand.runCallback()");
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
-            System.out.println("Hello?2");
             String callData = super.getUpdate().getCallbackQuery().getData();
-            System.out.println("Hello?3");
+            Integer chatId = Integer.parseInt(super.getUpdate().getCallbackQuery().getMessage().getChatId().toString());
 
             EditMessageText newMessage = new EditMessageText();
-            System.out.println("Hello?4");
-            newMessage.setChatId(super.getChatId().toString());
+            System.out.println(super.getChatId());
+            System.out.println("callback chatId" + chatId);
+            newMessage.setChatId(chatId.toString());
             System.out.println("Hello?5");
             newMessage.setMessageId(messageId);
             System.out.println("Hello?6");
