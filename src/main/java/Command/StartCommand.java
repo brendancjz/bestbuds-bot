@@ -49,8 +49,8 @@ public class StartCommand extends Command {
                 "! Welcome to Best Buds Bot.\n\n";
         intro += "<u>What can this bot do?</u>\n";
         intro += this.generateBotDescription();
-        intro += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n" +
-                "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL.PSQL is reliable and " +
+        intro += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n\n" +
+                "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
                 "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 

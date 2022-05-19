@@ -98,7 +98,7 @@ public class Command {
         desc += "BestBuds Bot helps to remember all your friends birthdays! \uD83C\uDF89 \uD83C\uDF82 " +
                 "It will remind you to send a birthday wish to them nearing their birthday and it will " +
                 "collate all your birthday wishes too!\n\n";
-        desc += "<u>To be started,</u> update your personal details and " +
+        desc += "To get started, update your personal details and " +
                 "join a BestBuds group with your friend group! \uD83C\uDFE0\n\n";
 
         return desc;
