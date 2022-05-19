@@ -53,18 +53,26 @@ public class StartCommand extends Command {
 
             EditMessageText newMessage = new EditMessageText();
             newMessage.setChatId(chatId.toString());
-            System.out.println("Hello?5");
             newMessage.setMessageId(messageId);
-            System.out.println("Hello?6");
             newMessage.enableHtml(true);
-            System.out.println("Hello?7");
 
-            newMessage.setText("Next Page: " + callData);
-            System.out.println("Hello?");
-            System.out.println("Execute: " + super.getBot().execute(newMessage));
+            Integer currentPageNumber = Integer.parseInt(callData.split("_")[2]);
 
+            if (currentPageNumber == 1) {
+                newMessage.setReplyMarkup(KeyboardMarkup.continueKB());
+
+                newMessage.setText("Get Started -- Page 1");
+            } else if (currentPageNumber == 2) {
+                newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(currentPageNumber));
+
+                newMessage.setText("Get Started -- Page 2");
+            } else if (currentPageNumber == 3) {
+                newMessage.setReplyMarkup(KeyboardMarkup.backKB(currentPageNumber));
+                newMessage.setText("Get Started -- Page 3");
+            }
+
+            super.getBot().execute(newMessage);
         } catch (TelegramApiException e) {
-            System.out.println("Hello?1");
             e.printStackTrace();
         }
 

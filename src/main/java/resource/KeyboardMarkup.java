@@ -111,6 +111,48 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
+    public static InlineKeyboardMarkup backKB(Integer currentPageNumber) {
+
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("BACK TO PREVIOUS PAGE");
+        button1.setCallbackData("start_page_" + (currentPageNumber - 1));
+        row.add(button1);
+
+        keyboard.add(row);
+
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+        inlineKeyboard.setKeyboard(keyboard);
+        return inlineKeyboard;
+    }
+
+    //KeyboardMarkUps
+    public static InlineKeyboardMarkup navigationKB(Integer currentPageNumber) {
+
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("BACK");
+        button1.setCallbackData("start_page_" + (currentPageNumber - 1));
+        row.add(button1);
+
+        InlineKeyboardButton button2 = new InlineKeyboardButton();
+        button2.setText("NEXT PAGE");
+        button2.setCallbackData("start_page_" + (currentPageNumber + 1));
+        row.add(button2);
+        keyboard.add(row);
+
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+        inlineKeyboard.setKeyboard(keyboard);
+        return inlineKeyboard;
+    }
+
+    //KeyboardMarkUps
     public static InlineKeyboardMarkup financeKB(YearMonth prevMonth, YearMonth currMonth, YearMonth nextMonth) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
