@@ -1,5 +1,6 @@
-package Command;
+package Command.GroupCommand;
 
+import Command.Command;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import Timer.HappyBirthdayTimer;
@@ -36,28 +37,6 @@ public class SubscribeCommand extends Command {
                 invalidMessage(message, text);
             }
 
-//            String[] arr = text.split(" ");
-//
-//            if (arr.length == 3) {
-//                String firstName = arr[1];
-//                String date = arr[2];
-//
-//                if (validateDate(date) && !super.getPSQL().isUserRegistered(chatId)) {
-//                    super.getPSQL().addNewUser(chatId, firstName, date);
-//                    message.setText("Thanks! Your name is " + firstName + " and your D.O.B is " + date + ".");
-//                    super.getBot().execute(message);
-//
-//                    scheduleBirthdayMessage(chatId);
-//                } else if (super.getPSQL().isUserRegistered(chatId)) {
-//                    message.setText("You are already registered.");
-//
-//                    super.getBot().execute(message);
-//                } else {
-//                    wrongDateFormatMessage(message);
-//                }
-//            } else {
-//                missingArgumentsMessage(message);
-//            }
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
