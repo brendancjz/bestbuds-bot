@@ -46,6 +46,7 @@ public class StartCommand extends Command {
     @Override
     public void runCallback(String callData) {
         try {
+            System.out.println("StartCommand.runCallback()");
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
 
             EditMessageText newMessage = new EditMessageText();
