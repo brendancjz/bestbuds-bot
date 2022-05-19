@@ -25,6 +25,7 @@ public class Command {
     }
 
     public Integer getChatId() {
+        System.out.println("getting chat Id");
         return Integer.parseInt(this.update.getMessage().getChatId().toString());
     }
 
