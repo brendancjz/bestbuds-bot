@@ -108,12 +108,15 @@ public class StartCommand extends Command {
         info += "  - First Name\n";
         info += "  - Date of Birth\n";
         info += "  - One Line Self Description\n";
-        info += "  Enter /profile for more information.\n\n";
+        info += "  Enter /profile for user commands.\n\n";
         info += "<b>[STEP 2] Create or Join a BestBuds Group</b>\n";
         info += "  - Group Name\n";
         info += "  - Group Code\n";
-        info += "  Enter /subscribe for more information.\n\n";
-        info += "<b>[STEP 3] Send and Receive Birthday Messages from your BestBuds Group(s)</b>\n\n\n";
+        info += "  Enter /subscribe for group commands.\n\n";
+        info += "<b>[STEP 3] Send and Receive Birthday Messages</b>\n";
+        info += "  - Outgoing Message";
+        info += "  - Incoming Message";
+        info += "  Enter /message for messaging commands\n\n\n";
         info += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return info;
