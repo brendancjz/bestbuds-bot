@@ -116,7 +116,7 @@ public class StartCommand extends Command {
         info += "<b>[STEP 3] Send and Receive Birthday Messages</b>\n";
         info += "  - Outgoing Message\n";
         info += "  - Incoming Message\n";
-        info += "  Enter /message for messaging commands\n\n\n";
+        info += "  Enter /message for messaging commands\n\n\n\n\n\n\n";
         info += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return info;
@@ -137,12 +137,15 @@ public class StartCommand extends Command {
         demo += "<pre>  /update_desc I want Apple Airpods Pro please!</pre>\n\n";
 
         demo += "<b>Join a BestBuds Group</b>\n";
-        demo += "<pre>  /join SAMPLE_GRP_CODE_123</pre>\n\n";
+        demo += "<pre>  /join SAMPLE_GRP_CODE</pre>\n\n";
 
         demo += "<b>Create a BestBuds Group</b>\n";
         demo += "<pre>  /create SAMPLE_GRP_NAME</pre>\n\n";
 
-        demo += "\n\n\n";
+        demo += "<b>Send message to BestBud</b>\n";
+        demo += "<pre>  /send YOUR_USER_CODE USER_CODE MESSAGE</pre>\n\n";
+
+        demo += "\n\n\n\n\n\n\n\n";
         demo += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return demo;
