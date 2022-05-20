@@ -145,7 +145,7 @@ public class StartCommand extends Command {
         demo += "<b>Send message to BestBud</b>\n";
         demo += "<pre>  /send USER_CODE Happy Birthday!!</pre>\n\n";
 
-        demo += "\n\n\n\n\n";
+        demo += "\n\n\n";
         demo += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return demo;
