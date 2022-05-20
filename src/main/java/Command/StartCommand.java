@@ -70,7 +70,7 @@ public class StartCommand extends Command {
                 newMessage.setText(generateGetStarted());
             } else if (currentPageNumber == 3) {
                 newMessage.setReplyMarkup(KeyboardMarkup.backKB(currentPageNumber));
-                newMessage.setText(generateExample());
+                newMessage.setText(generateDemo());
             }
 
             super.getBot().execute(newMessage);
@@ -114,19 +114,23 @@ public class StartCommand extends Command {
         info += "  - Group Code\n";
         info += "  Enter /subscribe for group commands.\n\n";
         info += "<b>[STEP 3] Send and Receive Birthday Messages</b>\n";
-        info += "  - Outgoing Message";
-        info += "  - Incoming Message";
+        info += "  - Outgoing Message\n";
+        info += "  - Incoming Message\n";
         info += "  Enter /message for messaging commands\n\n\n";
         info += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return info;
     }
 
-    private String generateExample() {
-        String example = "";
+    private String generateDemo() {
+        String demo = "";
 
-        example += "<b>Example</b>";
+        demo += "<b>Demostration</b>\n";
+        demo += generateBBB();
+        demo += "<b>New User</b>\n";
+        demo += "<pre>  /update Brendan 12/05/1999</pre>\n";
+        demo += "<pre>  /update_desc Hit me up with tech project ideas! \uD83D\uDE04</pre>\n\n";
 
-        return example;
+        return demo;
     }
 }
