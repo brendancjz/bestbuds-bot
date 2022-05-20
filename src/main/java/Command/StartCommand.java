@@ -128,8 +128,22 @@ public class StartCommand extends Command {
         demo += "<b>Demostration</b>\n";
         demo += generateBBB();
         demo += "<b>New User</b>\n";
-        demo += "<pre>  /update Brendan 12/05/1999</pre>\n";
+        demo += "<pre>  /update Brendan 01/01/1999</pre>\n";
         demo += "<pre>  /update_desc Hit me up with tech project ideas! \uD83D\uDE04</pre>\n\n";
+
+        demo += "<b>Existing User</b>\n";
+        demo += "<pre>  /update_name Bren</pre>\n";
+        demo += "<pre>  /update_dob 12/05/1999</pre>\n";
+        demo += "<pre>  /update_desc I want Apple Airpods Pro please!</pre>\n\n";
+
+        demo += "<b>Join a BestBuds Group</b>\n";
+        demo += "<pre>  /join SAMPLE_GRP_CODE_123</pre>\n\n";
+
+        demo += "<b>Create a BestBuds Group</b>\n";
+        demo += "<pre>  /create SAMPLE_GRP_NAME</pre>\n\n";
+
+        demo += "\n\n\n";
+        demo += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return demo;
     }
