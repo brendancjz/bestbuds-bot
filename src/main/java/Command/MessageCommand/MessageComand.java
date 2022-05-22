@@ -72,7 +72,7 @@ public class MessageComand extends Command {
             if (currentPageNumber == 1) {
                 newMessage.setText(generateMessageInstruction(currentPageNumber));
             }
-            
+
             super.getBot().execute(newMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -103,9 +103,9 @@ public class MessageComand extends Command {
                 "birthday, the bot collates and sends the list of birthday messages.\n\n\n";
         instruction += "<b>BestBuds Message Commands</b>\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
-        instruction += "<em>Send message to BestBud</em>\n";
+        instruction += "<em>Send Message to BestBud</em>\n";
         instruction += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>\n\n\n";
-        instruction += "<em>Each user has its own unique code. This code is used BestBud identification during the automation process.</em>";
+        instruction += "<em>Each user has its own unique code. This code is used BestBud identification during the messaging process.</em>";
 
         return instruction;
     }

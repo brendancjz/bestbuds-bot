@@ -127,7 +127,7 @@ public class ProfileCommand extends Command {
         info += "  - User Date of Birth\n";
         info += "  - One Line Self Description\n";
         info += "  - BestBud Group(s)\n\n\n";
-        info += "<em>Each user has its own unique code. This code is used BestBud identification during the automation process.</em>";
+        info += "<em>Each user has its own unique code. This code is used BestBud identification during the messaging process.</em>";
 
 
         return info;
