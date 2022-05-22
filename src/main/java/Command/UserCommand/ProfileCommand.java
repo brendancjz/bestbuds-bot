@@ -87,7 +87,7 @@ public class ProfileCommand extends Command {
 
     private String generateCommandList(Integer pageNo) {
         String instruction = "";
-        instruction += "<b>BestBuds Group Commands - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
+        instruction += "<b>BestBuds User Commands - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
         instruction += "<em>Join a BestBuds Group</em>\n";
         instruction += "<pre>  /join &lt;group_code&gt;</pre>\n\n";
@@ -111,14 +111,14 @@ public class ProfileCommand extends Command {
 
         info += "<b>Profile - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n\n";
         info += "<u>What is a BestBud?</u>\n";
-        info += "BestBuds Group contains all your friends in your friend group. \uD83C\uDFE0\n " +
-                "In this group, you can view all your friends birthdays and other non-sensitive information. " +
-                "You will be notified when a friend's birthday is around the corner.\n\n";
-        info += "<u>What does a BestBuds Group have?</u>\n";
-        info += "  - Group Name\n";
-        info += "  - Group Code\n";
-        info += "  - BestBuds Users\n\n\n";
-        info += "<em>Each group has its own unique code. Share this code to your friend group.</em>";
+        info += "A BestBud is a user who uses BestBuds Bot. You are a BestBud :).\n\n ";
+        info += "<u>What does a BestBud have?</u>\n";
+        info += "  - User Name\n";
+        info += "  - User Code\n";
+        info += "  - User Date of Birth\n";
+        info += "  - One Line Self Description\n";
+        info += "  - BestBud Group(s)\n\n\n";
+        info += "<em>Each user has its own unique code. This code is used BestBud identify during the automation process.</em>";
 
 
         return info;

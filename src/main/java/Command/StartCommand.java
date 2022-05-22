@@ -112,9 +112,6 @@ public class StartCommand extends Command {
 
         info += this.generateBBB();
         info += "<b>[STEP 1] Update your Personal Details</b>\n";
-//        info += "  - First Name\n";
-//        info += "  - Date of Birth\n";
-//        info += "  - One Line Self Description\n";
         info += "  Enter /profile for user commands.\n\n";
         info += "<b>[STEP 2] Create or Join a BestBuds Group</b>\n";
 //        info += "  - Group Name\n";
