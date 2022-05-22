@@ -122,7 +122,7 @@ public class StartCommand extends Command {
         info += "<b>[STEP 3] Send and Receive Birthday Messages</b>\n";
 //        info += "  - Outgoing Message\n";
 //        info += "  - Incoming Message\n";
-        info += "  Enter /message for messaging commands\n\n";
+        info += "  Enter /message for messaging commands\n\n\n\n";
         info += "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
                 "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
         info += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n";
@@ -152,7 +152,7 @@ public class StartCommand extends Command {
         demo += "<pre>  /create SAMPLE_GRP_NAME</pre>\n\n";
 
         demo += "<b>Send message to BestBud</b>\n";
-        demo += "<pre>  /send USER_CODE Happy Birthday!!</pre>\n\n";
+        demo += "<pre>  /send USER_CODE Happy Birthday!!</pre>\n\n\n";
 
         demo += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
