@@ -12,6 +12,9 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class StartCommand extends Command {
+
+    private static final Integer NUM_OF_PAGES = 3;
+
     public StartCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
 
@@ -63,7 +66,7 @@ public class StartCommand extends Command {
             if (currentPageNumber == 1) {
                 newMessage.setReplyMarkup(KeyboardMarkup.continueKB());
 
-                newMessage.setText(generateIntro(firstName));
+                newMessage.setText(generateIntro(firstName, currentPageNumber));
             } else if (currentPageNumber == 2) {
                 newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(currentPageNumber));
 
@@ -81,8 +84,8 @@ public class StartCommand extends Command {
 
     }
 
-    private String generateIntro(String name) {
-        String intro = "<b>Start</b>\n";
+    private String generateIntro(String name, Integer pageNo) {
+        String intro = "<b>Start - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
 
         intro += this.generateBBB();
 
@@ -100,8 +103,8 @@ public class StartCommand extends Command {
         return intro;
     }
     
-    private String generateGetStarted() {
-        String info = "<b>Get Started</b>\n";
+    private String generateGetStarted(Integer pageNo) {
+        String info = "<b>Get Started - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
 
         info += this.generateBBB();
         info += "<b>[STEP 1] Update your Personal Details</b>\n";
@@ -122,10 +125,10 @@ public class StartCommand extends Command {
         return info;
     }
 
-    private String generateDemo() {
+    private String generateDemo(Integer pageNo) {
         String demo = "";
 
-        demo += "<b>Demostration</b>\n";
+        demo += "<b>Demostration - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
         demo += generateBBB();
         demo += "<b>New User</b>\n";
         demo += "<pre>  /update Brendan 01/01/1999</pre>\n";
