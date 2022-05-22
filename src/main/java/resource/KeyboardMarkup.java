@@ -92,7 +92,7 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
-    public static InlineKeyboardMarkup continueKB() {
+    public static InlineKeyboardMarkup continueKB(String command) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
 
@@ -100,7 +100,7 @@ public class KeyboardMarkup {
 
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         button1.setText("CONTINUE TO NEXT PAGE");
-        button1.setCallbackData("start_page_2");
+        button1.setCallbackData(command + "_page_2");
         row.add(button1);
 
         keyboard.add(row);
@@ -111,7 +111,7 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
-    public static InlineKeyboardMarkup backKB(Integer currentPageNumber) {
+    public static InlineKeyboardMarkup backKB(String command, Integer currentPageNumber) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
 
@@ -119,7 +119,7 @@ public class KeyboardMarkup {
 
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         button1.setText("BACK TO PREVIOUS PAGE");
-        button1.setCallbackData("start_page_" + (currentPageNumber - 1));
+        button1.setCallbackData(command + "_page_" + (currentPageNumber - 1));
         row.add(button1);
 
         keyboard.add(row);
@@ -130,7 +130,7 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
-    public static InlineKeyboardMarkup navigationKB(Integer currentPageNumber) {
+    public static InlineKeyboardMarkup navigationKB(String command, Integer currentPageNumber) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
 
@@ -138,12 +138,12 @@ public class KeyboardMarkup {
 
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         button1.setText("BACK");
-        button1.setCallbackData("start_page_" + (currentPageNumber - 1));
+        button1.setCallbackData(command + "_page_" + (currentPageNumber - 1));
         row.add(button1);
 
         InlineKeyboardButton button2 = new InlineKeyboardButton();
         button2.setText("NEXT PAGE");
-        button2.setCallbackData("start_page_" + (currentPageNumber + 1));
+        button2.setCallbackData(command + "_page_" + (currentPageNumber + 1));
         row.add(button2);
         keyboard.add(row);
 

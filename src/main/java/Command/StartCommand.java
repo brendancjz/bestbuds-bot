@@ -15,6 +15,7 @@ public class StartCommand extends Command {
 
     private static final Integer NUM_OF_PAGES = 3;
     private static final Integer FIRST_PAGE = 1;
+    private static final String COMMAND = "start";
 
     public StartCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
@@ -29,7 +30,7 @@ public class StartCommand extends Command {
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
-            message.setReplyMarkup(KeyboardMarkup.continueKB());
+            message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
             String startMsg = generateIntro(super.getFirstName(), FIRST_PAGE);
 
@@ -65,15 +66,15 @@ public class StartCommand extends Command {
             System.out.println("Page " + currentPageNumber);
 
             if (currentPageNumber == 1) {
-                newMessage.setReplyMarkup(KeyboardMarkup.continueKB());
+                newMessage.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
                 newMessage.setText(generateIntro(firstName, currentPageNumber));
             } else if (currentPageNumber == 2) {
-                newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(currentPageNumber));
+                newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(COMMAND, currentPageNumber));
 
                 newMessage.setText(generateGetStarted(currentPageNumber));
             } else if (currentPageNumber == 3) {
-                newMessage.setReplyMarkup(KeyboardMarkup.backKB(currentPageNumber));
+                newMessage.setReplyMarkup(KeyboardMarkup.backKB(COMMAND, currentPageNumber));
                 newMessage.setText(generateDemo(currentPageNumber));
             }
 
