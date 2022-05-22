@@ -170,6 +170,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 message.setText("Your name is " + firstName);
                 executeMessage(message);
             } else {
+                message.enableHtml(false);
                 message.setText("Bad Command: " + text + " . Enter /help for assistance.");
                 executeMessage(message);
             }
