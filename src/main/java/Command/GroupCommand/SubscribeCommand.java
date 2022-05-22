@@ -100,7 +100,7 @@ public class SubscribeCommand extends Command {
         instruction += "<pre>  /view_bestbuds &lt;group_code&gt;</pre>\n\n";
         instruction += "<em>View BestBuds Group Details</em>\n";
         instruction += "<pre>  /view_group &lt;group_code&gt;</pre>\n\n\n";
-        instruction += "<b>BestBuds Group Commands</b> \n\n";
+        instruction += "<b>Group Owner Commands</b> \n\n";
         instruction += "<em>Remove a BestBud</em>\n";
         instruction += "<pre>  /remove  &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
 

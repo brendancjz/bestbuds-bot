@@ -122,7 +122,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
     private void personalChatMessage(SendMessage message, Update update, int chatId, PSQL psql) {
         try {
-            String text = update.getMessage().getText();
+            String text = update.getMessage().getText().trim();
 
             Command command;
             //Universal Commands. No need to update Query and check User.
