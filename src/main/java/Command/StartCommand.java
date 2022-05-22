@@ -96,7 +96,9 @@ public class StartCommand extends Command {
         intro += this.generateBotDescription();
         intro += "<u>Why should I use this bot?</u>\n";
         intro += "It's difficult to discreetly collate a friend's birthday messages within a friend group. " +
-                "This bot will help to automate this process.\n\n";
+                "BestBuds Bot helps to automate this process.\n\n";
+        intro += "<u>How do I use this bot?</u>\n";
+        intro += "There are useful commands available to navigate and use BestBuds Bot. Continue to the next page to find out more.\n\n";
         intro += "<u>Who created this bot?</u>\n";
         intro += "<a href='brendanchia.com'>Brendan</a>\n\n\n";
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
