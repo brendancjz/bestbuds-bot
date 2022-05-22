@@ -14,6 +14,7 @@ import java.sql.SQLException;
 public class StartCommand extends Command {
 
     private static final Integer NUM_OF_PAGES = 3;
+    private static final Integer FIRST_PAGE = 1;
 
     public StartCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
@@ -30,7 +31,7 @@ public class StartCommand extends Command {
             message.enableHtml(true);
             message.setReplyMarkup(KeyboardMarkup.continueKB());
 
-            String startMsg = generateIntro(super.getFirstName());
+            String startMsg = generateIntro(super.getFirstName(), FIRST_PAGE);
 
             if (super.getPSQL().isUserRegistered(super.getChatId())) {
                 startMsg += " <em>It looks like you are already registered in the database!</em>";
@@ -70,10 +71,10 @@ public class StartCommand extends Command {
             } else if (currentPageNumber == 2) {
                 newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(currentPageNumber));
 
-                newMessage.setText(generateGetStarted());
+                newMessage.setText(generateGetStarted(currentPageNumber));
             } else if (currentPageNumber == 3) {
                 newMessage.setReplyMarkup(KeyboardMarkup.backKB(currentPageNumber));
-                newMessage.setText(generateDemo());
+                newMessage.setText(generateDemo(currentPageNumber));
             }
 
             super.getBot().execute(newMessage);
