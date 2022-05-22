@@ -111,18 +111,20 @@ public class StartCommand extends Command {
 
         info += this.generateBBB();
         info += "<b>[STEP 1] Update your Personal Details</b>\n";
-        info += "  - First Name\n";
-        info += "  - Date of Birth\n";
-        info += "  - One Line Self Description\n";
+//        info += "  - First Name\n";
+//        info += "  - Date of Birth\n";
+//        info += "  - One Line Self Description\n";
         info += "  Enter /profile for user commands.\n\n";
         info += "<b>[STEP 2] Create or Join a BestBuds Group</b>\n";
-        info += "  - Group Name\n";
-        info += "  - Group Code\n";
+//        info += "  - Group Name\n";
+//        info += "  - Group Code\n";
         info += "  Enter /subscribe for group commands.\n\n";
         info += "<b>[STEP 3] Send and Receive Birthday Messages</b>\n";
-        info += "  - Outgoing Message\n";
-        info += "  - Incoming Message\n";
-        info += "  Enter /message for messaging commands\n\n\n\n\n";
+//        info += "  - Outgoing Message\n";
+//        info += "  - Incoming Message\n";
+        info += "  Enter /message for messaging commands\n\n";
+        info += "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
+                "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
         info += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n";
         info += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
@@ -152,8 +154,6 @@ public class StartCommand extends Command {
         demo += "<b>Send message to BestBud</b>\n";
         demo += "<pre>  /send USER_CODE Happy Birthday!!</pre>\n\n";
 
-        demo += "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
-                "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
         demo += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return demo;
