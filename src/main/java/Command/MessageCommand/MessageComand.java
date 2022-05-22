@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class MessageComand extends Command {
     private static final Integer NUM_OF_PAGES = 2;
     private static final Integer FIRST_PAGE = 1;
-    private static final String COMMAND = "subscribe";
+    private static final String COMMAND = "message";
 
     public MessageComand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
