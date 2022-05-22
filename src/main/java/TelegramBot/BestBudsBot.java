@@ -5,6 +5,7 @@ import Command.GroupCommand.CreateCommand;
 import Command.GroupCommand.SubscribeCommand;
 import Command.MessageCommand.MessageComand;
 import Command.UserCommand.ProfileCommand;
+import Command.UserCommand.UpdateCommand;
 import PSQL.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -172,6 +173,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/create")) {
                 System.out.println("=== Create Event Called === ");
                 command = new CreateCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/update")) {
+                System.out.println("=== Update Event Called === ");
+                command = new UpdateCommand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/update_dob")) {
