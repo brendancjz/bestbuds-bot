@@ -94,6 +94,9 @@ public class StartCommand extends Command {
                 "! Welcome to Best Buds Bot.\n\n";
         intro += "<u>What can this bot do?</u>\n";
         intro += this.generateBotDescription();
+        intro += "<u>Why should I use this bot?</u>\n";
+        intro += "It's difficult to discreetly collate a friend's birthday messages within a friend group. " +
+                "This bot will help to automate this process.\n\n";
         intro += "<u>Who created this bot?</u>\n";
         intro += "<a href='brendanchia.com'>Brendan</a>\n\n\n";
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
@@ -117,7 +120,8 @@ public class StartCommand extends Command {
         info += "<b>[STEP 3] Send and Receive Birthday Messages</b>\n";
         info += "  - Outgoing Message\n";
         info += "  - Incoming Message\n";
-        info += "  Enter /message for messaging commands\n\n\n\n\n\n\n";
+        info += "  Enter /message for messaging commands\n\n\n\n\n";
+        info += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n";
         info += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return info;
@@ -148,7 +152,6 @@ public class StartCommand extends Command {
 
         demo += "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
                 "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
-        demo += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n";
         demo += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return demo;
