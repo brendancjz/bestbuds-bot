@@ -34,6 +34,7 @@ public class SubscribeCommand extends Command {
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
+            message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
             if (text.equals("/subscribe")) { //Instructions to create or join a Group
 
