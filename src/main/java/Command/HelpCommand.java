@@ -42,7 +42,7 @@ public class HelpCommand extends Command {
         help += "<u>Where can I clarify or give feedback?</u>\n";
         help += "Reach out to @brendanchia!\n\n\n";
         help += "<em>BestBuds Bot is in BETA. Do give feedback or suggestions to improve the bot. :)</em>";
-        
+
         return help;
     }
 }

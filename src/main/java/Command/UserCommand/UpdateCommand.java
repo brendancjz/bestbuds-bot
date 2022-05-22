@@ -26,7 +26,7 @@ public class UpdateCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-            message.setText(generateHelp());
+            message.setText("");
             super.getBot().execute(message);
 
         } catch (TelegramApiException throwables) {
