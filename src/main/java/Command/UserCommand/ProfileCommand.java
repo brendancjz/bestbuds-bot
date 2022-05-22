@@ -83,6 +83,10 @@ public class ProfileCommand extends Command {
     }
 
     private void setCorrectKeyboard(EditMessageText newMessage, Integer pageNo) {
+        if (NUM_OF_PAGES == FIRST_PAGE) {
+            return;
+        }
+
         if (pageNo == FIRST_PAGE) {
             newMessage.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
         } else if (pageNo == NUM_OF_PAGES) {

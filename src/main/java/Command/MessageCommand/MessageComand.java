@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class MessageComand extends Command {
-    private static final Integer NUM_OF_PAGES = 2;
+    private static final Integer NUM_OF_PAGES = 1;
     private static final Integer FIRST_PAGE = 1;
     private static final String COMMAND = "message";
 
@@ -81,6 +81,10 @@ public class MessageComand extends Command {
     }
 
     private void setCorrectKeyboard(EditMessageText newMessage, Integer pageNo) {
+        if (NUM_OF_PAGES == FIRST_PAGE) {
+            return;
+        }
+
         if (pageNo == FIRST_PAGE) {
             newMessage.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
         } else if (pageNo == NUM_OF_PAGES) {
