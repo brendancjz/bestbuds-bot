@@ -31,7 +31,8 @@ public class MessageComand extends Command {
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
-            message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
+
+            if (NUM_OF_PAGES != FIRST_PAGE) message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
             if (text.equals("/" + COMMAND)) { //Instructions to send messages
 
