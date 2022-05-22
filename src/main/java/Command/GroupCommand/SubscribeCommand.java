@@ -115,6 +115,11 @@ public class SubscribeCommand extends Command {
         instruction += "BestBuds Group contains all your friends in your friend group. \uD83C\uDFE0\n " +
                 "In this group, you can view all your friends birthdays and other non-sensitive information. " +
                 "You will be notified when a friend's birthday is around the corner.\n\n";
+        instruction += "<u>What does a BestBuds Group have?</u>\n";
+        instruction += "  - Group Name\n";
+        instruction += "  - Group Code\n";
+        instruction += "  - BestBuds Users\n\n\n";
+        instruction += "<em>Each group has its own unique code. Share this code to your friend group.</em>";
 
 
         return instruction;
