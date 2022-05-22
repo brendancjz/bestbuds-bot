@@ -125,7 +125,7 @@ public class StartCommand extends Command {
         info += "  Enter /message for messaging commands\n\n\n";
         info += "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
                 "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
-        info += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n\n\n\n";
+        info += "At any point you need assistance, enter /help! \uD83C\uDD98\n\n\n\n";
         info += "<em>You have established a connection with the server. This connection is 24/7.</em>";
 
         return info;
