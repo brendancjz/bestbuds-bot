@@ -111,6 +111,12 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new ProfileCommand(this, update, psql);
                 command.runCallback();
                 return;
+            } else if (callData.startsWith("message_page")) {
+
+                System.out.println("=== Message Event Called === ");
+                command = new MessageComand(this, update, psql);
+                command.runCallback();
+                return;
             }
         } catch (TelegramApiException | SQLException | URISyntaxException e) {
             e.printStackTrace();
