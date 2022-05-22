@@ -89,14 +89,14 @@ public class ProfileCommand extends Command {
         String instruction = "";
         instruction += "<b>BestBuds User Commands - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
-        instruction += "<em>Join a BestBuds Group</em>\n";
-        instruction += "<pre>  /join &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em>Create a BestBuds Group</em>\n";
-        instruction += "<pre>  /create &lt;group_name&gt;</pre>\n\n";
-        instruction += "<em>Leave a BestBuds Group</em>\n";
-        instruction += "<pre>  /exit &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em>View all BestBuds in BestBuds Group</em>\n";
-        instruction += "<pre>  /view_bestbuds &lt;group_code&gt;</pre>\n\n";
+        instruction += "<em>Update Name and DOB</em>\n";
+        instruction += "<pre>  /update &lt;first_name&gt; &lt;date_of_birth&gt;</pre>\n\n";
+        instruction += "<em>Update Self Description</em>\n";
+        instruction += "<pre>  /update_desc &lt;description&gt;</pre>\n\n";
+        instruction += "<em>Update Name</em>\n";
+        instruction += "<pre>  /update_name &lt;first_name&gt;</pre>\n\n";
+        instruction += "<em>Update DOB</em>\n";
+        instruction += "<pre>  /update_dob &lt;date_of_birth&gt;</pre>\n\n";
         instruction += "<em>View BestBuds Group Details</em>\n";
         instruction += "<pre>  /view_group &lt;group_code&gt;</pre>\n\n\n";
         instruction += "<b>Group Owner Commands</b> \n\n";
@@ -118,7 +118,7 @@ public class ProfileCommand extends Command {
         info += "  - User Date of Birth\n";
         info += "  - One Line Self Description\n";
         info += "  - BestBud Group(s)\n\n\n";
-        info += "<em>Each user has its own unique code. This code is used BestBud identify during the automation process.</em>";
+        info += "<em>Each user has its own unique code. This code is used BestBud identification during the automation process.</em>";
 
 
         return info;
