@@ -97,11 +97,8 @@ public class ProfileCommand extends Command {
         instruction += "<pre>  /update_name &lt;first_name&gt;</pre>\n\n";
         instruction += "<em>Update DOB</em>\n";
         instruction += "<pre>  /update_dob &lt;date_of_birth&gt;</pre>\n\n";
-        instruction += "<em>View BestBuds Group Details</em>\n";
-        instruction += "<pre>  /view_group &lt;group_code&gt;</pre>\n\n\n";
-        instruction += "<b>Group Owner Commands</b> \n\n";
-        instruction += "<em>Remove a BestBud</em>\n";
-        instruction += "<pre>  /remove  &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
+        instruction += "<em>View BestBud Details</em>\n";
+        instruction += "<pre>  /view_user &lt;user_code&gt;</pre>\n\n\n";
 
         return instruction;
     }
