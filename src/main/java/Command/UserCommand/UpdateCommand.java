@@ -44,10 +44,47 @@ public class UpdateCommand extends Command {
 //                notRegisteredMessage(message);
 //            }
             message.setText(actualCommand);
-            super.getBot().execute(message);
+            runActualCommand(message, text);
+
 
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private void runActualCommand(SendMessage message, String text) throws TelegramApiException {
+        String[] arr = text.split(" ");
+        String actualCommand = arr[0];
+
+        if (actualCommand.equals("/update_name") && validateUpdateName(text)) {
+            //Update User name
+            String name = arr[1];
+            message.setText(name);
+            super.getBot().execute(message);
+        } else if (actualCommand.equals("/update_dob") && validateUpdateDOB(text)) {
+            //Update User dob
+            String dob = arr[1];
+            message.setText(dob);
+            super.getBot().execute(message);
+        } else if (actualCommand.equals("/update_desc")) {
+            //Update User desc
+        } else if (actualCommand.equals("/update")) {
+            //Update name and dob tgt
+        } else {
+            message.setText("Sorry, command is correct but input arguments are incorrect.");
+            super.getBot().execute(message);
+        }
+    }
+
+    private Boolean validateUpdateDOB(String text) {
+        String[] arr = text.split(" ");
+
+        return arr.length == 2 && validateDate(arr[1]);
+    }
+
+    private Boolean validateUpdateName(String text) {
+        String[] arr = text.split(" ");
+
+        return arr.length == 2;
     }
 }
