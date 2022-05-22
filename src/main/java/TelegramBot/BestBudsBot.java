@@ -138,6 +138,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
         try {
             String text = update.getMessage().getText().trim();
 
+            runPersonalChatMessageRouter(this, update, psql);
+
             Command command;
             //Universal Commands. No need to update Query and check User.
             if (text.startsWith("/start")) {
@@ -146,14 +148,12 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command.runCommand();
                 return;
             }
-
             if (text.startsWith("/help")) {
                 System.out.println("=== Help Event Called === ");
                 command = new HelpCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
-
             if (text.startsWith("/subscribe")) {
                 System.out.println("=== Subscribe Event Called === ");
                 command = new SubscribeCommand(this, update, psql);
@@ -201,6 +201,9 @@ public class BestBudsBot extends TelegramLongPollingBot {
         } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private void runPersonalChatMessageRouter(BestBudsBot bestBudsBot, Update update, PSQL psql) {
     }
 
     private void executeMessage(SendMessage message) {

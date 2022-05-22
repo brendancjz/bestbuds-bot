@@ -86,12 +86,12 @@ public class MessageComand extends Command {
     private String generateMessageInstruction(Integer pageNo) {
         String instruction = "";
 
-        instruction += "<b>Meessage - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n\n";
-        instruction += "<u>What is a BestBuds Group?</u>\n";
-        instruction += "BestBuds Group contains all your friends in your friend group. \uD83C\uDFE0\n " +
-                "In this group, you can view all your friends birthdays and other non-sensitive information. " +
-                "You will be notified when a friend's birthday is around the corner.\n\n";
-        instruction += "<u>What does a BestBuds Group have?</u>\n";
+        instruction += "<b>Message - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n\n";
+        instruction += "<u>What is a BestBuds Message?</u>\n";
+        instruction += "BestBuds Message is a birthday message specific to a BestBud. BestBuds Bot first reminds " +
+                "everyone else in a BestBuds Group to send a birthday message to a BestBud. On the BestBud's " +
+                "birthday, the bot collates and sends the list of birthday messages.\n\n";
+        instruction += "<u>What does a BestBuds Message have?</u>\n";
         instruction += "  - Group Name\n";
         instruction += "  - Group Code\n";
         instruction += "  - BestBuds Users\n\n\n";
