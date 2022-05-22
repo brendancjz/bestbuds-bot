@@ -102,8 +102,11 @@ public class MessageComand extends Command {
         instruction += "<u>What is a BestBuds Message?</u>\n";
         instruction += "BestBuds Message is a birthday message specific to a BestBud. BestBuds Bot first reminds " +
                 "everyone else in a BestBuds Group to send a birthday message to a BestBud. On the BestBud's " +
-                "birthday, the bot collates and sends the list of birthday messages.\n\n";
-        instruction += "<u>What does a BestBuds Message have?</u>\n";
+                "birthday, the bot collates and sends the list of birthday messages.\n\n\n";
+        instruction += "<b>BestBuds Message Commands</b>\n";
+        instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
+        instruction += "<em>Send message to BestBud</em>\n";
+        instruction += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>\n\n";
         instruction += "  - Group Name\n";
         instruction += "  - Group Code\n";
         instruction += "  - BestBuds Users\n\n\n";
