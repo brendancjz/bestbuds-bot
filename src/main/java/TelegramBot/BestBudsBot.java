@@ -3,6 +3,7 @@ package TelegramBot;
 import Command.*;
 import Command.GroupCommand.CreateCommand;
 import Command.GroupCommand.SubscribeCommand;
+import Command.MessageCommand.MessageComand;
 import Command.UserCommand.ProfileCommand;
 import PSQL.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -155,6 +156,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/profile")) {
                 System.out.println("=== Profile Event Called === ");
                 command = new ProfileCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/message")) {
+                System.out.println("=== Message Event Called === ");
+                command = new MessageComand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/create")) {

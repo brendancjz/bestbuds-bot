@@ -36,7 +36,7 @@ public class SubscribeCommand extends Command {
             message.enableHtml(true);
             message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
-            if (text.equals("/subscribe")) { //Instructions to create or join a Group
+            if (text.equals("/" + COMMAND)) { //Instructions to create or join a Group
 
                 message.setText(generateSubscribeInstruction(FIRST_PAGE));
                 super.getBot().execute(message);
