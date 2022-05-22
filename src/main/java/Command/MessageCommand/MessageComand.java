@@ -71,10 +71,8 @@ public class MessageComand extends Command {
 
             if (currentPageNumber == 1) {
                 newMessage.setText(generateMessageInstruction(currentPageNumber));
-            } else if (currentPageNumber == 2) {
-                newMessage.setText(generateCommandList(currentPageNumber));
             }
-
+            
             super.getBot().execute(newMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -106,32 +104,8 @@ public class MessageComand extends Command {
         instruction += "<b>BestBuds Message Commands</b>\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
         instruction += "<em>Send message to BestBud</em>\n";
-        instruction += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>\n\n";
-        instruction += "  - Group Name\n";
-        instruction += "  - Group Code\n";
-        instruction += "  - BestBuds Users\n\n\n";
-        instruction += "<em>Each group has its own unique code. Share this code to your friend group.</em>";
-
-        return instruction;
-    }
-
-    private String generateCommandList(Integer pageNo) {
-        String instruction = "";
-        instruction += "<b>BestBuds Group Commands - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
-        instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
-        instruction += "<em>Join a BestBuds Group</em>\n";
-        instruction += "<pre>  /join &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em>Create a BestBuds Group</em>\n";
-        instruction += "<pre>  /create &lt;group_name&gt;</pre>\n\n";
-        instruction += "<em>Leave a BestBuds Group</em>\n";
-        instruction += "<pre>  /exit &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em>View all BestBuds in BestBuds Group</em>\n";
-        instruction += "<pre>  /view_bestbuds &lt;group_code&gt;</pre>\n\n";
-        instruction += "<em>View BestBuds Group Details</em>\n";
-        instruction += "<pre>  /view_group &lt;group_code&gt;</pre>\n\n\n";
-        instruction += "<b>Group Owner Commands</b> \n\n";
-        instruction += "<em>Remove a BestBud</em>\n";
-        instruction += "<pre>  /remove  &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
+        instruction += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>\n\n\n";
+        instruction += "<em>Each user has its own unique code. This code is used BestBud identification during the automation process.</em>";
 
         return instruction;
     }
