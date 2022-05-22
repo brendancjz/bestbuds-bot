@@ -68,12 +68,11 @@ public class ProfileCommand extends Command {
             Integer currentPageNumber = Integer.parseInt(callData.split("_")[2]);
             System.out.println("Page " + currentPageNumber);
 
-            if (currentPageNumber == 1) {
-                newMessage.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
+            setCorrectKeyboard(newMessage, currentPageNumber);
 
+            if (currentPageNumber == 1) {
                 newMessage.setText(generateProfileInformation(currentPageNumber));
             } else if (currentPageNumber == 2) {
-                newMessage.setReplyMarkup(KeyboardMarkup.backKB(COMMAND, currentPageNumber));
                 newMessage.setText(generateCommandList(currentPageNumber));
             }
 
@@ -81,8 +80,16 @@ public class ProfileCommand extends Command {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
 
-
+    private void setCorrectKeyboard(EditMessageText newMessage, Integer pageNo) {
+        if (pageNo == FIRST_PAGE) {
+            newMessage.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
+        } else if (pageNo == NUM_OF_PAGES) {
+            newMessage.setReplyMarkup(KeyboardMarkup.backKB(COMMAND, pageNo));
+        } else {
+            newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(COMMAND, pageNo));
+        }
     }
 
     private String generateCommandList(Integer pageNo) {

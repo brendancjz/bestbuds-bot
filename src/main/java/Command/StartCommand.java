@@ -65,16 +65,13 @@ public class StartCommand extends Command {
             Integer currentPageNumber = Integer.parseInt(callData.split("_")[2]);
             System.out.println("Page " + currentPageNumber);
 
-            if (currentPageNumber == 1) {
-                newMessage.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
+            setCorrectKeyboard(newMessage, currentPageNumber);
 
+            if (currentPageNumber == 1) {
                 newMessage.setText(generateIntro(firstName, currentPageNumber));
             } else if (currentPageNumber == 2) {
-                newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(COMMAND, currentPageNumber));
-
                 newMessage.setText(generateGetStarted(currentPageNumber));
             } else if (currentPageNumber == 3) {
-                newMessage.setReplyMarkup(KeyboardMarkup.backKB(COMMAND, currentPageNumber));
                 newMessage.setText(generateDemo(currentPageNumber));
             }
 
@@ -84,6 +81,16 @@ public class StartCommand extends Command {
         }
 
 
+    }
+
+    private void setCorrectKeyboard(EditMessageText newMessage, Integer pageNo) {
+        if (pageNo == FIRST_PAGE) {
+            newMessage.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
+        } else if (pageNo == NUM_OF_PAGES) {
+            newMessage.setReplyMarkup(KeyboardMarkup.backKB(COMMAND, pageNo));
+        } else {
+            newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(COMMAND, pageNo));
+        }
     }
 
     private String generateIntro(String name, Integer pageNo) {
