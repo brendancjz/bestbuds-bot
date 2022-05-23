@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class PSQL {
     private final Connection connection;
@@ -23,15 +22,18 @@ public class PSQL {
             String sql = "INSERT INTO Users (chat_id,name,dob,code,joined_on,description) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            System.out.println("hello");
+            java.util.Date date = new java.util.Date(System.currentTimeMillis());
+
+            System.out.println("hello1");
             preparedStatement.setInt(1, chatId);
             preparedStatement.setString(2, name);
-            preparedStatement.setDate(3, (java.sql.Date) new Date());
+            preparedStatement.setDate(3, (Date) date);
+            System.out.println("hello2");
             preparedStatement.setString(4, "code");
-            preparedStatement.setDate(5, (java.sql.Date) new Date());
+            preparedStatement.setDate(5, (Date) date);
             preparedStatement.setString(6, "desc");
 
-            System.out.println("hello");
+            System.out.println("hello3");
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Successful registration.");
