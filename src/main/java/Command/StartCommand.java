@@ -49,6 +49,7 @@ public class StartCommand extends Command {
             super.getBot().execute(message);
 
         } catch (SQLException | TelegramApiException throwables) {
+            System.out.println("Unexpected error occurred.");
             throwables.printStackTrace();
         }
 

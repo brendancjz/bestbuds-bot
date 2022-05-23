@@ -23,6 +23,7 @@ public class PSQL {
             String sql = "INSERT INTO Users (chat_id,name,dob,code,joined_on,description) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
+            System.out.println("hello");
             preparedStatement.setInt(1, chatId);
             preparedStatement.setString(2, name);
             preparedStatement.setDate(3, (java.sql.Date) new Date());
@@ -30,6 +31,7 @@ public class PSQL {
             preparedStatement.setDate(5, (java.sql.Date) new Date());
             preparedStatement.setString(6, "desc");
 
+            System.out.println("hello");
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Successful registration.");
