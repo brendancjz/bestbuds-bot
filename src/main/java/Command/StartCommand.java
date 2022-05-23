@@ -10,6 +10,7 @@ import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class StartCommand extends Command {
 
@@ -37,12 +38,15 @@ public class StartCommand extends Command {
 
             if (super.getPSQL().isUserRegistered(super.getChatId())) {
                 startMsg += " <em>It looks like you are already registered in the database!</em>";
+            } else {
+                super.getPSQL().addNewUser(super.getChatId());
+
             }
 
             message.setText(startMsg);
             super.getBot().execute(message);
 
-        } catch (SQLException | TelegramApiException throwables) {
+        } catch (SQLException | TelegramApiException | ParseException throwables) {
             throwables.printStackTrace();
         }
 

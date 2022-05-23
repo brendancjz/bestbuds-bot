@@ -13,6 +13,29 @@ public class PSQL {
         this.connection = getConnection();
     }
 
+    public void addNewUser(int chatId) throws SQLException, ParseException {
+        boolean userExists = isUserRegistered(chatId);
+
+        if (!userExists) {
+            System.out.println("This user is not registered yet.");
+
+            String sql = "INSERT INTO Users (chat_id) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, chatId);
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Successful registration.");
+                System.out.println("[" + chatId + "] has been registered in users.");
+            } else {
+                System.out.println("Unsuccessful registration in users.");
+            }
+
+        }
+
+    }
+
     public void addNewUser(int chatId, String firstName, String date) throws SQLException, ParseException {
         boolean userExists = isUserRegistered(chatId);
 
