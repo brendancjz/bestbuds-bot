@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.sql.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PSQL {
     private final Connection connection;
@@ -13,16 +14,21 @@ public class PSQL {
         this.connection = getConnection();
     }
 
-    public void addNewUser(int chatId) throws SQLException, ParseException {
+    public void addNewUser(int chatId, String name) throws SQLException, ParseException {
         boolean userExists = isUserRegistered(chatId);
 
         if (!userExists) {
             System.out.println("This user is not registered yet.");
 
-            String sql = "INSERT INTO Users (chat_id) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO Users (chat_id,name,dob,code,joined_on,description) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, chatId);
+            preparedStatement.setString(2, name);
+            preparedStatement.setDate(3, (java.sql.Date) new Date());
+            preparedStatement.setString(4, "code");
+            preparedStatement.setDate(5, (java.sql.Date) new Date());
+            preparedStatement.setString(6, "desc");
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
