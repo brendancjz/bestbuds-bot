@@ -14,7 +14,7 @@ public class PSQL {
         this.connection = getConnection();
     }
 
-    public void addNewUser(int chatId, String name) throws SQLException, ParseException {
+    public void addNewUser(int chatId, String name) throws SQLException {
         boolean userExists = isUserRegistered(chatId);
 
         if (!userExists) {

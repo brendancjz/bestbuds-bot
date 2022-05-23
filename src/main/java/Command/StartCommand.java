@@ -39,6 +39,7 @@ public class StartCommand extends Command {
             if (super.getPSQL().isUserRegistered(super.getChatId())) {
                 startMsg += " <em>It looks like you are already registered in the database!</em>";
             } else {
+
                 super.getPSQL().addNewUser(super.getChatId(), super.getFirstName());
                 startMsg += " <em>You have been registered!</em>";
 
