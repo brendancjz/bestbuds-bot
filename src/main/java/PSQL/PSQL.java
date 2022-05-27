@@ -28,7 +28,7 @@ public class PSQL {
             preparedStatement.setString(2, name);
             preparedStatement.setDate(3, Date.valueOf("1999-05-12"));
             System.out.println("hello2");
-            preparedStatement.setString(4, "code");
+            preparedStatement.setString(4, "coder");
             preparedStatement.setDate(5, Date.valueOf("2022-05-12"));
             preparedStatement.setString(6, "desc");
 
