@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PSQL {
@@ -21,18 +22,16 @@ public class PSQL {
 
             String sql = "INSERT INTO Users (chat_id,name,dob,code,joined_on,description) VALUES (?, ?, ?, ?, ?, ?)";
             //INSERT INTO Users (chat_id, name, dob, code, joined_on, description) VALUES (123, 'bobby', '1999-05-29', 'BRE', '2022-05-26', 'brendan');
+            //Date.valueOf("2022-05-12")
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            System.out.println("hello1");
-            preparedStatement.setInt(1, chatId);
+            preparedStatement.setInt(1, 1);
             preparedStatement.setString(2, name);
-            preparedStatement.setDate(3, Date.valueOf("1999-05-12"));
-            System.out.println("hello2");
+            preparedStatement.setDate(3, null);
             preparedStatement.setString(4, "coder");
-            preparedStatement.setDate(5, Date.valueOf("2022-05-12"));
-            preparedStatement.setString(6, "desc");
+            preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+            preparedStatement.setString(6, "");
 
-            System.out.println("hello3");
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Successful registration.");
