@@ -22,7 +22,7 @@ public class PSQL {
             String sql = "INSERT INTO Users (chat_id,name,dob,code,joined_on,description) VALUES (?, ?, ?, ?, ?, ?)";
             //INSERT INTO Users (chat_id, name, dob, code, joined_on, description) VALUES (123, 'bobby', '1999-05-29', 'BRE', '2022-05-26', 'brendan');
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            
+
             System.out.println("hello1");
             preparedStatement.setInt(1, chatId);
             preparedStatement.setString(2, name);
