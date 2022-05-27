@@ -30,6 +30,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        System.out.println("onUpdateReceived called.");
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 SendMessage message = new SendMessage();
