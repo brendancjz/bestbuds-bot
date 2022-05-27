@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.User;
 import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
@@ -104,16 +105,13 @@ public class ProfileCommand extends Command {
 
     private String generateProfileDetails(Integer chatId) throws SQLException {
         String deeds = "";
-        String name = super.getPSQL().getUserName(chatId);
-        String dob = super.getPSQL().getUserDOB(chatId);
-        String code = super.getPSQL().getUserCode(chatId);
-        String desc = super.getPSQL().getUserDesc(chatId);
+        User user = super.getPSQL().getUserDataResultSet(chatId);
 
         deeds += "<b><u>Your BestBud Details:</u></b>\n\n";
-        deeds += "<em>Name:</em> " + name + "\n";
-        deeds += "<em>D.O.B:</em> " + dob + "\n";
-        deeds += "<em>Code:</em>  " + code + "\n";
-        deeds += "<em>Description:</em> " + desc + "\n";
+        deeds += "<em>Name:</em> " + user.name + "\n";
+        deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
+        deeds += "<em>Code:</em>  " + user.code + "\n";
+        deeds += "<em>Description:</em> " + user.desc + "\n";
 
 
         return deeds;

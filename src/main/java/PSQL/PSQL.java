@@ -1,5 +1,7 @@
 package PSQL;
 
+import resource.Entity.User;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -104,6 +106,25 @@ public class PSQL {
         }
     }
 
+    public User getUserDataResultSet(int chatId) throws SQLException {
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Users WHERE chat_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, chatId);
+
+        ResultSet resultSet = statement.executeQuery();
+        User user = new User();
+
+        while (resultSet.next()) {
+            user.name = resultSet.getString("name");
+            user.code = resultSet.getString("code");
+            user.dob = resultSet.getDate("dob");
+            user.desc = resultSet.getString("description");
+        }
+
+        return user;
+    }
+
     private ResultSet getUsersDataResultSet(int chatId) throws SQLException {
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Users WHERE chat_id = ?";
@@ -125,7 +146,6 @@ public class PSQL {
             System.out.println("User's name is " + name);
         }
 
-
         return name;
     }
 
@@ -140,7 +160,6 @@ public class PSQL {
             code = resultSet.getString("code");
             System.out.println("User's code is " + code);
         }
-
 
         return code;
     }
