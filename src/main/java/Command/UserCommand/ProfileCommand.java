@@ -109,11 +109,11 @@ public class ProfileCommand extends Command {
         String code = super.getPSQL().getUserCode(chatId);
         String desc = super.getPSQL().getUserDesc(chatId);
 
-        deeds += "<u>Your BestBud Details:</u>\n";
-        deeds += "Name: " + name + "\n";
-        deeds += "Date of Birth: " + dob + "\n";
-        deeds += "Code: " + code + "\n";
-        deeds += "Description: " + desc + "\n";
+        deeds += "<b><u>Your BestBud Details:</u></b>\n\n";
+        deeds += "<em>Name:</em> " + name + "\n";
+        deeds += "<em>Date of Birth:</em> <pre>" + dob + "</pre>\n";
+        deeds += "<em>Code:</em> " + code + "\n";
+        deeds += "<em>Description:</em> " + desc + "\n";
 
 
         return deeds;
