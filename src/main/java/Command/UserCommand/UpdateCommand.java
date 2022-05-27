@@ -47,21 +47,18 @@ public class UpdateCommand extends Command {
             runActualCommand(message, text);
 
 
-        } catch (TelegramApiException | SQLException throwables) {
+        } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    private void runActualCommand(SendMessage message, String text) throws TelegramApiException, SQLException {
+    private void runActualCommand(SendMessage message, String text) throws TelegramApiException {
         String[] arr = text.split(" ");
         String actualCommand = arr[0];
 
         if (actualCommand.equals("/update_name") && validateUpdateName(text)) {
             //Update User name
             String name = arr[1];
-
-            super.getPSQL().addNewUser(123,"test");
-
             message.setText(name);
             super.getBot().execute(message);
         } else if (actualCommand.equals("/update_dob") && validateUpdateDOB(text)) {
