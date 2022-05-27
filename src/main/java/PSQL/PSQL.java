@@ -157,7 +157,6 @@ public class PSQL {
             System.out.println("User's name is " + desc);
         }
 
-
         return desc;
     }
 
@@ -171,10 +170,10 @@ public class PSQL {
         ResultSet resultSet = getUsersDataResultSet(chatId);
         while (resultSet.next()) {
             Date date = resultSet.getDate("dob");
-            dob = dateFormat.format(date);
+            System.out.println(date);
+            if (date != null) dob = dateFormat.format(date);
             System.out.println("User's dob is " + dob);
         }
-
 
         return dob;
     }
