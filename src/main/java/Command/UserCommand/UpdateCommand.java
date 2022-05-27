@@ -59,15 +59,13 @@ public class UpdateCommand extends Command {
 
         if (actualCommand.equals("/update_name")) {
             //Update User name
-            String name = arr[1];
+            String name = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
 
             if (validateUpdateName(text)) {
                 super.getPSQL().updateUserName(super.getChatId(), name);
 
                 message.setText("Successfully updated your name: " + name + ".");
-            } else {
-                message.setText("Sorry, inputted wrong format. Please input one word only.");
-            }
+            } 
 
             super.getBot().execute(message);
 
@@ -131,7 +129,7 @@ public class UpdateCommand extends Command {
     private Boolean validateUpdateName(String text) {
         String[] arr = text.split(" ");
 
-        return arr.length == 2;
+        return arr.length >= 2;
     }
 
     private Boolean validateDesc(String text) {
