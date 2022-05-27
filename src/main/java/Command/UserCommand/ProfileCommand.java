@@ -41,7 +41,10 @@ public class ProfileCommand extends Command {
                 message.setText(generateProfileInformation(FIRST_PAGE));
                 super.getBot().execute(message);
 
-                message.setText("Your Details:\n");
+                SendMessage message2 = new SendMessage();
+                message2.setChatId(super.getChatId().toString());
+                message2.enableHtml(true);
+                message2.setText("Your Details:\n");
                 super.getBot().execute(message);
             } else {
                 invalidMessage(message, text);
