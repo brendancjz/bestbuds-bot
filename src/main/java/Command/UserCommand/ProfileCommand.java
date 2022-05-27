@@ -38,15 +38,15 @@ public class ProfileCommand extends Command {
             if (NUM_OF_PAGES != FIRST_PAGE) message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
             if (text.equals("/" + COMMAND)) { //Information on User
-
-                message.setText(generateProfileInformation(FIRST_PAGE));
-                super.getBot().execute(message);
-
                 SendMessage message2 = new SendMessage();
                 message2.setChatId(super.getChatId().toString());
                 message2.enableHtml(true);
                 message2.setText(generateProfileDetails(chatId));
                 super.getBot().execute(message2);
+
+                message.setText(generateProfileInformation(FIRST_PAGE));
+                super.getBot().execute(message);
+
             } else {
                 invalidMessage(message, text);
             }
