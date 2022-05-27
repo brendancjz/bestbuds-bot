@@ -87,6 +87,21 @@ public class PSQL {
         }
     }
 
+    public void updateUserNameAndDOB(int chatId, String firstName, String dob) throws SQLException {
+        String sql = "UPDATE Users SET name=?,dob=? WHERE chat_id=? ";
+        PreparedStatement statement= connection.prepareStatement(sql);
+        statement.setString(1, firstName);
+        statement.setDate(2, Date.valueOf(dob));
+        statement.setInt(2, chatId);
+        int rowsInserted = statement.executeUpdate();
+
+        if ((rowsInserted > 0)) {
+            System.out.println("[Name & DOB] Update query successful.");
+        } else {
+            System.out.println("[Name & DOB] Update query failed.");
+        }
+    }
+
     private ResultSet getUsersDataResultSet(int chatId) throws SQLException {
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Users WHERE chat_id = ?";

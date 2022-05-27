@@ -93,17 +93,33 @@ public class UpdateCommand extends Command {
                 super.getPSQL().updateUserDesc(super.getChatId(), desc);
 
                 message.setText("Successfully updated your description: " + desc + ".");
-            } else {
-                message.setText("Sorry, inputted wrong format. Please input in this format: yyyy-MM-dd.");
             }
+
             super.getBot().execute(message);
         } else if (actualCommand.equals("/update")) {
             //Update name and dob tgt
+            String name = arr[1];
+            String dob = arr[2];
+
+            if (validateUpdateNameAndDOB(text)) {
+                super.getPSQL().updateUserNameAndDOB(super.getChatId(), name, dob);
+
+                message.setText("Successfully updated your name and dob: " + name + ", " + dob + ".");
+            } else {
+                message.setText("Sorry, command is correct but input arguments are incorrect.");
+            }
+            super.getBot().execute(message);
 
         } else {
             message.setText("Sorry, command is correct but input arguments are incorrect.");
             super.getBot().execute(message);
         }
+    }
+
+    private Boolean validateUpdateNameAndDOB(String text) {
+        String[] arr = text.split(" ");
+
+        return arr.length == 3 && validateDate(arr[2]);
     }
 
     private Boolean validateUpdateDOB(String text) {
