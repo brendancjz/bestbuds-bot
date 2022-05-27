@@ -6,6 +6,7 @@ import Command.GroupCommand.SubscribeCommand;
 import Command.MessageCommand.MessageComand;
 import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
+import Command.UserCommand.ViewBestBudCommand;
 import PSQL.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -181,20 +182,10 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new UpdateCommand(this, update, psql);
                 command.runCommand();
             }
-            else if (text.startsWith("/update_dob")) {
-                System.out.println("=== Update DOB Event Called === ");
-                command = new UpdateDOBCommand(this, update, psql);
+            else if (text.startsWith("/view_user")) {
+                System.out.println("=== View Event Called === ");
+                command = new ViewBestBudCommand(this, update, psql);
                 command.runCommand();
-            }
-            else if (text.startsWith("/getDOB")) {
-                String date = psql.getUserDOB(chatId);
-                message.setText("Your D.O.B is " + date);
-                executeMessage(message);
-            }
-            else if (text.startsWith("/getName")) {
-                String firstName = psql.getUserName(chatId);
-                message.setText("Your name is " + firstName);
-                executeMessage(message);
             } else {
                 message.enableHtml(false);
                 message.setText("Bad Command: " + text + " . Enter /help for assistance.");

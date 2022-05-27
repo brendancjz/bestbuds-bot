@@ -22,7 +22,6 @@ public class UpdateCommand extends Command {
         try {
             System.out.println("UpdateCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText();
-            int chatId = Integer.parseInt(super.getUpdate().getMessage().getChatId().toString());
 
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
@@ -34,20 +33,7 @@ public class UpdateCommand extends Command {
                 return;
             }
 
-            String actualCommand = text.split(" ")[0];
-
-//            if (super.getPSQL().isUserRegistered(chatId)) {
-//                super.getPSQL().updateUserName(chatId, firstName);
-//                message.setText("Thanks! Your changed name is " + firstName + ".");
-//                super.getBot().execute(message);
-//
-//            } else {
-//                notRegisteredMessage(message);
-//            }
-            message.setText(actualCommand);
             runActualCommand(message, text);
-
-
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }

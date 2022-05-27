@@ -125,6 +125,25 @@ public class PSQL {
         return user;
     }
 
+    public User getUserDataResultSet(String userCode) throws SQLException {
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Users WHERE code = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, userCode);
+
+        ResultSet resultSet = statement.executeQuery();
+        User user = new User();
+
+        while (resultSet.next()) {
+            user.name = resultSet.getString("name");
+            user.code = resultSet.getString("code");
+            user.dob = resultSet.getDate("dob");
+            user.desc = resultSet.getString("description");
+        }
+
+        return user;
+    }
+
     private ResultSet getUsersDataResultSet(int chatId) throws SQLException {
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Users WHERE chat_id = ?";
