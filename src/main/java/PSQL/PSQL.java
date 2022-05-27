@@ -3,7 +3,9 @@ package PSQL;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
@@ -127,15 +129,49 @@ public class PSQL {
         return name;
     }
 
-    public String getUserDOB(int chatId) throws SQLException {
-        System.out.println("-- Getting User DOB State --");
+    public String getUserCode(int chatId) throws SQLException {
+        System.out.println("-- Getting User Code State --");
 
-        String dob = null;
+        String code = null;
 
         //Selecting User from Users table.
         ResultSet resultSet = getUsersDataResultSet(chatId);
         while (resultSet.next()) {
-            dob = resultSet.getString("dob");
+            code = resultSet.getString("code");
+            System.out.println("User's code is " + code);
+        }
+
+
+        return code;
+    }
+
+    public String getUserDesc(int chatId) throws SQLException {
+        System.out.println("-- Getting User Desc State --");
+
+        String desc = null;
+
+        //Selecting User from Users table.
+        ResultSet resultSet = getUsersDataResultSet(chatId);
+        while (resultSet.next()) {
+            desc = resultSet.getString("description");
+            System.out.println("User's name is " + desc);
+        }
+
+
+        return desc;
+    }
+
+    public String getUserDOB(int chatId) throws SQLException {
+        System.out.println("-- Getting User DOB State --");
+
+        String dob = null;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        //Selecting User from Users table.
+        ResultSet resultSet = getUsersDataResultSet(chatId);
+        while (resultSet.next()) {
+            Date date = resultSet.getDate("dob");
+            dob = dateFormat.format(date);
             System.out.println("User's dob is " + dob);
         }
 

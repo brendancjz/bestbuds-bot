@@ -44,13 +44,13 @@ public class ProfileCommand extends Command {
                 SendMessage message2 = new SendMessage();
                 message2.setChatId(super.getChatId().toString());
                 message2.enableHtml(true);
-                message2.setText("Your Details:\n");
+                message2.setText(generateProfileDetails(chatId));
                 super.getBot().execute(message2);
             } else {
                 invalidMessage(message, text);
             }
 
-        } catch (TelegramApiException throwables) {
+        } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
 
@@ -100,6 +100,23 @@ public class ProfileCommand extends Command {
         } else {
             newMessage.setReplyMarkup(KeyboardMarkup.navigationKB(COMMAND, pageNo));
         }
+    }
+
+    private String generateProfileDetails(Integer chatId) throws SQLException {
+        String deeds = "";
+        String name = super.getPSQL().getUserName(chatId);
+        String dob = super.getPSQL().getUserDOB(chatId);
+        String code = super.getPSQL().getUserCode(chatId);
+        String desc = super.getPSQL().getUserDesc(chatId);
+
+        deeds += "<u>Your BestBud Details:</u>\n";
+        deeds += "Name: " + name + "\n";
+        deeds += "Date of Birth: " + dob + "\n";
+        deeds += "Code: " + code + "\n";
+        deeds += "Description: " + desc + "\n";
+
+
+        return deeds;
     }
 
     private String generateCommandList(Integer pageNo) {
