@@ -176,7 +176,11 @@ public class PSQL {
     }
 
     private static String getNewUserCode(String name) {
-        return name.substring(0,2) + getRandomFourDigitCode();
+        return name.substring(0,3) + getRandomFourDigitCode();
+    }
+
+    private static String getNewGroupCode(String name) {
+        return name + getRandomFourDigitCode();
     }
 
 
