@@ -19,19 +19,17 @@ public class PSQL {
         if (!userExists) {
             System.out.println("This user is not registered yet.");
 
-            String sql = "INSERT INTO Users (chat_id,name,dob,code,joined_on,description) VALUES (?, ?, '1999-05-12', ?, '2022-05-26', ?)";
+            String sql = "INSERT INTO Users (chat_id,name,dob,code,joined_on,description) VALUES (?, ?, ?, ?, ?, ?)";
             //INSERT INTO Users (chat_id, name, dob, code, joined_on, description) VALUES (123, 'bobby', '1999-05-29', 'BRE', '2022-05-26', 'brendan');
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            java.util.Date date = new java.util.Date(System.currentTimeMillis());
-
+            
             System.out.println("hello1");
             preparedStatement.setInt(1, chatId);
             preparedStatement.setString(2, name);
-//            preparedStatement.setDate(3, (Date) date);
+            preparedStatement.setDate(3, Date.valueOf("1999-05-12"));
             System.out.println("hello2");
             preparedStatement.setString(4, "code");
-            preparedStatement.setDate(5, (Date) date);
+            preparedStatement.setDate(5, Date.valueOf("2022-05-12"));
             preparedStatement.setString(6, "desc");
 
             System.out.println("hello3");
