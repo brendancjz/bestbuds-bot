@@ -74,7 +74,7 @@ public class PSQL {
     }
 
     public void updateUserDesc(int chatId, String desc) throws SQLException {
-        String sql = "UPDATE Users SET desc=? WHERE chat_id=? ";
+        String sql = "UPDATE Users SET description=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
         statement.setString(1, desc);
         statement.setInt(2, chatId);
