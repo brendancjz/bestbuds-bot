@@ -45,35 +45,10 @@ public class PSQL {
 
     }
 
-    public void addNewUser(int chatId, String firstName, String date) throws SQLException, ParseException {
-        boolean userExists = isUserRegistered(chatId);
-
-        if (!userExists) {
-            System.out.println("This user is not registered yet.");
-
-            String sql = "INSERT INTO Users (chat_id, name, dob) VALUES (?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setInt(1, chatId);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, date);
-
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Successful registration.");
-                System.out.println("[" + chatId + "] has been registered in users.");
-            } else {
-                System.out.println("Unsuccessful registration in users.");
-            }
-
-        }
-
-    }
-
     public void updateUserDOB(int chatId, String text) throws SQLException {
-        String sql = "UPDATE users SET dob=? WHERE chat_id=? ";
+        String sql = "UPDATE Users SET dob=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
-        statement.setString(1, text);
+        statement.setDate(1, Date.valueOf(text));
         statement.setInt(2, chatId);
         int rowsInserted = statement.executeUpdate();
 

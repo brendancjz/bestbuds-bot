@@ -47,12 +47,12 @@ public class UpdateCommand extends Command {
             runActualCommand(message, text);
 
 
-        } catch (TelegramApiException throwables) {
+        } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    private void runActualCommand(SendMessage message, String text) throws TelegramApiException {
+    private void runActualCommand(SendMessage message, String text) throws TelegramApiException, SQLException {
         String[] arr = text.split(" ");
         String actualCommand = arr[0];
 
@@ -64,8 +64,17 @@ public class UpdateCommand extends Command {
         } else if (actualCommand.equals("/update_dob") && validateUpdateDOB(text)) {
             //Update User dob
             String dob = arr[1];
-            message.setText(dob);
+
+            if (validateDate(dob)) {
+                super.getPSQL().updateUserDOB(super.getChatId(), dob);
+
+                message.setText("Successfully updated your date of birth.");
+            } else {
+                message.setText("Sorry, inputted wrong format. Please input in this format yyyy-MM-dd.");
+            }
+
             super.getBot().execute(message);
+
         } else if (actualCommand.equals("/update_desc")) {
             //Update User desc
         } else if (actualCommand.equals("/update")) {

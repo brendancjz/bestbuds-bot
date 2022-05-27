@@ -73,10 +73,16 @@ public class Command {
     }
 
     public boolean validateDate(String date) {
-        DateFormat dateFormat1 = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+//        DateFormat dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
+//        DateFormat dateFormat3 = new SimpleDateFormat("yyyy/MM/dd");
+//        DateFormat dateFormat4 = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             Date d = dateFormat1.parse(date);
+//            Date d2 = dateFormat2.parse(date);
+//            Date d3 = dateFormat3.parse(date);
+//            Date d4 = dateFormat4.parse(date);
         } catch (ParseException e) {
             return false;
         }
