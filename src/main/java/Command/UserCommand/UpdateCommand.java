@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class UpdateCommand extends Command {
 
@@ -65,7 +66,7 @@ public class UpdateCommand extends Command {
 
                 message.setText("Successfully updated your name to " + name + ".");
             } else {
-                message.setText("Sorry, inputted wrong format. You should input one word only.");
+                message.setText("Sorry, inputted wrong format. Please input one word only.");
             }
 
             super.getBot().execute(message);
@@ -86,6 +87,9 @@ public class UpdateCommand extends Command {
 
         } else if (actualCommand.equals("/update_desc")) {
             //Update User desc
+            String desc = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
+            message.setText(desc);
+            super.getBot().execute(message);
         } else if (actualCommand.equals("/update")) {
             //Update name and dob tgt
 
