@@ -6,6 +6,7 @@ import java.sql.*;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PSQL {
     private final Connection connection;
@@ -25,12 +26,12 @@ public class PSQL {
             //Date.valueOf("2022-05-12")
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, 1);
+            preparedStatement.setInt(1, chatId);
             preparedStatement.setString(2, name);
             preparedStatement.setDate(3, null);
-            preparedStatement.setString(4, "coder");
+            preparedStatement.setString(4, getNewUserCode(name));
             preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
-            preparedStatement.setString(6, "");
+            preparedStatement.setString(6, null);
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -164,6 +165,18 @@ public class PSQL {
         }
 
         return userExists;
+    }
+
+    private static String getRandomFourDigitCode() {
+        Random rnd = new Random();
+        int number = rnd.nextInt(9999);
+
+        // this will convert any number sequence into 6 character.
+        return String.format("%04d", number);
+    }
+
+    private static String getNewUserCode(String name) {
+        return name.substring(0,2) + getRandomFourDigitCode();
     }
 
 
