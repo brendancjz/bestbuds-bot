@@ -64,7 +64,7 @@ public class UpdateCommand extends Command {
             if (validateUpdateName(text)) {
                 super.getPSQL().updateUserName(super.getChatId(), name);
 
-                message.setText("Successfully updated your name to " + name + ".");
+                message.setText("Successfully updated your name: " + name + ".");
             } else {
                 message.setText("Sorry, inputted wrong format. Please input one word only.");
             }
@@ -78,7 +78,7 @@ public class UpdateCommand extends Command {
             if (validateUpdateDOB(text)) {
                 super.getPSQL().updateUserDOB(super.getChatId(), dob);
 
-                message.setText("Successfully updated your date of birth.");
+                message.setText("Successfully updated your date of birth: " + dob + ".");
             } else {
                 message.setText("Sorry, inputted wrong format. Please input in this format: yyyy-MM-dd.");
             }
@@ -92,7 +92,7 @@ public class UpdateCommand extends Command {
             if (validateDesc(text)) {
                 super.getPSQL().updateUserDesc(super.getChatId(), desc);
 
-                message.setText("Successfully updated your date of birth.");
+                message.setText("Successfully updated your description: " + desc + ".");
             } else {
                 message.setText("Sorry, inputted wrong format. Please input in this format: yyyy-MM-dd.");
             }
