@@ -109,8 +109,8 @@ public class ProfileCommand extends Command {
 
         deeds += "<b><u>Your BestBud Details:</u></b>\n\n";
         deeds += "<em>Name:</em> " + user.name + "\n";
-        deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
         deeds += "<em>Code:</em>  " + user.code + "\n";
+        deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
         deeds += "<em>Description:</em> " + user.desc + "\n";
 
 
