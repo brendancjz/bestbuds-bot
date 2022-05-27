@@ -163,14 +163,13 @@ public class PSQL {
     public String getUserDOB(int chatId) throws SQLException {
         System.out.println("-- Getting User DOB State --");
 
-        String dob = "";
+        String dob = "null";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         //Selecting User from Users table.
         ResultSet resultSet = getUsersDataResultSet(chatId);
         while (resultSet.next()) {
             Date date = resultSet.getDate("dob");
-            System.out.println(date);
             if (date != null) dob = dateFormat.format(date);
             System.out.println("User's dob is " + dob);
         }
