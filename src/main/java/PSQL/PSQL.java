@@ -116,7 +116,7 @@ public class PSQL {
     public String getUserName(int chatId) throws SQLException {
         System.out.println("-- Getting User Name State --");
 
-        String name = null;
+        String name = "";
 
         //Selecting User from Users table.
         ResultSet resultSet = getUsersDataResultSet(chatId);
@@ -132,7 +132,7 @@ public class PSQL {
     public String getUserCode(int chatId) throws SQLException {
         System.out.println("-- Getting User Code State --");
 
-        String code = null;
+        String code = "";
 
         //Selecting User from Users table.
         ResultSet resultSet = getUsersDataResultSet(chatId);
@@ -148,7 +148,7 @@ public class PSQL {
     public String getUserDesc(int chatId) throws SQLException {
         System.out.println("-- Getting User Desc State --");
 
-        String desc = null;
+        String desc = "";
 
         //Selecting User from Users table.
         ResultSet resultSet = getUsersDataResultSet(chatId);
@@ -164,7 +164,7 @@ public class PSQL {
     public String getUserDOB(int chatId) throws SQLException {
         System.out.println("-- Getting User DOB State --");
 
-        String dob = null;
+        String dob = "";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         //Selecting User from Users table.

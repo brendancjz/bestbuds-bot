@@ -65,7 +65,7 @@ public class UpdateCommand extends Command {
                 super.getPSQL().updateUserName(super.getChatId(), name);
 
                 message.setText("Successfully updated your name: " + name + ".");
-            } 
+            }
 
             super.getBot().execute(message);
 
