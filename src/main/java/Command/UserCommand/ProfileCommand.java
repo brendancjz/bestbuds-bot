@@ -101,6 +101,9 @@ public class ProfileCommand extends Command {
         String instruction = "";
         instruction += "<b>BestBuds User Commands - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
+        instruction += "<em>If you're on desktop, triple click on the command to copy the text.</em>\n\n";
+        instruction += "<pre>&lt;first_name&gt; -- &lt;no whitespace&gt;</pre>\n\n";
+        instruction += "<pre>&lt;date_of_birth&gt; -- &lt;yyyy-MM-dd&gt;</pre>\n\n";
         instruction += "<em>Update Name and DOB</em>\n";
         instruction += "<pre>  /update &lt;first_name&gt; &lt;date_of_birth&gt;</pre>\n\n";
         instruction += "<em>Update Self Description</em>\n";
