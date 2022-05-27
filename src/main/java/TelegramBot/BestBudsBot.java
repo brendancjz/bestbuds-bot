@@ -186,11 +186,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new UpdateDOBCommand(this, update, psql);
                 command.runCommand();
             }
-            else if (text.startsWith("/update_name")) {
-                System.out.println("=== Update Name Event Called === ");
-                command = new UpdateNameCommand(this, update, psql);
-                command.runCommand();
-            }
             else if (text.startsWith("/getDOB")) {
                 String date = psql.getUserDOB(chatId);
                 message.setText("Your D.O.B is " + date);
