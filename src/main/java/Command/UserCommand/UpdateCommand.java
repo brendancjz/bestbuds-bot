@@ -75,7 +75,7 @@ public class UpdateCommand extends Command {
             //Update User dob
             String dob = arr[1];
 
-            if (validateDate(dob)) {
+            if (validateUpdateDOB(text)) {
                 super.getPSQL().updateUserDOB(super.getChatId(), dob);
 
                 message.setText("Successfully updated your date of birth.");
@@ -88,7 +88,14 @@ public class UpdateCommand extends Command {
         } else if (actualCommand.equals("/update_desc")) {
             //Update User desc
             String desc = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
-            message.setText(desc);
+
+            if (validateDesc(text)) {
+                super.getPSQL().updateUserDesc(super.getChatId(), desc);
+
+                message.setText("Successfully updated your date of birth.");
+            } else {
+                message.setText("Sorry, inputted wrong format. Please input in this format: yyyy-MM-dd.");
+            }
             super.getBot().execute(message);
         } else if (actualCommand.equals("/update")) {
             //Update name and dob tgt
@@ -109,5 +116,11 @@ public class UpdateCommand extends Command {
         String[] arr = text.split(" ");
 
         return arr.length == 2;
+    }
+
+    private Boolean validateDesc(String text) {
+        String[] arr = text.split(" ");
+
+        return arr.length >= 2;
     }
 }
