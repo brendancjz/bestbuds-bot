@@ -56,12 +56,21 @@ public class UpdateCommand extends Command {
         String[] arr = text.split(" ");
         String actualCommand = arr[0];
 
-        if (actualCommand.equals("/update_name") && validateUpdateName(text)) {
+        if (actualCommand.equals("/update_name")) {
             //Update User name
             String name = arr[1];
-            message.setText(name);
+
+            if (validateUpdateName(text)) {
+                super.getPSQL().updateUserName(super.getChatId(), name);
+
+                message.setText("Successfully updated your name to " + name + ".");
+            } else {
+                message.setText("Sorry, inputted wrong format. You should input one word only.");
+            }
+
             super.getBot().execute(message);
-        } else if (actualCommand.equals("/update_dob") && validateUpdateDOB(text)) {
+
+        } else if (actualCommand.equals("/update_dob")) {
             //Update User dob
             String dob = arr[1];
 
@@ -70,7 +79,7 @@ public class UpdateCommand extends Command {
 
                 message.setText("Successfully updated your date of birth.");
             } else {
-                message.setText("Sorry, inputted wrong format. Please input in this format yyyy-MM-dd.");
+                message.setText("Sorry, inputted wrong format. Please input in this format: yyyy-MM-dd.");
             }
 
             super.getBot().execute(message);
@@ -79,6 +88,7 @@ public class UpdateCommand extends Command {
             //Update User desc
         } else if (actualCommand.equals("/update")) {
             //Update name and dob tgt
+
         } else {
             message.setText("Sorry, command is correct but input arguments are incorrect.");
             super.getBot().execute(message);

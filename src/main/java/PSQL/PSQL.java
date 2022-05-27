@@ -60,7 +60,7 @@ public class PSQL {
     }
 
     public void updateUserName(int chatId, String firstName) throws SQLException {
-        String sql = "UPDATE users SET name=? WHERE chat_id=? ";
+        String sql = "UPDATE Users SET name=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
         statement.setString(1, firstName);
         statement.setInt(2, chatId);
