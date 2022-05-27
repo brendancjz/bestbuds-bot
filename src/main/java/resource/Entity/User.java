@@ -38,6 +38,8 @@ public class User {
 
     public String getDob() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(this.dob);
+        if (this.dob != null) return dateFormat.format(this.dob);
+
+        return "null";
     }
 }
