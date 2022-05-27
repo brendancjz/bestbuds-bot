@@ -111,7 +111,7 @@ public class ProfileCommand extends Command {
 
         deeds += "<b><u>Your BestBud Details:</u></b>\n\n";
         deeds += "<em>Name:</em> " + name + "\n";
-        deeds += "<em>D.O.B:</em>  " + dob + "\n";
+        deeds += "<em>D.O.B:</em> " + dob + "\n";
         deeds += "<em>Code:</em>  " + code + "\n";
         deeds += "<em>Description:</em> " + desc + "\n";
 
