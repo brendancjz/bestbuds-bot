@@ -92,7 +92,7 @@ public class PSQL {
         PreparedStatement statement= connection.prepareStatement(sql);
         statement.setString(1, firstName);
         statement.setDate(2, Date.valueOf(dob));
-        statement.setInt(2, chatId);
+        statement.setInt(3, chatId);
         int rowsInserted = statement.executeUpdate();
 
         if ((rowsInserted > 0)) {
