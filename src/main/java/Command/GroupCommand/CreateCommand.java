@@ -30,7 +30,6 @@ public class CreateCommand extends Command {
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(false);
-            message.setReplyMarkup(KeyboardMarkup.confirmationKB());
 
             if (text.equals("/create")) { //Bad command. Missing arguments
                 missingArgumentsMessage(message);
@@ -41,6 +40,7 @@ public class CreateCommand extends Command {
                 String[] arr = text.split(" ");
                 String groupName = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
 
+                message.setReplyMarkup(KeyboardMarkup.confirmationKB(groupName));
                 message.setText("Confirm creating a BestBuds Group: " + groupName + "?");
             }
 
@@ -70,7 +70,12 @@ public class CreateCommand extends Command {
             newMessage.enableHtml(true);
 
             String confirmationResult = callData.split("_")[1];
-            newMessage.setText(confirmationResult);
+            String callbackData = callData.split("_")[2];
+
+            if (confirmationResult.equals("YES")) {
+                newMessage.setText("You are the owner of a new BestBuds Group: " + callbackData);
+            }
+
 
             super.getBot().execute(newMessage);
         } catch (TelegramApiException e) {
