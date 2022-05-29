@@ -152,7 +152,7 @@ public class PSQL {
         statement.setInt(1, chatId);
 
         ResultSet resultSet = statement.executeQuery();
-        User user = null;
+        User user = new User();
 
         while (resultSet.next()) {
             user.name = resultSet.getString("name");
@@ -161,7 +161,6 @@ public class PSQL {
             user.desc = resultSet.getString("description");
         }
 
-        System.out.println(user);
         return user;
     }
 
@@ -203,7 +202,7 @@ public class PSQL {
     public boolean isUserRegistered(int chatId) throws SQLException {
         System.out.println("PSQL.isUserRegistered()");
         User user = this.getUserDataResultSet(chatId);
-        return user != null;
+        return !User.isNull(user);
     }
 
     private static String getRandomFourDigitCode() {
@@ -216,7 +215,7 @@ public class PSQL {
 
     private Boolean isUserCodeUnique(String code) throws SQLException {
         User user = this.getUserDataResultSet(code);
-        return user == null;
+        return User.isNull(user);
     }
 
     private String getNewUserCode(String name) throws SQLException {

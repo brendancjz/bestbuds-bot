@@ -42,4 +42,8 @@ public class User {
 
         return "null";
     }
+
+    public static Boolean isNull(User user) {
+        return user.code.equals("null");
+    }
 }
