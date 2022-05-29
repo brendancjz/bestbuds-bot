@@ -49,6 +49,34 @@ public class PSQL {
 
     }
 
+    public void addNewGroup(int chatId, String groupName) throws SQLException {
+        boolean userExists = isUserRegistered(chatId);
+
+        if (userExists) {
+            User owner = this.getUserDataResultSet(chatId);
+
+            String sql = "INSERT INTO Groups (name,code,created_on,created_by) VALUES (?, ?, ?, ?)";
+            //INSERT INTO Groups (name, code, created_on, created_by) VALUES ('bob', 'bb123', '2022-05-28', 'bre9970');
+            //Date.valueOf("2022-05-12")
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, groupName);
+            preparedStatement.setString(2, getNewGroupCode(groupName));
+            preparedStatement.setDate(3, Date.valueOf(LocalDate.now()));
+            preparedStatement.setString(4, owner.code);
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Successful creation.");
+                System.out.println("[" + groupName + "] has been registered in Groups.");
+            } else {
+                System.out.println("Unsuccessful registration in Groups.");
+            }
+
+        }
+
+    }
+
     public void updateUserDOB(int chatId, String text) throws SQLException {
         String sql = "UPDATE Users SET dob=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
@@ -153,67 +181,22 @@ public class PSQL {
         return statement.executeQuery();
     }
 
-    public String getUserName(int chatId) throws SQLException {
-        System.out.println("-- Getting User Name State --");
-
-        String name = "";
-
-        //Selecting User from Users table.
-        ResultSet resultSet = getUsersDataResultSet(chatId);
-        while (resultSet.next()) {
-            name = resultSet.getString("name");
-            System.out.println("User's name is " + name);
-        }
-
-        return name;
-    }
-
-    public String getUserCode(int chatId) throws SQLException {
-        System.out.println("-- Getting User Code State --");
-
-        String code = "";
-
-        //Selecting User from Users table.
-        ResultSet resultSet = getUsersDataResultSet(chatId);
-        while (resultSet.next()) {
-            code = resultSet.getString("code");
-            System.out.println("User's code is " + code);
-        }
-
-        return code;
-    }
-
-    public String getUserDesc(int chatId) throws SQLException {
-        System.out.println("-- Getting User Desc State --");
-
-        String desc = "";
-
-        //Selecting User from Users table.
-        ResultSet resultSet = getUsersDataResultSet(chatId);
-        while (resultSet.next()) {
-            desc = resultSet.getString("description");
-            System.out.println("User's name is " + desc);
-        }
-
-        return desc;
-    }
-
-    public String getUserDOB(int chatId) throws SQLException {
-        System.out.println("-- Getting User DOB State --");
-
-        String dob = "null";
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        //Selecting User from Users table.
-        ResultSet resultSet = getUsersDataResultSet(chatId);
-        while (resultSet.next()) {
-            Date date = resultSet.getDate("dob");
-            if (date != null) dob = dateFormat.format(date);
-            System.out.println("User's dob is " + dob);
-        }
-
-        return dob;
-    }
+//    public String getUserDOB(int chatId) throws SQLException {
+//        System.out.println("-- Getting User DOB State --");
+//
+//        String dob = "null";
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//
+//        //Selecting User from Users table.
+//        ResultSet resultSet = getUsersDataResultSet(chatId);
+//        while (resultSet.next()) {
+//            Date date = resultSet.getDate("dob");
+//            if (date != null) dob = dateFormat.format(date);
+//            System.out.println("User's dob is " + dob);
+//        }
+//
+//        return dob;
+//    }
 
     public ArrayList<String> getAllChatId() throws SQLException {
         String sql = "SELECT * from Users";
@@ -252,11 +235,26 @@ public class PSQL {
     }
 
     private static String getNewUserCode(String name) {
-        return name.substring(0,3) + getRandomFourDigitCode();
+        if (name.length() >= 3) {
+            return name.substring(0,3) + getRandomFourDigitCode();
+        }
+
+        return name + getRandomFourDigitCode();
     }
 
     private static String getNewGroupCode(String name) {
-        return name + getRandomFourDigitCode();
+        String code = "";
+
+        String[] arr = name.split(" ");
+        if (arr.length > 1) {
+            for (String word : arr) {
+                code += word.charAt(0);
+            }
+        } else {
+            code = name;
+        }
+
+        return code + getRandomFourDigitCode();
     }
 
 

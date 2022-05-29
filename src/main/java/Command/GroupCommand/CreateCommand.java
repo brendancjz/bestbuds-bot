@@ -70,17 +70,18 @@ public class CreateCommand extends Command {
             newMessage.enableHtml(true);
 
             String confirmationResult = callData.split("_")[1];
-            String callbackData = callData.split("_")[2];
+            String groupName = callData.split("_")[2];
 
             if (confirmationResult.equals("YES")) {
-                newMessage.setText("You are the owner of a new BestBuds Group: " + callbackData);
+                newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
+                super.getPSQL().addNewGroup(chatId, groupName);
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");
             }
 
 
             super.getBot().execute(newMessage);
-        } catch (TelegramApiException e) {
+        } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
     }
