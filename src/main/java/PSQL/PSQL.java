@@ -164,6 +164,7 @@ public class PSQL {
     }
 
     public User getUserDataResultSet(String userCode) throws SQLException {
+        System.out.println("PSQL.getUserDataResultSet()");
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Users WHERE code = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
