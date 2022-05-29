@@ -145,6 +145,7 @@ public class PSQL {
     }
 
     public User getUserDataResultSet(int chatId) throws SQLException {
+        System.out.println("PSQL.getUserDataResultSet()");
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Users WHERE chat_id = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -160,6 +161,7 @@ public class PSQL {
             user.desc = resultSet.getString("description");
         }
 
+        System.out.println(user);
         return user;
     }
 
