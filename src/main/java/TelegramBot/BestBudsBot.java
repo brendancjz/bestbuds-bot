@@ -93,8 +93,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
 //            execute(message);
 
             if (callData.startsWith("confirmation")) {
-                newMessage.setText("Hello world: " + callData);
-                execute(newMessage);
+                command = new CreateCommand(this, update, psql);
+                command.runCallback();
                 return;
             } else if (callData.startsWith("start_page")) {
 

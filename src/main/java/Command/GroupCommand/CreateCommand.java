@@ -4,6 +4,7 @@ import Command.Command;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.KeyboardMarkup;
@@ -11,6 +12,7 @@ import resource.KeyboardMarkup;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Arrays;
 
 public class CreateCommand extends Command {
 
@@ -24,7 +26,6 @@ public class CreateCommand extends Command {
         try {
             System.out.println("CreateCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText();
-            int chatId = Integer.parseInt(super.getUpdate().getMessage().getChatId().toString());
 
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
@@ -36,17 +37,12 @@ public class CreateCommand extends Command {
                 return;
             }
 
-            String[] arr = text.split(" ");
+            if (validateGroupName(text)) {
+                String[] arr = text.split(" ");
+                String groupName = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
 
-            if (arr.length != 2) {
-                invalidMessage(message, text);
-                return;
+                message.setText("Confirm creating a BestBuds Group: " + groupName + "?");
             }
-
-
-            String groupName = arr[1];
-
-            message.setText("Group Name: " + groupName);
 
             //TODO Use Callback to confirm the group name and creation of group
             //TODO add this new group into the db
@@ -57,5 +53,34 @@ public class CreateCommand extends Command {
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @Override
+    public void runCallback() {
+        try {
+            System.out.println("CreateCommand.runCallback()");
+            Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
+            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
+            String callData = super.getUpdate().getCallbackQuery().getData();
+            Integer chatId = Integer.parseInt(super.getUpdate().getCallbackQuery().getMessage().getChatId().toString());
+
+            EditMessageText newMessage = new EditMessageText();
+            newMessage.setChatId(chatId.toString());
+            newMessage.setMessageId(messageId);
+            newMessage.enableHtml(true);
+
+            String confirmationResult = callData.split("_")[1];
+            newMessage.setText(confirmationResult);
+
+            super.getBot().execute(newMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Boolean validateGroupName(String text) {
+        String[] arr = text.split(" ");
+
+        return arr.length >= 2;
     }
 }
