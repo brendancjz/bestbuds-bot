@@ -74,6 +74,8 @@ public class CreateCommand extends Command {
 
             if (confirmationResult.equals("YES")) {
                 newMessage.setText("You are the owner of a new BestBuds Group: " + callbackData);
+            } else { //NO
+                newMessage.setText("Cancelled BestBuds Group creation.");
             }
 
 
