@@ -75,8 +75,10 @@ public class CreateCommand extends Command {
             String groupName = callData.split("_")[2];
 
             if (confirmationResult.equals("YES")) {
-                newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
+                System.out.println("YES -- Adding Group");
                 Group newGroup = super.getPSQL().addNewGroup(chatId, groupName);
+
+                newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");
             }
