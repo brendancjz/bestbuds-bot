@@ -102,6 +102,7 @@ public class StartCommand extends Command {
     }
 
     private String generateIntro(String name, Integer pageNo) {
+        System.out.println("StartCommand.generateIntro()");
         String intro = "<b>Start - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
 
         intro += this.generateBBB();
