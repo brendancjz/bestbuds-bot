@@ -7,6 +7,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.Group;
+import resource.Entity.User;
 import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
@@ -74,7 +76,7 @@ public class CreateCommand extends Command {
 
             if (confirmationResult.equals("YES")) {
                 newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
-                super.getPSQL().addNewGroup(chatId, groupName);
+                Group newGroup = super.getPSQL().addNewGroup(chatId, groupName);
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");
             }
@@ -91,4 +93,22 @@ public class CreateCommand extends Command {
 
         return arr.length >= 2;
     }
+
+//    private String generateProfileDetails(Integer chatId) throws SQLException {
+//        String deeds = "";
+//        User user = super.getPSQL().getUserDataResultSet(chatId);
+//
+//        if (user != null) {
+//            deeds += "<b><u>Your BestBud Details:</u></b>\n\n";
+//            deeds += "<em>Name:</em> " + user.name + "\n";
+//            deeds += "<em>Code:</em>  " + user.code + "\n";
+//            deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
+//            deeds += "<em>Description:</em> " + user.desc + "\n";
+//
+//        } else {
+//            deeds = "Missing profile details.";
+//        }
+//
+//        return deeds;
+//    }
 }

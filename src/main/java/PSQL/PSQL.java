@@ -1,5 +1,6 @@
 package PSQL;
 
+import resource.Entity.Group;
 import resource.Entity.User;
 
 import java.net.URI;
@@ -49,30 +50,38 @@ public class PSQL {
 
     }
 
-    public void addNewGroup(int chatId, String groupName) throws SQLException {
+    public Group addNewGroup(int chatId, String groupName) throws SQLException {
         boolean userExists = isUserRegistered(chatId);
 
-        if (userExists) {
-            User owner = this.getUserDataResultSet(chatId);
+        if (!userExists) return null;
 
-            String sql = "INSERT INTO Groups (name,code,created_on,created_by) VALUES (?, ?, ?, ?)";
-            //INSERT INTO Groups (name, code, created_on, created_by) VALUES ('bob', 'bb123', '2022-05-28', 'bre9970');
-            //Date.valueOf("2022-05-12")
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        User owner = this.getUserDataResultSet(chatId);
+        Group newGroup = new Group();
+        newGroup.name = groupName;
+        newGroup.code = getNewGroupCode(groupName);
+        newGroup.createdOn = Date.valueOf(LocalDate.now());
+        newGroup.createdBy = owner.code;
 
-            preparedStatement.setString(1, groupName);
-            preparedStatement.setString(2, getNewGroupCode(groupName));
-            preparedStatement.setDate(3, Date.valueOf(LocalDate.now()));
-            preparedStatement.setString(4, owner.code);
+        String sql = "INSERT INTO Groups (name,code,created_on,created_by) VALUES (?, ?, ?, ?)";
+        //INSERT INTO Groups (name, code, created_on, created_by) VALUES ('bob', 'bb123', '2022-05-28', 'bre9970');
+        //Date.valueOf("2022-05-12")
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Successful creation.");
-                System.out.println("[" + groupName + "] has been registered in Groups.");
-            } else {
-                System.out.println("Unsuccessful registration in Groups.");
-            }
+        preparedStatement.setString(1, groupName);
+        preparedStatement.setString(2, newGroup.code);
+        preparedStatement.setDate(3, newGroup.createdOn);
+        preparedStatement.setString(4, newGroup.createdBy);
 
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful creation.");
+            System.out.println("[" + groupName + "] has been registered in Groups.");
+
+            return newGroup;
+        } else {
+            System.out.println("Unsuccessful registration in Groups.");
+
+            return null;
         }
 
     }
