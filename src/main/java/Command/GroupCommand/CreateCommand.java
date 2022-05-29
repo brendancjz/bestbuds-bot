@@ -77,10 +77,19 @@ public class CreateCommand extends Command {
             if (confirmationResult.equals("YES")) {
                 System.out.println("YES -- Adding Group");
                 Group newGroup = super.getPSQL().addNewGroup(chatId, groupName);
-
                 newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
+                super.getBot().execute(newMessage);
+
+                SendMessage message2 = new SendMessage();
+                message2.setChatId(super.getChatId().toString());
+                message2.enableHtml(true);
+                message2.setText(generateGroupDetails(newGroup));
+                super.getBot().execute(message2);
+
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");
+                super.getBot().execute(newMessage);
+
             }
 
 
@@ -96,21 +105,20 @@ public class CreateCommand extends Command {
         return arr.length >= 2;
     }
 
-//    private String generateProfileDetails(Integer chatId) throws SQLException {
-//        String deeds = "";
-//        User user = super.getPSQL().getUserDataResultSet(chatId);
-//
-//        if (user != null) {
-//            deeds += "<b><u>Your BestBud Details:</u></b>\n\n";
-//            deeds += "<em>Name:</em> " + user.name + "\n";
-//            deeds += "<em>Code:</em>  " + user.code + "\n";
-//            deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
-//            deeds += "<em>Description:</em> " + user.desc + "\n";
-//
-//        } else {
-//            deeds = "Missing profile details.";
-//        }
-//
-//        return deeds;
-//    }
+    private String generateGroupDetails(Group group) throws SQLException {
+        String deeds = "";
+
+        if (group != null) {
+            deeds += "<b><u>Your BestBuds Group Details:</u></b>\n\n";
+            deeds += "<em>Name:</em> " + group.name + "\n";
+            deeds += "<em>Code:</em>  " + group.code + "\n";
+            deeds += "<em>Created By:</em> " + group.createdBy + "\n";
+            deeds += "<em>Created On:</em> " + group.getCreatedOn() + "\n";
+
+        } else {
+            deeds = "Missing profile details.";
+        }
+
+        return deeds;
+    }
 }
