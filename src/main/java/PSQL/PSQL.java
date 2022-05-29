@@ -52,7 +52,7 @@ public class PSQL {
 
     public Group addNewGroup(int chatId, String groupName) throws SQLException {
         boolean userExists = isUserRegistered(chatId);
-
+        System.out.println(userExists);
         if (!userExists) return null;
         System.out.println("Adding new Group");
 
