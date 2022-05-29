@@ -141,7 +141,7 @@ public class PSQL {
         statement.setInt(1, chatId);
 
         ResultSet resultSet = statement.executeQuery();
-        User user = new User();
+        User user = null;
 
         while (resultSet.next()) {
             user.name = resultSet.getString("name");
@@ -160,7 +160,7 @@ public class PSQL {
         statement.setString(1, userCode);
 
         ResultSet resultSet = statement.executeQuery();
-        User user = new User();
+        User user = null;
 
         while (resultSet.next()) {
             user.name = resultSet.getString("name");
@@ -170,15 +170,6 @@ public class PSQL {
         }
 
         return user;
-    }
-
-    private ResultSet getUsersDataResultSet(int chatId) throws SQLException {
-        // Obtaining user information from USERS
-        String sql = "SELECT * FROM Users WHERE chat_id = ?";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, chatId);
-
-        return statement.executeQuery();
     }
 
 //    public String getUserDOB(int chatId) throws SQLException {
@@ -214,16 +205,8 @@ public class PSQL {
     }
 
     public boolean isUserRegistered(int chatId) throws SQLException {
-
-        boolean userExists = false;
-        ResultSet resultSet = getUsersDataResultSet(chatId);
-        while (resultSet.next()) {
-            userExists = true;
-            String selectedChatId = resultSet.getString("chat_id");
-            System.out.println("[" + selectedChatId + "] has been selected.");
-        }
-
-        return userExists;
+        User user = this.getUserDataResultSet(chatId);
+        return user != null;
     }
 
     private static String getRandomFourDigitCode() {
@@ -234,15 +217,26 @@ public class PSQL {
         return String.format("%04d", number);
     }
 
-    private static String getNewUserCode(String name) {
-        if (name.length() >= 3) {
-            return name.substring(0,3) + getRandomFourDigitCode();
-        }
-
-        return name + getRandomFourDigitCode();
+    private Boolean isUserCodeUnique(String code) throws SQLException {
+        User user = this.getUserDataResultSet(code);
+        return user == null;
     }
 
-    private static String getNewGroupCode(String name) {
+    private String getNewUserCode(String name) throws SQLException {
+        String code = "";
+
+        do {
+            if (name.length() >= 3) {
+                code = name.substring(0,3) + getRandomFourDigitCode();
+            }
+
+            code = name + getRandomFourDigitCode();
+        } while (!isUserCodeUnique(code));
+
+        return code;
+    }
+
+    private String getNewGroupCode(String name) {
         String code = "";
 
         String[] arr = name.split(" ");
