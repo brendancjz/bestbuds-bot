@@ -75,7 +75,6 @@ public class CreateCommand extends Command {
             String groupName = callData.split("_")[2];
 
             if (confirmationResult.equals("YES")) {
-                System.out.println("YES -- Adding Group");
                 Group newGroup = super.getPSQL().addNewGroup(chatId, groupName);
                 newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
                 super.getBot().execute(newMessage);

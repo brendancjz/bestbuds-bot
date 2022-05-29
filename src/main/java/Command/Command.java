@@ -25,7 +25,11 @@ public class Command {
     }
 
     public Integer getChatId() {
-        return Integer.parseInt(this.update.getMessage().getChatId().toString());
+        if (this.update.getMessage() != null) {
+            return Integer.parseInt(this.update.getMessage().getChatId().toString());
+        } else {
+            return Integer.parseInt(this.update.getCallbackQuery().getMessage().getChatId().toString());
+        }
     }
 
     public String getFirstName() {
