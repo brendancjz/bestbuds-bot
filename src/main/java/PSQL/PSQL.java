@@ -54,6 +54,7 @@ public class PSQL {
         boolean userExists = isUserRegistered(chatId);
 
         if (!userExists) return null;
+        System.out.println("Adding new Group");
 
         User owner = this.getUserDataResultSet(chatId);
         Group newGroup = new Group();
@@ -63,7 +64,7 @@ public class PSQL {
         newGroup.createdBy = owner.code;
 
         String sql = "INSERT INTO Groups (name,code,created_by,created_on) VALUES (?, ?, ?, ?)";
-        //INSERT INTO Groups (name, code, created_on, created_by) VALUES ('bob', 'bb123', '2022-05-28', 'bre9970');
+        //insert into groups (name, code, created_by, created_on) VALUES ('bob vans', 'bv123', 'bren6016', '2022-05-29');
         //Date.valueOf("2022-05-12")
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
