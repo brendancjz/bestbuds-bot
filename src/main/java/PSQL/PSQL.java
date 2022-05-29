@@ -62,15 +62,15 @@ public class PSQL {
         newGroup.createdOn = Date.valueOf(LocalDate.now());
         newGroup.createdBy = owner.code;
 
-        String sql = "INSERT INTO Groups (name,code,created_on,created_by) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Groups (name,code,created_by,created_on) VALUES (?, ?, ?, ?)";
         //INSERT INTO Groups (name, code, created_on, created_by) VALUES ('bob', 'bb123', '2022-05-28', 'bre9970');
         //Date.valueOf("2022-05-12")
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         preparedStatement.setString(1, groupName);
         preparedStatement.setString(2, newGroup.code);
-        preparedStatement.setDate(3, newGroup.createdOn);
-        preparedStatement.setString(4, newGroup.createdBy);
+        preparedStatement.setString(3, newGroup.createdBy);
+        preparedStatement.setDate(4, newGroup.createdOn);
 
         int rowsInserted = preparedStatement.executeUpdate();
         if (rowsInserted > 0) {
