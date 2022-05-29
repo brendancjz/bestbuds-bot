@@ -121,7 +121,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command.runCallback();
                 return;
             }
-        } catch (TelegramApiException | SQLException | URISyntaxException e) {
+        } catch (SQLException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
