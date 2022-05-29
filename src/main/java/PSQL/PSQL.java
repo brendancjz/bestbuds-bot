@@ -207,7 +207,7 @@ public class PSQL {
 
     private String getNewUserCode(String name) throws SQLException {
         String code = "";
-
+        System.out.println(name);
         do {
             if (name.length() >= 3) {
                 code = name.substring(0,3) + getRandomFourDigitCode();
