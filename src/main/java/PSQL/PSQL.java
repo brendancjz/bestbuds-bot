@@ -199,6 +199,7 @@ public class PSQL {
     }
 
     public boolean isUserRegistered(int chatId) throws SQLException {
+        System.out.println("PSQL.isUserRegistered()");
         User user = this.getUserDataResultSet(chatId);
         return user != null;
     }
