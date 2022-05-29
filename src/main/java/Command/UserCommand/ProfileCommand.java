@@ -114,6 +114,8 @@ public class ProfileCommand extends Command {
             deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
             deeds += "<em>Description:</em> " + user.desc + "\n";
 
+        } else {
+            deeds = "Missing profile details.";
         }
 
         return deeds;
