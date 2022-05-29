@@ -32,10 +32,10 @@ public class HappyBirthdayTimer {
             SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(bot, chatId);
 
             //Get DOB
-            String dob = psql.getUserDOB(chatId);
+            //String dob = psql.getUserDOB(chatId);
             //System.out.println("DOB for Id: " + chatId + " is " + dob);
 
-            timer.schedule(task, scheduleOnBirthdate(dob));
+            //timer.schedule(task, scheduleOnBirthdate(dob));
         }
 
         psql.closeConnection();
@@ -49,11 +49,11 @@ public class HappyBirthdayTimer {
         SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(bot, chatId);
 
         //Get DOB
-        String dob = psql.getUserDOB(chatId);
+        //String dob = psql.getUserDOB(chatId);
         //System.out.println("DOB for Id: " + chatId + " is " + dob);
 
-        scheduleOnBirthdate(dob);
-        timer.schedule(task, scheduleOnBirthdate(dob));
+        //scheduleOnBirthdate(dob);
+        //timer.schedule(task, scheduleOnBirthdate(dob));
         psql.closeConnection();
     }
 
