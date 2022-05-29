@@ -207,19 +207,29 @@ public class PSQL {
 
     private String getNewUserCode(String name) throws SQLException {
         String code = "";
-        System.out.println(name);
+
         do {
-            if (name.length() >= 3) {
-                code = name.substring(0,3) + getRandomFourDigitCode();
+            String[] arr = name.split(" ");
+            if (arr.length > 1) {
+                for (String word : arr) {
+                    code += word.charAt(0);
+                }
+
+                code += getRandomFourDigitCode();
+            } else {
+                if (name.length() >= 4) {
+                    code = name.substring(0,4) + getRandomFourDigitCode();
+                } else {
+                    code = name + getRandomFourDigitCode();
+                }
             }
 
-            code = name + getRandomFourDigitCode();
         } while (!isUserCodeUnique(code));
 
         return code;
     }
 
-    private String getNewGroupCode(String name) {
+    private String getNewGroupCode(String name) { //TODO need to check if code is unique
         String code = "";
 
         String[] arr = name.split(" ");
