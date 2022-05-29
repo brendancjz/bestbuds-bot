@@ -46,6 +46,7 @@ public class StartCommand extends Command {
             }
 
             message.setText(startMsg);
+            System.out.println("Executing Message");
             super.getBot().execute(message);
 
         } catch (SQLException | TelegramApiException throwables) {
