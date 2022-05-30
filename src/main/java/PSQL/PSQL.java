@@ -87,6 +87,29 @@ public class PSQL {
 
     }
 
+    public void addUserIntoGroup(Integer chatId, String groupCode) throws SQLException {
+        boolean userExists = isUserRegistered(chatId);
+        System.out.println(userExists);
+        if (!userExists) return;
+        if (isGroupCodeUnique(groupCode)) return;
+
+        System.out.println("Adding User to Group");
+
+        String sql = "INSERT INTO GroupUsers (group_code, chat_id) VALUES (?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setString(1, groupCode);
+        preparedStatement.setInt(2, chatId);
+
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful joining of group.");
+            System.out.println("[" + chatId + "] has been joined a Group " + groupCode + ".");
+        } else {
+            System.out.println("Unsuccessful registration in Groups.");
+        }
+    }
+
     public void updateUserDOB(int chatId, String text) throws SQLException {
         String sql = "UPDATE Users SET dob=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
@@ -172,7 +195,7 @@ public class PSQL {
         statement.setString(1, userCode);
 
         ResultSet resultSet = statement.executeQuery();
-        User user = null;
+        User user = new User();
 
         while (resultSet.next()) {
             user.name = resultSet.getString("name");
@@ -182,6 +205,26 @@ public class PSQL {
         }
 
         return user;
+    }
+
+    public Group getGroupDataResultSet(String groupCode) throws SQLException {
+        System.out.println("PSQL.getGroupDataResultSet()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Groups WHERE code = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, groupCode);
+
+        ResultSet resultSet = statement.executeQuery();
+        Group group = new Group();
+
+        while (resultSet.next()) {
+            group.name = resultSet.getString("name");
+            group.code = resultSet.getString("code");
+            group.createdBy = resultSet.getString("created_by");
+            group.createdOn = resultSet.getDate("created_on");
+        }
+
+        return group;
     }
 
     public ArrayList<String> getAllChatId() throws SQLException {
@@ -216,6 +259,11 @@ public class PSQL {
     private Boolean isUserCodeUnique(String code) throws SQLException {
         User user = this.getUserDataResultSet(code);
         return User.isNull(user);
+    }
+
+    public Boolean isGroupCodeUnique(String code) throws SQLException {
+        Group group = this.getGroupDataResultSet(code);
+        return Group.isNull(group);
     }
 
     private String getNewUserCode(String name) throws SQLException {

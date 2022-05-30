@@ -8,12 +8,10 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
-import resource.Entity.User;
 import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Arrays;
 
 public class CreateCommand extends Command {
@@ -64,10 +62,9 @@ public class CreateCommand extends Command {
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
             String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
             String callData = super.getUpdate().getCallbackQuery().getData();
-            Integer chatId = Integer.parseInt(super.getUpdate().getCallbackQuery().getMessage().getChatId().toString());
 
             EditMessageText newMessage = new EditMessageText();
-            newMessage.setChatId(chatId.toString());
+            newMessage.setChatId(super.getChatId().toString());
             newMessage.setMessageId(messageId);
             newMessage.enableHtml(true);
 
@@ -75,7 +72,7 @@ public class CreateCommand extends Command {
             String groupName = callData.split("_")[2];
 
             if (confirmationResult.equals("YES")) {
-                Group newGroup = super.getPSQL().addNewGroup(chatId, groupName);
+                Group newGroup = super.getPSQL().addNewGroup(super.getChatId(), groupName);
                 newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
                 super.getBot().execute(newMessage);
 
@@ -90,7 +87,6 @@ public class CreateCommand extends Command {
                 super.getBot().execute(newMessage);
 
             }
-
 
             super.getBot().execute(newMessage);
         } catch (TelegramApiException | SQLException e) {
