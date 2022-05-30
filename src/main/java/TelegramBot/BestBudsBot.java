@@ -2,6 +2,7 @@ package TelegramBot;
 
 import Command.*;
 import Command.GroupCommand.CreateCommand;
+import Command.GroupCommand.JoinCommand;
 import Command.GroupCommand.SubscribeCommand;
 import Command.MessageCommand.MessageComand;
 import Command.UserCommand.ProfileCommand;
@@ -175,6 +176,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/create")) {
                 System.out.println("=== Create Event Called === ");
                 command = new CreateCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/join")) {
+                System.out.println("=== Join Event Called === ");
+                command = new JoinCommand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/update")) {
