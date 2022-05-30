@@ -41,6 +41,8 @@ public class JoinCommand extends Command {
 
                 message.setReplyMarkup(KeyboardMarkup.confirmationKB(groupCode));
                 message.setText("Confirm joining a BestBuds Group: " + groupCode + "?");
+            } else {
+                message.setText("Sorry, it seems like the group code does not exist.");
             }
 
             //TODO Use Callback to confirm the group name and creation of group
@@ -99,7 +101,7 @@ public class JoinCommand extends Command {
         System.out.println("Is arr length 2? " + (arr.length == 2));
         System.out.println("Is Group Code Unique? " + super.getPSQL().isGroupCodeUnique(arr[1]));
 
-        return arr.length == 2 && super.getPSQL().isGroupCodeUnique(arr[1]);
+        return arr.length == 2 && !super.getPSQL().isGroupCodeUnique(arr[1]);
     }
 
     private String generateGroupDetails(Group group) throws SQLException {

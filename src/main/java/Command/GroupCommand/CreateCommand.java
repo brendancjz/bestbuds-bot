@@ -42,6 +42,8 @@ public class CreateCommand extends Command {
 
                 message.setReplyMarkup(KeyboardMarkup.confirmationKB(groupName));
                 message.setText("Confirm creating a BestBuds Group: " + groupName + "?");
+            } else {
+                message.setText("Something went wrong. Please contact developer.");
             }
 
             //TODO Use Callback to confirm the group name and creation of group
