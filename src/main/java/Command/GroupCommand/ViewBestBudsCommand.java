@@ -11,6 +11,7 @@ import resource.Entity.User;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ViewBestBudsCommand extends Command {
     public ViewBestBudsCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
@@ -27,7 +28,8 @@ public class ViewBestBudsCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-            if (text.equals("//view_bestbuds")) { //Bad command. Missing arguments
+            if (text.equals("/view_bestbuds")) { //TODO allow user to choose which group he wants to see
+                List<Group> groups = super.getPSQL().getGroupsFromUser(super.getChatId());
                 missingArgumentsMessage(message);
                 return;
             }
@@ -68,7 +70,7 @@ public class ViewBestBudsCommand extends Command {
             deeds.append("<em>Created By:</em> ").append(group.createdBy).append("\n");
             deeds.append("<em>Created On:</em> ").append(group.getCreatedOn()).append("\n\n");
 
-            deeds.append("<b><u>BestBuds</u></b>\n");
+            deeds.append("<b><u>BestBuds Details: </u></b>\n");
             for (User user : group.users) {
                 deeds.append(generateProfileDetails(user));
             }

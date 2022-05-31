@@ -275,6 +275,24 @@ public class PSQL {
         return group;
     }
 
+    public List<Group> getGroupsFromUser(Integer chatId) throws SQLException {
+        System.out.println("PSQL.getGroupsFromUser()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Groups WHERE code = ANY (SELECT group_code FROM GroupUsers WHERE chat_id = ?)";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, chatId);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<Group> groups = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Group group = this.convertResultSetToGroup(resultSet);
+            groups.add(group);
+        }
+
+        return groups;
+    }
+
     private User convertResultSetToUser(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.name = resultSet.getString("name");
@@ -358,7 +376,7 @@ public class PSQL {
         return code;
     }
 
-    private String getNewGroupCode(String name) { //TODO need to check if code is unique
+    private String getNewGroupCode(String name) {
         String code = "";
 
         String[] arr = name.split(" ");
