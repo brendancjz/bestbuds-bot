@@ -4,16 +4,21 @@ import Command.Command;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
 import resource.Entity.User;
+import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBestBudsCommand extends Command {
+    private static final String COMMAND = "viewBestBuds";
+
     public ViewBestBudsCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
     }
@@ -31,11 +36,13 @@ public class ViewBestBudsCommand extends Command {
             if (text.equals("/view_bestbuds")) { //TODO allow user to choose which group he wants to see
                 List<Group> groups = super.getPSQL().getGroupsFromUser(super.getChatId());
 
-                String msg = "";
+                message.setText(generateGroupSelection(groups));
+
+                List<String> groupNames = new ArrayList<>();
                 for (Group group : groups) {
-                    msg += "Group " + group.name + "\n";
+                    groupNames.add(group.name);
                 }
-                message.setText(msg);
+                message.setReplyMarkup(KeyboardMarkup.selectKB(groupNames, COMMAND));
                 super.getBot().execute(message);
                 return;
             }
@@ -47,6 +54,7 @@ public class ViewBestBudsCommand extends Command {
                 Group group = super.getPSQL().getGroupDataResultSet(groupCode);
 
                 message.setText(this.generateBestBudsDetails(group));
+
             } else {
                 message.setText("Sorry, it seems like the group code does not exist or you did not join this group.");
             }
@@ -55,6 +63,40 @@ public class ViewBestBudsCommand extends Command {
 
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+
+    @Override
+    public void runCallback() {
+        try {
+            System.out.println("ViewBestBudsCommand.runCallback()");
+            Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
+            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
+            String callData = super.getUpdate().getCallbackQuery().getData();
+
+            EditMessageText newMessage = new EditMessageText();
+            newMessage.setChatId(super.getChatId().toString());
+            newMessage.setMessageId(messageId);
+            newMessage.enableHtml(true);
+
+            String groupSelection = callData.split("_")[2];
+            newMessage.setText(groupSelection);
+
+//            if (groupSelection.equals("YES")) {
+//                super.getPSQL().removeUserFromGroup(super.getChatId(), groupCode);
+//                Group group = super.getPSQL().getGroupDataResultSet(groupCode);
+//                newMessage.setText("You have exited the BestBuds Group: " + group.name);
+//                super.getBot().execute(newMessage);
+//
+//            } else { //NO
+//                newMessage.setText("Cancelled BestBuds Group exit.");
+//                super.getBot().execute(newMessage);
+//
+//            }
+
+            super.getBot().execute(newMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 
@@ -98,5 +140,11 @@ public class ViewBestBudsCommand extends Command {
 
 
         return deeds;
+    }
+
+    private String generateGroupSelection(List<Group> groups) {
+        String msg = "<b>Select Group to View BestBuds</b>";
+
+        return msg;
     }
 }

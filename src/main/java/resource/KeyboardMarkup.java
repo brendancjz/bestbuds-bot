@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -145,6 +146,24 @@ public class KeyboardMarkup {
         button2.setText("NEXT PAGE");
         button2.setCallbackData(command + "_page_" + (currentPageNumber + 1));
         row.add(button2);
+        keyboard.add(row);
+
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+        inlineKeyboard.setKeyboard(keyboard);
+        return inlineKeyboard;
+    }
+
+    public static ReplyKeyboard selectKB(List<String> options, String context) {
+        List<InlineKeyboardButton> row = new ArrayList<>();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        for (String selection : options) {
+            InlineKeyboardButton button = new InlineKeyboardButton();
+            button.setText(selection);
+            button.setCallbackData("select_" + context + "_" + selection);
+            row.add(button);
+        }
+
         keyboard.add(row);
 
         InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
@@ -298,6 +317,4 @@ public class KeyboardMarkup {
         markup.setOneTimeKeyboard(true);
         return markup;
     }
-
-
 }

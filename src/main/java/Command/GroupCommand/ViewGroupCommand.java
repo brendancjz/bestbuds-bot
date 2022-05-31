@@ -14,7 +14,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class ViewGroupCommand extends Command {
-    private static final String COMMAND = "exit";
+    private static final String COMMAND = "viewGroup";
 
     public ViewGroupCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);

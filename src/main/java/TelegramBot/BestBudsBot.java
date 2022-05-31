@@ -105,6 +105,17 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 }
                 command.runCallback();
                 return;
+            } else if (callData.startsWith("select_")) {
+                String[] callBackArr = update.getCallbackQuery().getData().split("_");
+                String commandStr = callBackArr[1];
+
+                if (commandStr.equals("viewBestBuds")) {
+                    command = new ViewBestBudsCommand(this, update, psql);
+                }
+
+                command.runCallback();
+                return;
+
             } else if (callData.startsWith("start_page")) {
 
                 System.out.println("=== Start Event Called === ");
