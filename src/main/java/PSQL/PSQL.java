@@ -264,31 +264,35 @@ public class PSQL {
             group = this.convertResultSetToGroup(resultSet);
         }
 
-        //Getting the users
-        sql = "SELECT * FROM GroupUsers WHERE group_code = ?";
+//        //Getting the users
+//        sql = "SELECT * FROM GroupUsers WHERE group_code = ?";
+//        statement = connection.prepareStatement(sql);
+//        statement.setString(1, groupCode);
+//        resultSet = statement.executeQuery();
+//        List<Integer> chatIdArr = new ArrayList<>();
+//
+//        while (resultSet.next()) {
+//            chatIdArr.add(resultSet.getInt("chat_id"));
+//        }
+//
+//        //Return if no users
+//        if (chatIdArr.size() == 0) return group;
+//
+//        sql = "SELECT * FROM Users WHERE ";
+//        for (int i = 0; i < chatIdArr.size(); i++) {
+//            sql += "chat_id = ? ";
+//            if (i != chatIdArr.size() - 1) sql += "OR ";
+//        }
+//
+//        statement = connection.prepareStatement(sql);
+//
+//        for (int i = 0; i < chatIdArr.size(); i++) {
+//            statement.setInt(i + 1, chatIdArr.get(i));
+//        }
+
+        sql = "SELECT * FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers WHERE group_code = ?)";
         statement = connection.prepareStatement(sql);
         statement.setString(1, groupCode);
-        resultSet = statement.executeQuery();
-        List<Integer> chatIdArr = new ArrayList<>();
-
-        while (resultSet.next()) {
-            chatIdArr.add(resultSet.getInt("chat_id"));
-        }
-
-        //Return if no users
-        if (chatIdArr.size() == 0) return group;
-
-        sql = "SELECT * FROM Users WHERE ";
-        for (int i = 0; i < chatIdArr.size(); i++) {
-            sql += "chat_id = ? ";
-            if (i != chatIdArr.size() - 1) sql += "OR ";
-        }
-
-        statement = connection.prepareStatement(sql);
-
-        for (int i = 0; i < chatIdArr.size(); i++) {
-            statement.setInt(i + 1, chatIdArr.get(i));
-        }
 
         resultSet = statement.executeQuery();
 
