@@ -101,7 +101,8 @@ public class ShareCodeCommand extends Command {
         String deeds = "";
 
         if (group != null) {
-            deeds += "Come join my BestBuds Group " + group.name + "! Use this command: <pre>  /join " + group.code + "</pre>";
+            deeds += "Hello, come join my BestBuds Group <b>" + group.name + "</b>!\n";
+            deeds += "Use this command: <pre>  /join " + group.code + "</pre>";
 
         } else {
             deeds = "Missing profile details.";
