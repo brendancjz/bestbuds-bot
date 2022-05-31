@@ -134,7 +134,12 @@ public class ViewBestBudsCommand extends Command {
     }
 
     private String generateGroupSelection(List<Group> groups) {
-        String msg = "<b>Select Group to View BestBuds</b>";
+        String msg = "";
+        if (groups.size() > 0) {
+            msg = "<b>Select Group to View BestBuds</b>";
+        } else {
+            msg = "You have not joined any BestBuds Group.";
+        }
 
         return msg;
     }
