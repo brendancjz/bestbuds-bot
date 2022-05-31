@@ -12,6 +12,8 @@ import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ViewGroupCommand extends Command {
     private static final String COMMAND = "viewGroup";
@@ -31,7 +33,16 @@ public class ViewGroupCommand extends Command {
             message.enableHtml(true);
 
             if (text.equals("/view_group")) { //Bad command. Missing arguments
-                missingArgumentsMessage(message);
+                List<Group> groups = super.getPSQL().getGroupsFromUser(super.getChatId());
+
+                message.setText(generateGroupSelection(groups));
+
+                List<String> groupNames = new ArrayList<>();
+                for (Group group : groups) {
+                    groupNames.add(group.name);
+                }
+                message.setReplyMarkup(KeyboardMarkup.selectKB(groupNames, COMMAND));
+                super.getBot().execute(message);
                 return;
             }
 
@@ -50,6 +61,31 @@ public class ViewGroupCommand extends Command {
 
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+
+    @Override
+    public void runCallback() {
+        try {
+            System.out.println("ViewGroupCommand.runCallback()");
+            Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
+            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
+            String callData = super.getUpdate().getCallbackQuery().getData();
+
+            EditMessageText newMessage = new EditMessageText();
+            newMessage.setChatId(super.getChatId().toString());
+            newMessage.setMessageId(messageId);
+            newMessage.enableHtml(true);
+
+            String groupSelection = callData.split("_")[2];
+
+            Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
+
+            newMessage.setText(this.generateGroupDetails(group));
+
+            super.getBot().execute(newMessage);
+        } catch (TelegramApiException | SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -76,5 +112,16 @@ public class ViewGroupCommand extends Command {
         }
 
         return deeds;
+    }
+
+    private String generateGroupSelection(List<Group> groups) {
+        String msg = "";
+        if (groups.size() > 0) {
+            msg = "<b>Select Group to View BestBuds</b>";
+        } else {
+            msg = "You have not joined any BestBuds Group.";
+        }
+
+        return msg;
     }
 }
