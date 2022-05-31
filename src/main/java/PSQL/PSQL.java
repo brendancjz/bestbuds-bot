@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class PSQL {
@@ -243,10 +244,7 @@ public class PSQL {
         User user = new User();
 
         while (resultSet.next()) {
-            user.name = resultSet.getString("name");
-            user.code = resultSet.getString("code");
-            user.dob = resultSet.getDate("dob");
-            user.desc = resultSet.getString("description");
+            user = this.convertResultSetToUser(resultSet);
         }
 
         return user;
@@ -263,11 +261,61 @@ public class PSQL {
         Group group = new Group();
 
         while (resultSet.next()) {
-            group.name = resultSet.getString("name");
-            group.code = resultSet.getString("code");
-            group.createdBy = resultSet.getString("created_by");
-            group.createdOn = resultSet.getDate("created_on");
+            group = this.convertResultSetToGroup(resultSet);
         }
+
+        //Getting the users
+        sql = "SELECT * FROM GroupUsers WHERE code = ?";
+        statement = connection.prepareStatement(sql);
+        statement.setString(1, groupCode);
+        resultSet = statement.executeQuery();
+        List<Integer> chatIdArr = new ArrayList<>();
+
+        while (resultSet.next()) {
+            chatIdArr.add(resultSet.getInt("chat_id"));
+        }
+
+        //Return if no users
+        if (chatIdArr.size() == 0) return group;
+
+        sql = "SELECT * FROM Users WHERE ";
+        for (int i = 0; i < chatIdArr.size(); i++) {
+            sql += "chat_id = ? ";
+            if (i != chatIdArr.size() - 1) sql += "OR ";
+        }
+
+        statement = connection.prepareStatement(sql);
+
+        for (int i = 0; i < chatIdArr.size(); i++) {
+            statement.setInt(i + 1, chatIdArr.get(i));
+        }
+
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            User user = this.convertResultSetToUser(resultSet);
+            group.users.add(user);
+        }
+
+        return group;
+    }
+
+    private User convertResultSetToUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.name = resultSet.getString("name");
+        user.code = resultSet.getString("code");
+        user.dob = resultSet.getDate("dob");
+        user.desc = resultSet.getString("description");
+
+        return user;
+    }
+
+    private Group convertResultSetToGroup(ResultSet resultSet) throws SQLException {
+        Group group = new Group();
+        group.name = resultSet.getString("name");
+        group.code = resultSet.getString("code");
+        group.createdBy = resultSet.getString("created_by");
+        group.createdOn = resultSet.getDate("created_on");
 
         return group;
     }

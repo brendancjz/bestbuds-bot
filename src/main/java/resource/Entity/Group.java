@@ -3,6 +3,8 @@ package resource.Entity;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Group {
     public Long id;
@@ -10,6 +12,7 @@ public class Group {
     public String code;
     public String createdBy;
     public Date createdOn;
+    public List<User> users;
 
     public Group() {
         this.id = -1L;
@@ -17,6 +20,7 @@ public class Group {
         this.code = "null";
         this.createdBy = "null";
         this.createdOn = null;
+        this.users = new ArrayList<>();
     }
 
     public Group(String name, String code, String createdBy, Date createdOn) {
@@ -24,6 +28,7 @@ public class Group {
         this.code = code;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
+        this.users = new ArrayList<>();
     }
 
     public String getName() {
