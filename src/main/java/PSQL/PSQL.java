@@ -133,6 +133,28 @@ public class PSQL {
         }
     }
 
+    public Boolean isUserInGroup(Integer chatId, String groupCode) throws SQLException {
+        boolean userExists = isUserRegistered(chatId);
+        System.out.println(userExists);
+        if (!userExists) return false;
+        if (isGroupCodeUnique(groupCode)) return false;
+
+        System.out.println("PSQL.isUserInGroup()");
+
+        String sql = "SELECT * FROM GroupUsers WHERE chat_id = ? AND group_code = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, chatId);
+        statement.setString(2, groupCode);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void updateUserDOB(int chatId, String text) throws SQLException {
         String sql = "UPDATE Users SET dob=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);

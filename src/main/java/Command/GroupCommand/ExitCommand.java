@@ -35,14 +35,14 @@ public class ExitCommand extends Command {
                 return;
             }
 
-            if (validateGroupCode(text)) {
+            if (validateGroupCode(text, super.getChatId())) {
                 String[] arr = text.split(" ");
                 String groupCode = arr[1];
 
                 message.setReplyMarkup(KeyboardMarkup.confirmationKB(COMMAND, groupCode));
                 message.setText("Confirm exiting a BestBuds Group: " + groupCode + "?");
             } else {
-                message.setText("Sorry, it seems like the group code does not exist.");
+                message.setText("Sorry, it seems like the group code does not exist or you did not join this group.");
             }
 
             super.getBot().execute(message);
@@ -92,12 +92,12 @@ public class ExitCommand extends Command {
         }
     }
 
-    private Boolean validateGroupCode(String text) throws SQLException {
+    private Boolean validateGroupCode(String text, Integer chatId) throws SQLException {
         String[] arr = text.split(" ");
         System.out.println("Is arr length 2? " + (arr.length == 2));
         System.out.println("Is Group Code Unique? " + super.getPSQL().isGroupCodeUnique(arr[1]));
 
-        return arr.length == 2 && !super.getPSQL().isGroupCodeUnique(arr[1]);
+        return arr.length == 2 && !super.getPSQL().isGroupCodeUnique(arr[1]) && super.getPSQL().isUserInGroup(chatId, arr[1]);
     }
 
     private String generateGroupDetails(Group group) throws SQLException {
