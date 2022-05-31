@@ -80,22 +80,13 @@ public class ViewBestBudsCommand extends Command {
             newMessage.enableHtml(true);
 
             String groupSelection = callData.split("_")[2];
-            newMessage.setText(groupSelection);
 
-//            if (groupSelection.equals("YES")) {
-//                super.getPSQL().removeUserFromGroup(super.getChatId(), groupCode);
-//                Group group = super.getPSQL().getGroupDataResultSet(groupCode);
-//                newMessage.setText("You have exited the BestBuds Group: " + group.name);
-//                super.getBot().execute(newMessage);
-//
-//            } else { //NO
-//                newMessage.setText("Cancelled BestBuds Group exit.");
-//                super.getBot().execute(newMessage);
-//
-//            }
+            Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
+
+            newMessage.setText(this.generateBestBudsDetails(group));
 
             super.getBot().execute(newMessage);
-        } catch (TelegramApiException e) {
+        } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
     }
