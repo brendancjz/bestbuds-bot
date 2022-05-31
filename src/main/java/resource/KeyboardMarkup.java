@@ -69,7 +69,7 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
-    public static InlineKeyboardMarkup confirmationKB(String callbackData) {
+    public static InlineKeyboardMarkup confirmationKB(String command, String callbackData) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
 
@@ -77,12 +77,12 @@ public class KeyboardMarkup {
 
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         button1.setText("YES");
-        button1.setCallbackData("confirmation_YES_" + callbackData);
+        button1.setCallbackData("confirmation_" + command + "_YES_" + callbackData);
         row.add(button1);
 
         InlineKeyboardButton button2 = new InlineKeyboardButton();
         button2.setText("NO");
-        button2.setCallbackData("confirmation_NO_" + callbackData);
+        button2.setCallbackData("confirmation_" + command + "_NO_" + callbackData);
         row.add(button2);
         keyboard.add(row);
 

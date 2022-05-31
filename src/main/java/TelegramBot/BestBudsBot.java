@@ -86,15 +86,23 @@ public class BestBudsBot extends TelegramLongPollingBot {
             newMessage.setMessageId(messageId);
             newMessage.enableHtml(true);
 
-            Command command;
+            Command command = null;
 
 //            SendMessage message = new SendMessage();
 //            message.setChatId(chatId.toString());
 //            message.setText("Hello world");
 //            execute(message);
 
-            if (callData.startsWith("confirmation")) {
-                command = new CreateCommand(this, update, psql);
+            if (callData.startsWith("confirmation")) { //TODO Abstract out the create command to join too
+
+                String[] callBackArr = update.getCallbackQuery().getData().split("_");
+                String commandStr = callBackArr[1];
+                
+                if (commandStr.equals("create")) {
+                    command = new CreateCommand(this, update, psql);
+                } else if (commandStr.equals("join")) {
+                    command = new JoinCommand(this, update, psql);
+                }
                 command.runCallback();
                 return;
             } else if (callData.startsWith("start_page")) {

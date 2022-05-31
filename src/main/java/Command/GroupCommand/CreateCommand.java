@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class CreateCommand extends Command {
+    private static final String COMMAND = "create";
 
     public CreateCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
@@ -40,7 +41,7 @@ public class CreateCommand extends Command {
                 String[] arr = text.split(" ");
                 String groupName = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
 
-                message.setReplyMarkup(KeyboardMarkup.confirmationKB(groupName));
+                message.setReplyMarkup(KeyboardMarkup.confirmationKB(COMMAND, groupName));
                 message.setText("Confirm creating a BestBuds Group: " + groupName + "?");
             } else {
                 message.setText("Something went wrong. Please contact developer.");
@@ -70,8 +71,8 @@ public class CreateCommand extends Command {
             newMessage.setMessageId(messageId);
             newMessage.enableHtml(true);
 
-            String confirmationResult = callData.split("_")[1];
-            String groupName = callData.split("_")[2];
+            String confirmationResult = callData.split("_")[2];
+            String groupName = callData.split("_")[3];
 
             if (confirmationResult.equals("YES")) {
                 Group newGroup = super.getPSQL().addNewGroup(super.getChatId(), groupName);

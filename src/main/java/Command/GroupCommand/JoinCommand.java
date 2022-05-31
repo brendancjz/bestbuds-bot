@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class JoinCommand extends Command {
+    private static final String COMMAND = "join";
 
     public JoinCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
@@ -39,7 +40,7 @@ public class JoinCommand extends Command {
                 String[] arr = text.split(" ");
                 String groupCode = arr[1];
 
-                message.setReplyMarkup(KeyboardMarkup.confirmationKB(groupCode));
+                message.setReplyMarkup(KeyboardMarkup.confirmationKB(COMMAND, groupCode));
                 message.setText("Confirm joining a BestBuds Group: " + groupCode + "?");
             } else {
                 message.setText("Sorry, it seems like the group code does not exist.");
@@ -69,8 +70,8 @@ public class JoinCommand extends Command {
             newMessage.setMessageId(messageId);
             newMessage.enableHtml(true);
 
-            String confirmationResult = callData.split("_")[1];
-            String groupCode = callData.split("_")[2];
+            String confirmationResult = callData.split("_")[2];
+            String groupCode = callData.split("_")[3];
 
             if (confirmationResult.equals("YES")) {
                 super.getPSQL().addUserIntoGroup(super.getChatId(), groupCode);
