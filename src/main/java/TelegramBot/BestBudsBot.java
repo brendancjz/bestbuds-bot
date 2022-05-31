@@ -111,6 +111,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 if (commandStr.equals("viewBestBuds")) {
                     command = new ViewBestBudsCommand(this, update, psql);
+                } else if (commandStr.equals("viewGroup")) {
+                    command = new ViewGroupCommand(this, update, psql);
                 }
 
                 command.runCallback();

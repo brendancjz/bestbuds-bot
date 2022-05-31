@@ -117,7 +117,7 @@ public class ViewGroupCommand extends Command {
     private String generateGroupSelection(List<Group> groups) {
         String msg = "";
         if (groups.size() > 0) {
-            msg = "<b>Select Group to View BestBuds</b>";
+            msg = "<b>Select Group to View Details</b>";
         } else {
             msg = "You have not joined any BestBuds Group.";
         }
