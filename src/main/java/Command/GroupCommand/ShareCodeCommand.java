@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShareCodeCommand extends Command {
-    private static final String COMMAND = "viewGroup";
+    private static final String COMMAND = "shareCode";
 
     public ShareCodeCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
