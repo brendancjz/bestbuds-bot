@@ -175,8 +175,6 @@ public class KeyboardMarkup {
             count++;
         }
 
-        keyboard.add(row);
-
         InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
         inlineKeyboard.setKeyboard(keyboard);
         return inlineKeyboard;
