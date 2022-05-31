@@ -265,7 +265,7 @@ public class PSQL {
         }
 
         //Getting the users
-        sql = "SELECT * FROM GroupUsers WHERE code = ?";
+        sql = "SELECT * FROM GroupUsers WHERE group_code = ?";
         statement = connection.prepareStatement(sql);
         statement.setString(1, groupCode);
         resultSet = statement.executeQuery();
