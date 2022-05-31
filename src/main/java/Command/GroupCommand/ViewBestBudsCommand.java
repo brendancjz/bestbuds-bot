@@ -59,22 +59,35 @@ public class ViewBestBudsCommand extends Command {
     }
 
     private String generateBestBudsDetails(Group group) throws SQLException {
-        String deeds = "";
+        StringBuilder deeds = new StringBuilder();
 
         if (group != null) {
-            deeds += "<b><u>Your BestBuds Group Details:</u></b>\n\n";
-            deeds += "<em>Name:</em> " + group.name + "\n";
-            deeds += "<em>Code:</em>  " + group.code + "\n";
-            deeds += "<em>Created By:</em> " + group.createdBy + "\n";
-            deeds += "<em>Created On:</em> " + group.getCreatedOn() + "\n\n";
+            deeds.append("<b><u>Your BestBuds Group Details:</u></b>\n\n");
+            deeds.append("<em>Name:</em> ").append(group.name).append("\n");
+            deeds.append("<em>Code:</em>  ").append(group.code).append("\n");
+            deeds.append("<em>Created By:</em> ").append(group.createdBy).append("\n");
+            deeds.append("<em>Created On:</em> ").append(group.getCreatedOn()).append("\n\n");
 
+            deeds.append("<b><u>BestBuds</u></b>\n");
             for (User user : group.users) {
-                deeds += "<em>User:</em> " + user.name + "\n";
+                deeds.append(generateProfileDetails(user));
             }
 
         } else {
-            deeds = "Missing profile details.";
+            deeds = new StringBuilder("Missing profile details.");
         }
+
+        return deeds.toString();
+    }
+
+    private String generateProfileDetails(User user) {
+        String deeds = "";
+
+        deeds += "<em>Name:</em> " + user.name + "\n";
+        deeds += "<em>Code:</em>  " + user.code + "\n";
+        deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
+        deeds += "<em>Description:</em> " + user.desc + "\n\n";
+
 
         return deeds;
     }
