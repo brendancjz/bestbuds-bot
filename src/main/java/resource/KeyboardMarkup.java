@@ -157,11 +157,22 @@ public class KeyboardMarkup {
         List<InlineKeyboardButton> row = new ArrayList<>();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
 
+        int count = 1;
         for (String selection : options) {
+            if (count > 1 && count % 2 == 1) {
+                row = new ArrayList<>();
+            }
+
             InlineKeyboardButton button = new InlineKeyboardButton();
             button.setText(selection);
             button.setCallbackData("select_" + context + "_" + selection);
             row.add(button);
+            if (count % 2 == 0) {
+                keyboard.add(row);
+            } else if (count == options.size()) {
+                keyboard.add(row);
+            }
+            count++;
         }
 
         keyboard.add(row);

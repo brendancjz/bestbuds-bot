@@ -361,19 +361,17 @@ public class PSQL {
                 for (String word : arr) {
                     code += word.charAt(0);
                 }
-
-                code += getRandomFourDigitCode();
             } else {
                 if (name.length() >= 4) {
-                    code = name.substring(0,4) + getRandomFourDigitCode();
+                    code = name.substring(0,4);
                 } else {
-                    code = name + getRandomFourDigitCode();
+                    code = name;
                 }
             }
 
         } while (!isUserCodeUnique(code));
 
-        return code;
+        return code + getRandomFourDigitCode();
     }
 
     private String getNewGroupCode(String name) {
@@ -385,7 +383,11 @@ public class PSQL {
                 code += word.charAt(0);
             }
         } else {
-            code = name;
+            if (name.length() >= 4) {
+                code = name.substring(0,4);
+            } else {
+                code = name;
+            }
         }
 
         return code + getRandomFourDigitCode();
