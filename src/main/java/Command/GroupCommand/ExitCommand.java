@@ -73,7 +73,7 @@ public class ExitCommand extends Command {
                 Group group = super.getPSQL().getGroupDataResultSet(groupCode);
                 newMessage.setText("You have exited the BestBuds Group: " + group.name);
                 super.getBot().execute(newMessage);
-                
+
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group exit.");
                 super.getBot().execute(newMessage);
@@ -94,20 +94,4 @@ public class ExitCommand extends Command {
         return arr.length == 2 && !super.getPSQL().isGroupCodeUnique(arr[1]) && super.getPSQL().isUserInGroup(chatId, arr[1]);
     }
 
-    private String generateGroupDetails(Group group) throws SQLException {
-        String deeds = "";
-
-        if (group != null) {
-            deeds += "<b><u>Your BestBuds Group Details:</u></b>\n\n";
-            deeds += "<em>Name:</em> " + group.name + "\n";
-            deeds += "<em>Code:</em>  " + group.code + "\n";
-            deeds += "<em>Created By:</em> " + group.createdBy + "\n";
-            deeds += "<em>Created On:</em> " + group.getCreatedOn() + "\n";
-
-        } else {
-            deeds = "Missing profile details.";
-        }
-
-        return deeds;
-    }
 }

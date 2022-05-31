@@ -1,10 +1,7 @@
 package TelegramBot;
 
 import Command.*;
-import Command.GroupCommand.CreateCommand;
-import Command.GroupCommand.ExitCommand;
-import Command.GroupCommand.JoinCommand;
-import Command.GroupCommand.SubscribeCommand;
+import Command.GroupCommand.*;
 import Command.MessageCommand.MessageComand;
 import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
@@ -197,6 +194,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/exit")) {
                 System.out.println("=== Exit Event Called === ");
                 command = new ExitCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/view_group")) {
+                System.out.println("=== View Group Event Called === ");
+                command = new ViewGroupCommand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/update")) {
