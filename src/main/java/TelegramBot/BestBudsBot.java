@@ -113,6 +113,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
                     command = new ViewBestBudsCommand(this, update, psql);
                 } else if (commandStr.equals("viewGroup")) {
                     command = new ViewGroupCommand(this, update, psql);
+                } else if (commandStr.equals("shareCode")) {
+                    command = new ShareCodeCommand(this, update, psql);
                 }
 
                 command.runCallback();
@@ -217,6 +219,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/view_bestbuds")) {
                 System.out.println("=== View BestBuds Event Called === ");
                 command = new ViewBestBudsCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/share_code")) {
+                System.out.println("=== Share Code Event Called === ");
+                command = new ShareCodeCommand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/update")) {
