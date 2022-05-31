@@ -247,12 +247,13 @@ public class PSQL {
         return user;
     }
 
-    public Group getGroupDataResultSet(String groupCode) throws SQLException {
+    public Group getGroupDataResultSet(String groupNameOrCode) throws SQLException {
         System.out.println("PSQL.getGroupDataResultSet()");
         // Obtaining user information from USERS
-        String sql = "SELECT * FROM Groups WHERE code = ?";
+        String sql = "SELECT * FROM Groups WHERE code = ? OR name = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, groupCode);
+        statement.setString(1, groupNameOrCode);
+        statement.setString(2, groupNameOrCode);
 
         ResultSet resultSet = statement.executeQuery();
         Group group = new Group();
@@ -263,7 +264,7 @@ public class PSQL {
 
         sql = "SELECT * FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers WHERE group_code = ?)";
         statement = connection.prepareStatement(sql);
-        statement.setString(1, groupCode);
+        statement.setString(1, group.code);
 
         resultSet = statement.executeQuery();
 
