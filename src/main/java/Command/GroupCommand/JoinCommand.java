@@ -46,10 +46,6 @@ public class JoinCommand extends Command {
                 message.setText("Sorry, it seems like the group code does not exist.");
             }
 
-            //TODO Use Callback to confirm the group name and creation of group
-            //TODO add this new group into the db
-            //TODO add the user into this db. If user, not register, register the man in there.
-
             super.getBot().execute(message);
 
         } catch (TelegramApiException | SQLException throwables) {

@@ -2,6 +2,7 @@ package TelegramBot;
 
 import Command.*;
 import Command.GroupCommand.CreateCommand;
+import Command.GroupCommand.ExitCommand;
 import Command.GroupCommand.JoinCommand;
 import Command.GroupCommand.SubscribeCommand;
 import Command.MessageCommand.MessageComand;
@@ -102,6 +103,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
                     command = new CreateCommand(this, update, psql);
                 } else if (commandStr.equals("join")) {
                     command = new JoinCommand(this, update, psql);
+                } else if (commandStr.equals("exit")) {
+                    command = new ExitCommand(this, update, psql);
                 }
                 command.runCallback();
                 return;
@@ -189,6 +192,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/join")) {
                 System.out.println("=== Join Event Called === ");
                 command = new JoinCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/exit")) {
+                System.out.println("=== Exit Event Called === ");
+                command = new ExitCommand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/update")) {

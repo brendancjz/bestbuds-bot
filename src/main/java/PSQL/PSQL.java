@@ -110,6 +110,29 @@ public class PSQL {
         }
     }
 
+    public void removeUserFromGroup(Integer chatId, String groupCode) throws SQLException {
+        boolean userExists = isUserRegistered(chatId);
+        System.out.println(userExists);
+        if (!userExists) return;
+        if (isGroupCodeUnique(groupCode)) return;
+
+        System.out.println("Removing User From Group");
+
+        String sql = "DELETE FROM GroupUsers WHERE group_code=? AND chat_id=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setString(1, groupCode);
+        preparedStatement.setInt(2, chatId);
+
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful exiting of group.");
+            System.out.println("[" + chatId + "] has exited a Group " + groupCode + ".");
+        } else {
+            System.out.println("Unsuccessful exiting in Groups.");
+        }
+    }
+
     public void updateUserDOB(int chatId, String text) throws SQLException {
         String sql = "UPDATE Users SET dob=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
