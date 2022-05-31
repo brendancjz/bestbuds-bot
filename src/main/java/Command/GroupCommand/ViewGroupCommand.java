@@ -28,7 +28,7 @@ public class ViewGroupCommand extends Command {
 
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
-            message.enableHtml(false);
+            message.enableHtml(true);
 
             if (text.equals("/view_group")) { //Bad command. Missing arguments
                 missingArgumentsMessage(message);
