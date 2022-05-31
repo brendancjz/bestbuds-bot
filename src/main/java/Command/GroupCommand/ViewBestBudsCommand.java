@@ -30,7 +30,13 @@ public class ViewBestBudsCommand extends Command {
 
             if (text.equals("/view_bestbuds")) { //TODO allow user to choose which group he wants to see
                 List<Group> groups = super.getPSQL().getGroupsFromUser(super.getChatId());
-                missingArgumentsMessage(message);
+
+                String msg = "";
+                for (Group group : groups) {
+                    msg += "Group " + group.name + "\n";
+                }
+                message.setText(msg);
+                super.getBot().execute(message);
                 return;
             }
 
