@@ -62,12 +62,12 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
 
         if (isBefore12PM(hourNow)) { //Before timing
-            long numOfHoursUntil12PM = (CHOSEN_HOUR - 1) - hourNow;
+            long numOfHoursUntil12PM = (CHOSEN_HOUR - 1) - ((hourNow + 8) % 24);
             long numOfMinutesUntil12PM = 60 - minNow;
 
             return ONE_MINUTE * numOfMinutesUntil12PM + ONE_HOUR * numOfHoursUntil12PM;
         } else {
-            long numOfHoursFrom12PM = hourNow - CHOSEN_HOUR;
+            long numOfHoursFrom12PM = ((hourNow + 8) % 24) - CHOSEN_HOUR;
 
             return ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM;
         }
