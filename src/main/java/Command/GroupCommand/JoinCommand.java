@@ -26,7 +26,7 @@ public class JoinCommand extends Command {
         try {
             System.out.println("JoinCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText();
-            System.out.println(text);
+            System.out.println("OLD-" + text);
             text.trim();
             System.out.println("NEW-" + text);
 
