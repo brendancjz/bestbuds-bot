@@ -2,6 +2,8 @@ package Timer;
 
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -41,11 +43,20 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
         Runnable checkBirthDateHasBeenUpdated = () -> {
-            System.out.println("Checked User Birthdays has been filled.");
+            System.out.println("Checking that User Birthdays has been filled.");
+            SendMessage message = new SendMessage();
+            message.setChatId("107270014");
+            message.enableHtml(true);
+            message.setText("Hello 12pm!");
+            try {
+                super.getBot().execute(message);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         };
 
-        //scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.DAYS);
-        System.out.println("Delay is " + setDelayTillNext12PM());
+        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.DAYS);
+        System.out.println("Delay is " + (setDelayTillNext12PM() / 1000));
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
@@ -61,7 +72,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         int hourNow = dateNow.getHour();
         int minNow = dateNow.getMinute();
         int secNow = dateNow.getSecond();
-        System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
 
         if (isBefore12PM(hourNow)) { //Before timing
             long numOfHoursUntil12PM = (CHOSEN_HOUR - 1) - ((hourNow + 8) % 24);
