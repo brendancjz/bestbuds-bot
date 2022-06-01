@@ -5,6 +5,7 @@ import TelegramBot.BestBudsBot;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.concurrent.*;
@@ -35,22 +36,28 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
         Runnable checkBirthDateHasBeenUpdated = () -> {
-            try {
-                TimeUnit.MILLISECONDS.sleep(300);
-                System.out.println("Checked User Birthdays has been filled.");
-
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Checked User Birthdays has been filled.");
         };
 
-        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, 0, 1, TimeUnit.SECONDS);
-
+        //scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.DAYS);
+        setDelayTillNext12PM();
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
 
         super.getPSQL().closeConnection();
+    }
+
+    private Long setDelayTillNext12PM() {
+        LocalDateTime dateNow = LocalDateTime.now();
+        int yearNow = dateNow.getYear();
+        int monthNow = dateNow.getMonthValue();
+        int dayOfMonthNow = dateNow.getDayOfMonth();
+        int hourNow = dateNow.getHour();
+        int minNow = dateNow.getMinute();
+        int secNow = dateNow.getSecond();
+        System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
+
+        return 1L;
     }
 }
