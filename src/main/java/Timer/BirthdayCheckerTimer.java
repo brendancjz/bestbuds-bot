@@ -35,7 +35,14 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
         Runnable checkBirthDateHasBeenUpdated = () -> {
-            System.out.println("Checked User Birthdays has been filled.");
+            try {
+                TimeUnit.MILLISECONDS.sleep(300);
+                System.out.println("Checked User Birthdays has been filled.");
+
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         };
 
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, 0, 1, TimeUnit.SECONDS);
