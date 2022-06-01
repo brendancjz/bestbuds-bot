@@ -6,6 +6,7 @@ import TelegramBot.BestBudsBot;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
@@ -34,24 +35,10 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
         Runnable checkBirthDateHasBeenUpdated = () -> {
-            try {
-                TimeUnit.MILLISECONDS.sleep(300);
-                System.out.println("Checked User Birthdays has been filled.");
-
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            System.out.println("Checked User Birthdays has been filled.");
         };
 
-        ScheduledFuture<String> resultFuture =
-                (ScheduledFuture<String>) scheduler.schedule(checkBirthDateHasBeenUpdated, 1, TimeUnit.SECONDS);
-
-        try {
-            System.out.println(resultFuture.get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, 0, 1, TimeUnit.SECONDS);
 
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
