@@ -12,6 +12,9 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
+    private static final int CHOSEN_HOUR = 12;
+    private static final int ONE_MINUTE = 1000 * 60;
+    private static final int ONE_HOUR = 1000 * 60 * 60;
     public BirthdayCheckerTimer(BestBudsBot bestBudsBot) throws URISyntaxException, SQLException {
         super(bestBudsBot);
     }
@@ -40,7 +43,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         };
 
         //scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.DAYS);
-        setDelayTillNext12PM();
+        System.out.println("Delay is " + setDelayTillNext12PM());
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
@@ -58,6 +61,19 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         int secNow = dateNow.getSecond();
         System.out.println("dayOfMonthNow: " + dayOfMonthNow + " hourNow: " + ((hourNow + 8) % 24) + " minNow: " + minNow + " secNow: " + secNow);
 
-        return 1L;
+        if (isBefore12PM(hourNow)) { //Before timing
+            long numOfHoursUntil12PM = (CHOSEN_HOUR - 1) - hourNow;
+            long numOfMinutesUntil12PM = 60 - minNow;
+
+            return ONE_MINUTE * numOfMinutesUntil12PM + ONE_HOUR * numOfHoursUntil12PM;
+        } else {
+            long numOfHoursFrom12PM = hourNow - CHOSEN_HOUR;
+
+            return ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM;
+        }
+    }
+
+    private boolean isBefore12PM(int hourNow) {
+        return ((hourNow + 8) % 24) < CHOSEN_HOUR;
     }
 }
