@@ -69,7 +69,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         } else {
             long numOfHoursFrom12PM = ((hourNow + 8) % 24) - CHOSEN_HOUR;
 
-            return ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM;
+            return ONE_MINUTE * (long) minNow + ONE_HOUR * (24 - numOfHoursFrom12PM);
         }
     }
 
