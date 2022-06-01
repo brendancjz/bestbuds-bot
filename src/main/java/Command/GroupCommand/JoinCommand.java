@@ -70,10 +70,16 @@ public class JoinCommand extends Command {
             String groupCode = callData.split("_")[3];
 
             if (confirmationResult.equals("YES")) {
-                super.getPSQL().addUserIntoGroup(super.getChatId(), groupCode);
-                Group group = super.getPSQL().getGroupDataResultSet(groupCode);
-                newMessage.setText("You have joined the BestBuds Group: " + group.name);
-                super.getBot().execute(newMessage);
+                Group group = new Group();
+                if (super.getPSQL().addUserIntoGroup(super.getChatId(), groupCode)) {
+                    group = super.getPSQL().getGroupDataResultSet(groupCode);
+                    newMessage.setText("You have joined the BestBuds Group: " + group.name);
+                    super.getBot().execute(newMessage);
+                } else {
+                    newMessage.setText("Sorry, something went wrong. Please feedback this to the developer.");
+                    super.getBot().execute(newMessage);
+                }
+
 
                 SendMessage message2 = new SendMessage();
                 message2.setChatId(super.getChatId().toString());

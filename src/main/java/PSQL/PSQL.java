@@ -88,11 +88,11 @@ public class PSQL {
 
     }
 
-    public void addUserIntoGroup(Integer chatId, String groupCode) throws SQLException {
-        boolean userExists = isUserRegistered(chatId);
+    public Boolean addUserIntoGroup(Integer chatId, String groupCode) throws SQLException {
+        Boolean userExists = isUserRegistered(chatId);
         System.out.println(userExists);
-        if (!userExists) return;
-        if (isGroupCodeUnique(groupCode)) return;
+        if (!userExists) return false;
+        if (isGroupCodeUnique(groupCode)) return false;
 
         System.out.println("Adding User to Group");
 
@@ -106,8 +106,10 @@ public class PSQL {
         if (rowsInserted > 0) {
             System.out.println("Successful joining of group.");
             System.out.println("[" + chatId + "] has been joined a Group " + groupCode + ".");
+            return true;
         } else {
             System.out.println("Unsuccessful registration in Groups.");
+            return false;
         }
     }
 
