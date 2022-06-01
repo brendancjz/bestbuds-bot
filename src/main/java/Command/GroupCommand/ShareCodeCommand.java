@@ -102,8 +102,7 @@ public class ShareCodeCommand extends Command {
 
         if (group != null) {
             deeds += "Hello, come join my BestBuds Group <em>" + group.name + "</em>!\n";
-            deeds += "First, use /start command in @bbb_bestbuds_bot\n";
-            deeds += "Next, use this command: <pre>  /join " + group.code + "</pre>";
+            deeds += "Start the bot @bbb_bestbuds_bot and use this command: <pre>  /join " + group.code + "</pre>";
 
         } else {
             deeds = "Sorry, no code to share.";
