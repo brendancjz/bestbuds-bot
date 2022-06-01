@@ -26,6 +26,7 @@ public class JoinCommand extends Command {
         try {
             System.out.println("JoinCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText();
+            text.trim();
 
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
