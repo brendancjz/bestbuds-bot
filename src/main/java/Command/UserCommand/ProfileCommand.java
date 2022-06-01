@@ -28,7 +28,7 @@ public class ProfileCommand extends Command {
     public void runCommand() {
         try {
             System.out.println("ProfileCommand.runCommand()");
-            String text = super.getUpdate().getMessage().getText();
+            String text = super.getUpdate().getMessage().getText().trim();
             int chatId = Integer.parseInt(super.getUpdate().getMessage().getChatId().toString());
 
             SendMessage message = new SendMessage();

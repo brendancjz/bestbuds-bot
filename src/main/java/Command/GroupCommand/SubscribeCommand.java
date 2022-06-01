@@ -28,7 +28,7 @@ public class SubscribeCommand extends Command {
     public void runCommand() {
         try {
             System.out.println("SubscribeCommand.runCommand()");
-            String text = super.getUpdate().getMessage().getText();
+            String text = super.getUpdate().getMessage().getText().trim();
             int chatId = Integer.parseInt(super.getUpdate().getMessage().getChatId().toString());
 
             SendMessage message = new SendMessage();

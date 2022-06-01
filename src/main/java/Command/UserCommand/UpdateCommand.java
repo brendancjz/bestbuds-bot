@@ -21,7 +21,7 @@ public class UpdateCommand extends Command {
     public void runCommand() {
         try {
             System.out.println("UpdateCommand.runCommand()");
-            String text = super.getUpdate().getMessage().getText();
+            String text = super.getUpdate().getMessage().getText().trim();
 
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
