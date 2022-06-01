@@ -11,16 +11,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 
-public class HappyBirthdayTimer {
-    private final PSQL psql;
-    private final Timer timer;
-    private final BestBudsBot bot;
+public class HappyBirthdayTimer extends BestBudsTimer {
 
     public HappyBirthdayTimer(BestBudsBot bestBudsBot) throws URISyntaxException, SQLException {
-        this.timer = new Timer();
-        this.psql = new PSQL();
-        this.bot = bestBudsBot;
+        super(bestBudsBot);
     }
+
 
     public void start() throws URISyntaxException, SQLException {
         System.out.println("Timer.HappyBirthdayTimer has started...");
@@ -29,7 +25,7 @@ public class HappyBirthdayTimer {
 
         for (String id : chatIds) {
             int chatId = Integer.parseInt(id);
-            SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(bot, chatId);
+            SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(super.getBot(), chatId);
 
             //Get DOB
             //String dob = psql.getUserDOB(chatId);
@@ -46,7 +42,7 @@ public class HappyBirthdayTimer {
 
         PSQL psql = new PSQL();
 
-        SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(bot, chatId);
+        SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(super.getBot(), chatId);
 
         //Get DOB
         //String dob = psql.getUserDOB(chatId);

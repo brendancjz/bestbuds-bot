@@ -1,4 +1,5 @@
 import TelegramBot.BestBudsBot;
+import Timer.BirthdayCheckerTimer;
 import Timer.HappyBirthdayTimer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -17,7 +18,10 @@ public class Main {
             //Send Happy Birthday
 //            HappyBirthdayTimer timer = new HappyBirthdayTimer(bestBudsBot);
 //            timer.start();
-        } catch (TelegramApiException e) {
+
+            BirthdayCheckerTimer timer = new BirthdayCheckerTimer(bestBudsBot);
+            timer.start();
+        } catch (TelegramApiException | SQLException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
