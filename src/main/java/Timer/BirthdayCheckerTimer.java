@@ -15,6 +15,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int CHOSEN_HOUR = 12;
     private static final int ONE_MINUTE = 1000 * 60;
     private static final int ONE_HOUR = 1000 * 60 * 60;
+    private static final int ONE_DAY = 1000 * 60 * 60 * 24;
+
     public BirthdayCheckerTimer(BestBudsBot bestBudsBot) throws URISyntaxException, SQLException {
         super(bestBudsBot);
     }
@@ -69,7 +71,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         } else {
             long numOfHoursFrom12PM = ((hourNow + 8) % 24) - CHOSEN_HOUR;
 
-            return ONE_MINUTE * (long) minNow + ONE_HOUR * (24 - numOfHoursFrom12PM);
+            return ONE_DAY - (ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM);
         }
     }
 
