@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 21;
+    private static final int CHOSEN_HOUR = 12;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -37,7 +37,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
         System.out.println("Delay is in " + (setDelayTillNextChosenHour() / 60) + " minutes");
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
-        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_MINUTE, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
 
         //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
@@ -87,7 +87,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                         message.setText("Hi, your birthday is today!");
 
-                        super.getBot().execute(message);
+                        //super.getBot().execute(message);
                         continue;
                     }
                 }
