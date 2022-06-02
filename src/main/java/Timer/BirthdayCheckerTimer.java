@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 20;
+    private static final int CHOSEN_HOUR = 21;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -58,6 +58,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 Date dateOneWeekFromNow = Date.valueOf(LocalDate.now().plusDays(7));
 
                 for (User user : users) {
+                    //Within 7 Days
                     if (!user.getDob().equals("null") &&
                             user.dob.after(dateNow) &&
                             (user.dob.before(dateOneWeekFromNow) || user.dob.equals(dateOneWeekFromNow))) {
@@ -73,14 +74,21 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         }
 
                         super.getBot().execute(message);
-                    } else {
+                        continue;
+                    }
+
+                    //Today is birthday
+                    if (!user.getDob().equals("null") &&
+                            user.dob.equals(dateNow)) {
                         SendMessage message = new SendMessage();
 //                        message.setChatId(user.chatId.toString());
                         message.setChatId("107270014");
                         message.enableHtml(true);
-                        message.setText("Hi, your birthday is not within 7 days.");
+
+                        message.setText("Hi, your birthday is today!");
 
                         super.getBot().execute(message);
+                        continue;
                     }
                 }
 
