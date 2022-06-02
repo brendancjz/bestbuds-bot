@@ -16,7 +16,7 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 15;
+    private static final int CHOSEN_HOUR = 16;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -28,26 +28,25 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
     @Override
     public void start() {
         System.out.println("Timer.BirthdayCheckerTimer has started...");
-//        ArrayList<String> chatIds = super.getPSQL().getAllChatId();
-//
-//        for (String id : chatIds) {
-//            int chatId = Integer.parseInt(id);
-//            SendHappyBirthdayMessageTask task = new SendHappyBirthdayMessageTask(super.getBot(), chatId);
-//
-//            //Get DOB
-//            //String dob = psql.getUserDOB(chatId);
-//            //System.out.println("DOB for Id: " + chatId + " is " + dob);
-//
-//            //timer.schedule(task, scheduleOnBirthdate(dob));
-//        }
 
         //Schedule a daily check if anyone has not inputted their birthdate.
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
-        Runnable checkBirthDateHasBeenUpdated = () -> {
+        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+        System.out.println("Delay is " + (setDelayTillNextChosenHour()));
+        //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
+
+        //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
+
+        super.getPSQL().closeConnection();
+    }
+
+    private Runnable checkBirthDateHasBeenUpdated() {
+        return () -> {
             System.out.println("Checking that User Birthdays has been filled.");
             try {
-                List<User> users = super.getPSQL().getAllUsers();
+                PSQL psql = new PSQL();
+                List<User> users = psql.getAllUsers();
 
                 for (User user : users) {
                     if (user.getDob().equals("null")) {
@@ -57,22 +56,15 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         message.enableHtml(true);
                         message.setText("Hi, you have not set your date of birth. To do so, enter:<pre>  /update <date_of_birth</pre>");
 
-                            super.getBot().execute(message);
-
+                        super.getBot().execute(message);
                     }
                 }
-            } catch (TelegramApiException | SQLException e) {
+
+                psql.closeConnection();
+            } catch (TelegramApiException | SQLException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };
-
-        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
-        System.out.println("Delay is " + (setDelayTillNextChosenHour()));
-        //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
-
-        //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
-
-        super.getPSQL().closeConnection();
     }
 
     private Long setDelayTillNextChosenHour() {
