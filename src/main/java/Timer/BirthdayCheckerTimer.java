@@ -42,8 +42,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
-
-        super.getPSQL().closeConnection();
     }
 
     private Runnable checkIncomingBirthdays() {
@@ -59,7 +57,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                 for (User user : users) {
                     //TESTING
-                    this.runReminderMessageEvent(user.chatId);
+                    this.runReminderMessageEvent(user.chatId, psql);
 
                     //Within 7 Days
                     if (!user.getDob().equals("null") &&
@@ -73,7 +71,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         if (psql.addUserIntoBirthdayManagement(user.chatId)) {
 
                             //Now, remind everyone the group to wish this chatId fella
-                            this.runReminderMessageEvent(user.chatId);
+                            this.runReminderMessageEvent(user.chatId, psql);
                         }
 
 //                        super.getBot().execute(message);
@@ -102,9 +100,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         };
     }
 
-    private void runReminderMessageEvent(Integer chatId) throws SQLException {
+    private void runReminderMessageEvent(Integer chatId, PSQL psql) throws SQLException {
         //find the groups this person is in.
-        User user = super.getPSQL().getUserDataResultSet(chatId);
+        User user = psql.getUserDataResultSet(chatId);
         System.out.println("No. of groups for " + user.name + " is " + user.groups.size());
 
         //Get everyone from these groups except for the user himself
