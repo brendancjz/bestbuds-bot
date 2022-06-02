@@ -149,7 +149,7 @@ public class PSQL {
         User user = new User();
 
         while (resultSet.next()) {
-            user = this.convertResultSetToUser(resultSet);
+            user = this.getUserDataResultSet(resultSet.getInt("chat_id"));
         }
 
         return !User.isNull(user);

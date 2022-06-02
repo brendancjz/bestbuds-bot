@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 18;
+    private static final int CHOSEN_HOUR = 19;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
