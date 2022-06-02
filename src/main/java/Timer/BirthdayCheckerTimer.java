@@ -7,7 +7,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.User;
 
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +35,47 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
-        System.out.println("Delay is " + (setDelayTillNextChosenHour()));
-        //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
+        System.out.println("Delay is in " + (setDelayTillNextChosenHour() / 60) + " minutes");
+        //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+
+        //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
 
         super.getPSQL().closeConnection();
+    }
+
+    private Runnable checkIncomingBirthdays() {
+        return () -> {
+            System.out.println("Checking Incoming User Birthdays.");
+            try {
+                PSQL psql = new PSQL();
+                List<User> users = psql.getAllUsers();
+
+                //Check if birthday is coming up
+                Date dateNow = Date.valueOf(LocalDate.now());
+                Date dateOneWeekFromNow = Date.valueOf(LocalDate.now().plusDays(7));
+
+                for (User user : users) {
+                    if (!user.getDob().equals("null") &&
+                            user.dob.after(dateNow) &&
+                            (user.dob.before(dateOneWeekFromNow) || user.dob.equals(dateOneWeekFromNow))) {
+                        SendMessage message = new SendMessage();
+//                        message.setChatId(user.chatId.toString());
+                        message.setChatId("107270014");
+                        message.enableHtml(true);
+                        message.setText("Hi, your birthday is within 7 days");
+
+                        super.getBot().execute(message);
+                    }
+                }
+
+                psql.closeConnection();
+            } catch (TelegramApiException | SQLException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
     private Runnable checkBirthDateHasBeenUpdated() {
