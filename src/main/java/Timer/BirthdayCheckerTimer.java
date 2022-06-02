@@ -4,17 +4,19 @@ import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.User;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 12;
+    private static final int CHOSEN_HOUR = 15;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -44,19 +46,28 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
         Runnable checkBirthDateHasBeenUpdated = () -> {
             System.out.println("Checking that User Birthdays has been filled.");
-            SendMessage message = new SendMessage();
-            message.setChatId("107270014");
-            message.enableHtml(true);
-            message.setText("Hello 12pm!");
             try {
-                super.getBot().execute(message);
-            } catch (TelegramApiException e) {
+                List<User> users = super.getPSQL().getAllUsers();
+
+                for (User user : users) {
+                    if (user.getDob().equals("null")) {
+                        SendMessage message = new SendMessage();
+//                        message.setChatId(user.chatId.toString());
+                        message.setChatId("107270014");
+                        message.enableHtml(true);
+                        message.setText("Hi, you have not set your date of birth. To do so, enter:<pre>  /update <date_of_birth</pre>");
+
+                            super.getBot().execute(message);
+
+                    }
+                }
+            } catch (TelegramApiException | SQLException e) {
                 e.printStackTrace();
             }
         };
 
-        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), ONE_DAY, TimeUnit.SECONDS);
-        System.out.println("Delay is " + (setDelayTillNext12PM()));
+        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+        System.out.println("Delay is " + (setDelayTillNextChosenHour()));
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
@@ -64,7 +75,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         super.getPSQL().closeConnection();
     }
 
-    private Long setDelayTillNext12PM() {
+    private Long setDelayTillNextChosenHour() {
         LocalDateTime dateNow = LocalDateTime.now();
         int yearNow = dateNow.getYear();
         int monthNow = dateNow.getMonthValue();
@@ -73,7 +84,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         int minNow = dateNow.getMinute();
         int secNow = dateNow.getSecond();
 
-        if (isBefore12PM(hourNow)) { //Before timing
+        if (isBeforeChosenHour(hourNow)) { //Before timing
             long numOfHoursUntil12PM = (CHOSEN_HOUR - 1) - ((hourNow + 8) % 24);
             long numOfMinutesUntil12PM = 60 - minNow;
 
@@ -85,7 +96,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    private boolean isBefore12PM(int hourNow) {
+    private boolean isBeforeChosenHour(int hourNow) {
         return ((hourNow + 8) % 24) < CHOSEN_HOUR;
     }
 }

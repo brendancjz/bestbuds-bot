@@ -15,7 +15,7 @@ public class Group {
     public List<User> users;
 
     public Group() {
-        this.id = -1L;
+        this.id = null;
         this.name = "null";
         this.code = "null";
         this.createdBy = "null";
@@ -24,6 +24,7 @@ public class Group {
     }
 
     public Group(String name, String code, String createdBy, Date createdOn) {
+        this.id = null;
         this.name = name;
         this.code = code;
         this.createdBy = createdBy;

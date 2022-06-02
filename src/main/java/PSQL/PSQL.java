@@ -215,6 +215,20 @@ public class PSQL {
         }
     }
 
+    public List<User> getAllUsers() throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM Users";
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            User user = this.convertResultSetToUser(resultSet);
+            users.add(user);
+        }
+
+        return users;
+    }
+
     public User getUserDataResultSet(int chatId) throws SQLException {
         System.out.println("PSQL.getUserDataResultSet()");
         // Obtaining user information from USERS
@@ -298,6 +312,7 @@ public class PSQL {
 
     private User convertResultSetToUser(ResultSet resultSet) throws SQLException {
         User user = new User();
+        user.chatId = resultSet.getInt("chat_id");
         user.name = resultSet.getString("name");
         user.code = resultSet.getString("code");
         user.dob = resultSet.getDate("dob");

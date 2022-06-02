@@ -5,12 +5,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class User {
+    public Integer chatId;
     public String name;
     public String code;
     public String desc;
     public Date dob;
 
     public User() {
+        this.chatId = null;
         this.name = "null";
         this.code = "null";
         this.desc = "null";
@@ -18,6 +20,7 @@ public class User {
     }
 
     public User(String name, String code, String desc, Date dob) {
+        this.chatId = null;
         this.name = name;
         this.code = code;
         this.desc = desc;
