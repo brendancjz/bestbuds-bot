@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 17;
+    private static final int CHOSEN_HOUR = 18;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -37,7 +37,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
         System.out.println("Delay is in " + (setDelayTillNextChosenHour() / 60) + " minutes");
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
-        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_MINUTE, TimeUnit.SECONDS);
 
         //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
@@ -65,7 +65,12 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //                        message.setChatId(user.chatId.toString());
                         message.setChatId("107270014");
                         message.enableHtml(true);
-                        message.setText("Hi, your birthday is within 7 days");
+
+                        if (psql.addUserIntoBirthdayManagement(user.chatId)) {
+                            message.setText("Hi, your birthday is within 7 days. Added into bdaymgmt table");
+                        } else {
+                            message.setText("Hi, your birthday is within 7 days. Did not add into bdaymgmt table");
+                        }
 
                         super.getBot().execute(message);
                     }

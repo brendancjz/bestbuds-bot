@@ -113,6 +113,48 @@ public class PSQL {
         }
     }
 
+
+    public Boolean addUserIntoBirthdayManagement(Integer chatId) throws SQLException {
+        Boolean userExists = isUserRegistered(chatId);
+        System.out.println(userExists);
+        if (!userExists) return false;
+        if (isUserAlreadyInBirthdayManagement(chatId)) return false;
+
+        System.out.println("Adding User to BirthdayManagement");
+
+        String sql = "INSERT INTO BirthdayManagement (chat_id, has_sent_initial) VALUES (?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setInt(1, chatId);
+        preparedStatement.setBoolean(2, false);
+
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful adding entry to bday mgmt");
+            return true;
+        } else {
+            System.out.println("Unsuccessful entry in bday mgmt.");
+            return false;
+        }
+    }
+
+    private boolean isUserAlreadyInBirthdayManagement(Integer chatId) throws SQLException {
+        System.out.println("PSQL.isUserAlreadyInBirthdayManagement()");
+        // Obtaining user information from BIRTHDAYMANAGEMENT
+        String sql = "SELECT * FROM BirthdayManagement WHERE chat_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, chatId);
+
+        ResultSet resultSet = statement.executeQuery();
+        User user = new User();
+
+        while (resultSet.next()) {
+            user = this.convertResultSetToUser(resultSet);
+        }
+
+        return !User.isNull(user);
+    }
+
     public void removeUserFromGroup(Integer chatId, String groupCode) throws SQLException {
         boolean userExists = isUserRegistered(chatId);
         System.out.println(userExists);
