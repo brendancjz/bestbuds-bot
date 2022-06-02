@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 19;
+    private static final int CHOSEN_HOUR = 20;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -71,6 +71,14 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         } else {
                             message.setText("Hi, your birthday is within 7 days. Did not add into bdaymgmt table");
                         }
+
+                        super.getBot().execute(message);
+                    } else {
+                        SendMessage message = new SendMessage();
+//                        message.setChatId(user.chatId.toString());
+                        message.setChatId("107270014");
+                        message.enableHtml(true);
+                        message.setText("Hi, your birthday is not within 7 days.");
 
                         super.getBot().execute(message);
                     }
