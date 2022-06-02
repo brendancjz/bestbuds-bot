@@ -4,6 +4,7 @@ import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.Group;
 import resource.Entity.User;
 
 import java.net.URISyntaxException;
@@ -106,6 +107,11 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         System.out.println("No. of groups for " + user.name + " is " + user.groups.size());
 
         //Get everyone from these groups except for the user himself
+        for (Group group : user.groups) {
+            List<User> users = psql.getUsersFromGroup(group.code);
+            System.out.println(users.size());
+        }
+
 
     }
 
