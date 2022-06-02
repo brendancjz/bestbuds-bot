@@ -58,6 +58,10 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 Date dateOneWeekFromNow = Date.valueOf(LocalDate.now().plusDays(7));
 
                 for (User user : users) {
+                    //TESTING
+                    this.runReminderMessageEvent(user.chatId);
+                    continue;
+
                     //Within 7 Days
                     if (!user.getDob().equals("null") &&
                             user.dob.after(dateNow) &&
