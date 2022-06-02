@@ -15,9 +15,9 @@ import java.util.concurrent.*;
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
     private static final int CHOSEN_HOUR = 12;
-    private static final int ONE_MINUTE = 1000 * 60;
-    private static final int ONE_HOUR = 1000 * 60 * 60;
-    private static final int ONE_DAY = 1000 * 60 * 60 * 24;
+    private static final int ONE_MINUTE = 1 * 60;
+    private static final int ONE_HOUR = 1 * 60 * 60;
+    private static final int ONE_DAY = 1 * 60 * 60 * 24;
 
     public BirthdayCheckerTimer(BestBudsBot bestBudsBot) throws URISyntaxException, SQLException {
         super(bestBudsBot);
@@ -55,8 +55,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             }
         };
 
-        //scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.DAYS);
-        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, 60, 1, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.SECONDS);
         System.out.println("Delay is " + (setDelayTillNext12PM() / 1000));
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
