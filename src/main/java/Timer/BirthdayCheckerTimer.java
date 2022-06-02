@@ -55,7 +55,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             }
         };
 
-        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.DAYS);
+        //scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.DAYS);
+        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, 60, 1, TimeUnit.DAYS);
         System.out.println("Delay is " + (setDelayTillNext12PM() / 1000));
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
