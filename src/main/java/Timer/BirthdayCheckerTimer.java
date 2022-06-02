@@ -19,6 +19,7 @@ import java.util.concurrent.*;
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
     private static final int CHOSEN_HOUR = 16;
+    private static final int CHOSEN_MINUTE = 10;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -91,7 +92,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //                        message.setChatId(user.chatId.toString());
                         message.setChatId("107270014");
                         message.enableHtml(true);
-                        message.setText("Hi, you have not set your date of birth. To do so, enter:<pre>  /update <date_of_birth</pre>");
+                        message.setText("Hi, you have not set your date of birth. To do so, enter:<pre>  /update &lt;date_of_birth&gt;</pre>");
 
                         super.getBot().execute(message);
                     }
@@ -115,13 +116,13 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
         if (isBeforeChosenHour(hourNow)) { //Before timing
             long numOfHoursUntil12PM = (CHOSEN_HOUR - 1) - ((hourNow + 8) % 24);
-            long numOfMinutesUntil12PM = 60 - minNow;
+            long numOfMinutesUntil12PM = 60 - minNow + CHOSEN_MINUTE;
 
             return ONE_MINUTE * numOfMinutesUntil12PM + ONE_HOUR * numOfHoursUntil12PM;
         } else {
             long numOfHoursFrom12PM = ((hourNow + 8) % 24) - CHOSEN_HOUR;
 
-            return ONE_DAY - (ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM);
+            return ONE_DAY - (ONE_MINUTE * ((long) minNow - CHOSEN_MINUTE) + ONE_HOUR * numOfHoursFrom12PM);
         }
     }
 
