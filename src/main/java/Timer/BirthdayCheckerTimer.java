@@ -37,8 +37,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
         System.out.println("Delay is in " + (setDelayTillNextChosenHour() / 60) + " minutes");
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
-        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
-
+//        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), 0, ONE_DAY, TimeUnit.SECONDS);
         //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
@@ -62,18 +62,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     if (!user.getDob().equals("null") &&
                             user.dob.after(dateNow) &&
                             (user.dob.before(dateOneWeekFromNow) || user.dob.equals(dateOneWeekFromNow))) {
-                        SendMessage message = new SendMessage();
+//                        SendMessage message = new SendMessage();
 //                        message.setChatId(user.chatId.toString());
-                        message.setChatId("107270014");
-                        message.enableHtml(true);
+//                        message.setChatId("107270014");
+//                        message.enableHtml(true);
 
                         if (psql.addUserIntoBirthdayManagement(user.chatId)) {
-                            message.setText("Hi, your birthday is within 7 days. Added into bdaymgmt table");
-                        } else {
-                            message.setText("Hi, your birthday is within 7 days. Did not add into bdaymgmt table");
+
+                            //Now, remind everyone the group to wish this chatId fella
+                            this.runReminderMessageEvent(user.chatId);
                         }
 
-                        super.getBot().execute(message);
+//                        super.getBot().execute(message);
                         continue;
                     }
 
@@ -93,10 +93,19 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 }
 
                 psql.closeConnection();
-            } catch (TelegramApiException | SQLException | URISyntaxException e) {
+            } catch (SQLException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };
+    }
+
+    private void runReminderMessageEvent(Integer chatId) throws SQLException {
+        //find the groups this person is in.
+        User user = super.getPSQL().getUserDataResultSet(chatId);
+        System.out.println("No. of groups for " + user.name + " is " + user.groups.size());
+
+        //Get everyone from these groups except for the user himself
+
     }
 
     private Runnable checkBirthDateHasBeenUpdated() {

@@ -359,6 +359,7 @@ public class PSQL {
         user.code = resultSet.getString("code");
         user.dob = resultSet.getDate("dob");
         user.desc = resultSet.getString("description");
+        user.groups = this.getGroupsFromUser(user.chatId);
 
         return user;
     }
