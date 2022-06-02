@@ -14,7 +14,7 @@ import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 12;
+    private static final int CHOSEN_HOUR = 14;
     private static final int ONE_MINUTE = 1 * 60;
     private static final int ONE_HOUR = 1 * 60 * 60;
     private static final int ONE_DAY = 1 * 60 * 60 * 24;
@@ -56,7 +56,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         };
 
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated, setDelayTillNext12PM(), 1, TimeUnit.SECONDS);
-        System.out.println("Delay is " + (setDelayTillNext12PM() / 1000));
+        System.out.println("Delay is " + (setDelayTillNext12PM()));
         //Schedule a daily check if anyone's birthday is 1 week from current date. Send msg to everyone else to collate msges.
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
