@@ -39,7 +39,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         System.out.println("Delay is in " + (setDelayTillNextChosenHour() / 60) + " minutes");
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
 //        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
-        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), 0, ONE_DAY, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), 0, ONE_MINUTE, TimeUnit.SECONDS);
         //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
@@ -58,7 +58,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                 for (User user : users) {
                     //TESTING
-                    this.runReminderMessageEvent(user.chatId, psql);
+//                    this.runReminderMessageEvent(user.chatId, psql);
 
                     //Within 7 Days
                     if (!user.getDob().equals("null") &&
@@ -70,7 +70,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //                        message.enableHtml(true);
 
                         if (psql.addUserIntoBirthdayManagement(user.chatId)) {
-
                             //Now, remind everyone the group to wish this chatId fella
                             this.runReminderMessageEvent(user.chatId, psql);
                         }
@@ -95,13 +94,13 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 }
 
                 psql.closeConnection();
-            } catch (SQLException | URISyntaxException e) {
+            } catch (SQLException | URISyntaxException | TelegramApiException e) {
                 e.printStackTrace();
             }
         };
     }
 
-    private void runReminderMessageEvent(Integer chatId, PSQL psql) throws SQLException {
+    private void runReminderMessageEvent(Integer chatId, PSQL psql) throws SQLException, TelegramApiException {
         //find the groups this person is in.
         User user = psql.getUserDataResultSet(chatId);
         System.out.println("No. of groups for " + user.name + " is " + user.groups.size());
@@ -109,7 +108,15 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
             List<User> users = psql.getUsersFromGroupExceptUser(group.code, chatId);
-            System.out.println(users.size());
+
+            //send a msg to these ppl to send a msg to the user chatId
+            SendMessage message = new SendMessage();
+//            message.setChatId(user.chatId.toString());
+            message.setChatId("107270014");
+            message.enableHtml(true);
+
+            message.setText("Hello " + user.name + " testing, this msg will appear when someone bday is a week from now and you are reminded to send a msg to them!");
+            super.getBot().execute(message);
         }
 
 
