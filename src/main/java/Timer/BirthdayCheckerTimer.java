@@ -62,7 +62,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                     //User birthday
                     Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
-                    System.out.println(birthday.toString());
                     //TESTING
 //                    this.runReminderMessageEvent(user.chatId, psql);
 
@@ -108,24 +107,38 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         BirthdayManagement bdayMgmt = psql.getBirthdayManagementDataResultSet(chatId);
         System.out.println("Has sent initial msg for " + bdayMgmt.user.name + "? " + bdayMgmt.hasSentInitialMessage);
 
+
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
             List<User> users = psql.getUsersFromGroupExceptUser(group.code, chatId);
-
+            String reminderToSendOut = this.generateBirthdayReminder(bdayMgmt, group);
             for (User otherUser : users) {
                 //send a msg to these ppl to send a msg to the user chatId
                 SendMessage message = new SendMessage();
-//            message.setChatId(user.chatId.toString());
+//                message.setChatId(otherUser.chatId.toString());
                 message.setChatId("107270014");
                 message.enableHtml(true);
-
-                message.setText("Hello " + otherUser.name + " testing, this msg will appear when someone bday is a week from now and you are reminded to send a msg to them!");
+                message.setText(reminderToSendOut);
                 super.getBot().execute(message);
             }
-
         }
 
 
+    }
+
+    private String generateBirthdayReminder(BirthdayManagement bdayMgmt, Group group) {
+        String msg = "";
+        if (bdayMgmt.hasSentInitialMessage) {
+            //Simple reminder
+            msg = "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her!";
+        } else {
+            //Sending it for the first time
+            msg = "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is in one week's time! please send a birthday message to him/her!";
+        }
+
+        msg += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+
+        return msg;
     }
 
     private Runnable checkBirthDateHasBeenUpdated() {
