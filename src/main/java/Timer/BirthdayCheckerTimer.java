@@ -186,7 +186,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             msg = "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is in one week's time! please send a birthday message to him/her!";
         }
 
-        msg += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+        msg += "<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
 
         return msg;
     }

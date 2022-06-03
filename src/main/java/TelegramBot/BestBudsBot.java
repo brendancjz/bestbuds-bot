@@ -3,6 +3,7 @@ package TelegramBot;
 import Command.*;
 import Command.GroupCommand.*;
 import Command.MessageCommand.MessageComand;
+import Command.MessageCommand.SendCommand;
 import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
 import Command.UserCommand.ViewBestBudCommand;
@@ -235,7 +236,13 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("=== View Event Called === ");
                 command = new ViewBestBudCommand(this, update, psql);
                 command.runCommand();
-            } else {
+            }
+            else if (text.startsWith("/send")) {
+                System.out.println("=== Send Event Called === ");
+                command = new SendCommand(this, update, psql);
+                command.runCommand();
+            }
+            else {
                 message.enableHtml(false);
                 message.setText("Bad Command: " + text + " . Enter /help for assistance.");
                 executeMessage(message);
