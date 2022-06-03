@@ -76,6 +76,11 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         continue;
                     }
 
+                    //Birthday has passed
+                    if (!user.getDob().equals("null") && user.dob.before(dateNow)) {
+                        System.out.println("User: " + user.name + " bday has passed.");
+                    }
+
                     //Today is birthday
                     if (!user.getDob().equals("null") &&
                             user.dob.equals(dateNow)) {
