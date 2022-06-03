@@ -37,10 +37,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
-        System.out.println("Delay is in " + (setDelayTillNextChosenHour() / 60) + " minutes");
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
-//        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
-        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), 0, ONE_MINUTE, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+//        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), 0, ONE_MINUTE, TimeUnit.SECONDS);
         //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
@@ -106,8 +105,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             for (User otherUser : users) {
                 //send a msg to these ppl to send a msg to the user chatId
                 SendMessage message = new SendMessage();
-//                message.setChatId(otherUser.chatId.toString());
-                message.setChatId("107270014");
+                message.setChatId(otherUser.chatId.toString());
+//                message.setChatId("107270014");
                 message.enableHtml(true);
                 message.setText(reminderToSendOut);
                 super.getBot().execute(message);
@@ -145,7 +144,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     if (user.getDob().equals("null")) {
                         SendMessage message = new SendMessage();
 //                        message.setChatId(user.chatId.toString());
-                        message.setChatId("107270014");
+                        message.setChatId(user.chatId.toString());
                         message.enableHtml(true);
                         message.setText("Hi, you have not set your date of birth. To do so, enter:<pre>  /update &lt;date_of_birth&gt;</pre>");
 
