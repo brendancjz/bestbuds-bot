@@ -123,7 +123,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             }
         }
 
-
+        //Update has_sent_initial to true
+        psql.updateHasSentInitialBirthdayManagement(chatId, true);
     }
 
     private String generateBirthdayReminder(BirthdayManagement bdayMgmt, Group group) {

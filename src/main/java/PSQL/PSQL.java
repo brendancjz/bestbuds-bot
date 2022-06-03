@@ -1,5 +1,6 @@
 package PSQL;
 
+import org.telegram.telegrambots.meta.api.objects.Update;
 import resource.Entity.BirthdayManagement;
 import resource.Entity.Group;
 import resource.Entity.User;
@@ -276,6 +277,20 @@ public class PSQL {
             System.out.println("[Name & DOB] Update query successful.");
         } else {
             System.out.println("[Name & DOB] Update query failed.");
+        }
+    }
+
+    public void updateHasSentInitialBirthdayManagement(Integer chatId, Boolean hasSentInitial) throws SQLException {
+        String sql = "UPDATE BirthdayManagement SET has_sent_initial=? WHERE chat_id=? ";
+        PreparedStatement statement= connection.prepareStatement(sql);
+        statement.setBoolean(1, hasSentInitial);
+        statement.setInt(2, chatId);
+        int rowsInserted = statement.executeUpdate();
+
+        if ((rowsInserted > 0)) {
+            System.out.println("[Birthday Mgmt for " + chatId + "] Update query successful.");
+        } else {
+            System.out.println("[Birthday Mgmt for " + chatId + "] Update query failed.");
         }
     }
 
