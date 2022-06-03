@@ -1,5 +1,6 @@
 package PSQL;
 
+import resource.Entity.BirthdayManagement;
 import resource.Entity.Group;
 import resource.Entity.User;
 
@@ -355,6 +356,23 @@ public class PSQL {
         return group;
     }
 
+    public BirthdayManagement getBirthdayManagementDataResultSet(Integer chatId) throws SQLException {
+        System.out.println("PSQL.getBirthdayManagementDataResultSet()");
+        // Obtaining user information from BdayMgmt
+        String sql = "SELECT * FROM BirthdayManagement WHERE chat_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, chatId);
+
+        ResultSet resultSet = statement.executeQuery();
+        BirthdayManagement bdayMgmt = new BirthdayManagement();
+
+        while (resultSet.next()) {
+            bdayMgmt = this.convertResultSetToBirthdayManagement(resultSet);
+        }
+
+        return bdayMgmt;
+    }
+
     public List<User> getUsersFromGroup(String groupCode) throws SQLException {
         System.out.println("PSQL.getUsersFromGroup");
         String sql = "SELECT * FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers WHERE group_code = ?)";
@@ -428,6 +446,15 @@ public class PSQL {
         group.createdOn = resultSet.getDate("created_on");
 
         return group;
+    }
+
+    private BirthdayManagement convertResultSetToBirthdayManagement(ResultSet resultSet) throws SQLException {
+        BirthdayManagement bdayMgmt = new BirthdayManagement();
+        bdayMgmt.user = this.getUserDataResultSet(resultSet.getInt("chat_id"));
+        bdayMgmt.birthday = resultSet.getDate("birthday");
+        bdayMgmt.hasSentInitialMessage = resultSet.getBoolean("has_sent_initial");
+
+        return bdayMgmt;
     }
 
     public ArrayList<String> getAllChatId() throws SQLException {

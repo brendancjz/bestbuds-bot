@@ -4,6 +4,7 @@ import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.BirthdayManagement;
 import resource.Entity.Group;
 import resource.Entity.User;
 
@@ -68,21 +69,13 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     //Within 7 Days
                     if (birthday.after(dateNow) &&
                             (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
-//                        SendMessage message = new SendMessage();
-//                        message.setChatId(user.chatId.toString());
-//                        message.setChatId("107270014");
-//                        message.enableHtml(true);
-
                         psql.addUserIntoBirthdayManagement(user.chatId, birthday);
                         this.runReminderMessageEvent(user.chatId, psql);
-
-//                        super.getBot().execute(message);
                         continue;
                     }
 
                     //Birthday has passed
                     if (birthday.before(dateNow)) {
-                        System.out.println("Birthday passed.");
                         psql.removeUserFromBirthdayManagement(user.chatId);
                         continue;
                     }
@@ -93,9 +86,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //                        message.setChatId(user.chatId.toString());
                         message.setChatId("107270014");
                         message.enableHtml(true);
-
                         message.setText("Hi, your birthday is today!");
-
                         //super.getBot().execute(message);
                         continue;
                     }
@@ -112,6 +103,10 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         //find the groups this person is in.
         User user = psql.getUserDataResultSet(chatId);
         System.out.println("No. of groups for " + user.name + " is " + user.groups.size());
+
+        //Get has_sent_initial_msg
+        BirthdayManagement bdayMgmt = psql.getBirthdayManagementDataResultSet(chatId);
+        System.out.println("Has sent initial msg for " + bdayMgmt.user.name + "? " + bdayMgmt.hasSentInitialMessage);
 
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
