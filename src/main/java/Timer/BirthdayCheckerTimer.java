@@ -82,7 +82,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                     //Birthday has passed
                     if (birthday.before(dateNow)) {
-                        System.out.println("User: " + user.name + " bday has passed.");
+                        System.out.println("Birthday passed.");
+                        psql.removeUserFromBirthdayManagement(user.chatId);
+                        continue;
                     }
 
                     //Today is birthday

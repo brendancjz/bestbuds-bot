@@ -179,6 +179,26 @@ public class PSQL {
         }
     }
 
+    public void removeUserFromBirthdayManagement(Integer chatId) throws SQLException {
+        boolean userExists = isUserRegistered(chatId);
+        System.out.println(userExists);
+        if (!userExists) return;
+        if (!isUserAlreadyInBirthdayManagement(chatId)) return;
+
+        String sql = "DELETE FROM BirthdayManagement WHERE chat_id= ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setInt(1, chatId);
+
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful removal of user from BirthdayManagement.");
+            System.out.println("[" + chatId + "] has been removed from BdayMgmt.");
+        } else {
+            System.out.println("Unsuccessful removal from BdayMgmt.");
+        }
+    }
+
     public Boolean isUserInGroup(Integer chatId, String groupCode) throws SQLException {
         boolean userExists = isUserRegistered(chatId);
         System.out.println(userExists);
