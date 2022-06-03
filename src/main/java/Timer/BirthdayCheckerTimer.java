@@ -58,7 +58,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                 for (User user : users) {
                     if (user.getDob().equals("null")) continue;
-                    
+
                     //User birthday
                     Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
                     System.out.println(birthday.toString());
@@ -73,7 +73,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //                        message.setChatId("107270014");
 //                        message.enableHtml(true);
 
-                        psql.addUserIntoBirthdayManagement(user.chatId);
+                        psql.addUserIntoBirthdayManagement(user.chatId, birthday);
                         this.runReminderMessageEvent(user.chatId, psql);
 
 //                        super.getBot().execute(message);

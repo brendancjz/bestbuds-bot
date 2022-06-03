@@ -114,7 +114,7 @@ public class PSQL {
     }
 
 
-    public Boolean addUserIntoBirthdayManagement(Integer chatId) throws SQLException {
+    public Boolean addUserIntoBirthdayManagement(Integer chatId, Date birthday) throws SQLException {
         Boolean userExists = isUserRegistered(chatId);
         System.out.println(userExists);
         if (!userExists) return false;
@@ -122,11 +122,12 @@ public class PSQL {
 
         System.out.println("Adding User to BirthdayManagement");
 
-        String sql = "INSERT INTO BirthdayManagement (chat_id, has_sent_initial) VALUES (?, ?)";
+        String sql = "INSERT INTO BirthdayManagement (chat_id, birthday, has_sent_initial) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         preparedStatement.setInt(1, chatId);
-        preparedStatement.setBoolean(2, false);
+        preparedStatement.setDate(2, birthday);
+        preparedStatement.setBoolean(3, false);
 
         int rowsInserted = preparedStatement.executeUpdate();
         if (rowsInserted > 0) {
