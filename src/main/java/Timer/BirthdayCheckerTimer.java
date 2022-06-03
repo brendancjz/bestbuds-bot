@@ -62,9 +62,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                     //User birthday
                     Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
-                    //TESTING
-//                    this.runReminderMessageEvent(user.chatId, psql);
-
                     //Within 7 Days
                     if (birthday.after(dateNow) &&
                             (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
@@ -99,13 +96,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
     }
 
     private void runReminderMessageEvent(User user, PSQL psql) throws SQLException, TelegramApiException {
-        //find the groups this person is in.
-        System.out.println("No. of groups for " + user.name + " is " + user.groups.size());
-
         //Get has_sent_initial_msg
         BirthdayManagement bdayMgmt = psql.getBirthdayManagementDataResultSet(user.chatId);
-        System.out.println("Has sent initial msg for " + bdayMgmt.user.name + "? " + bdayMgmt.hasSentInitialMessage);
-
 
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
