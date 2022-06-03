@@ -351,6 +351,24 @@ public class PSQL {
         return users;
     }
 
+    public List<User> getUsersFromGroupExceptUser(String groupCode, Integer chatId) throws SQLException {
+        System.out.println("PSQL.getUsersFromGroup");
+        String sql = "SELECT * FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers WHERE group_code = ?)";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, groupCode);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<User> users = new ArrayList<>();
+
+        while (resultSet.next()) {
+            User user = this.convertResultSetToUser(resultSet);
+            if (!user.chatId.equals(chatId)) {
+                users.add(user);
+            }
+        }
+        return users;
+    }
+
     public List<Group> getGroupsFromUser(Integer chatId) throws SQLException {
         System.out.println("PSQL.getGroupsFromUser()");
         // Obtaining user information from USERS

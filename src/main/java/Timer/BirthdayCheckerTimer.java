@@ -108,7 +108,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
-            List<User> users = psql.getUsersFromGroup(group.code);
+            List<User> users = psql.getUsersFromGroupExceptUser(group.code, chatId);
             System.out.println(users.size());
         }
 
