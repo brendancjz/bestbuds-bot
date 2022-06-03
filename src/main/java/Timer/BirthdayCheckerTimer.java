@@ -69,10 +69,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //                        message.setChatId("107270014");
 //                        message.enableHtml(true);
 
-                        if (psql.addUserIntoBirthdayManagement(user.chatId)) {
-                            //Now, remind everyone the group to wish this chatId fella
-                            this.runReminderMessageEvent(user.chatId, psql);
-                        }
+                        psql.addUserIntoBirthdayManagement(user.chatId);
+                        this.runReminderMessageEvent(user.chatId, psql);
 
 //                        super.getBot().execute(message);
                         continue;
