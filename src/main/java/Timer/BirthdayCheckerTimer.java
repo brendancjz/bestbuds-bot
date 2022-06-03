@@ -69,7 +69,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     if (birthday.after(dateNow) &&
                             (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
                         psql.addUserIntoBirthdayManagement(user.chatId, birthday);
-                        this.runReminderMessageEvent(user.chatId, psql);
+                        this.runReminderMessageEvent(user, psql);
                         continue;
                     }
 
@@ -98,19 +98,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         };
     }
 
-    private void runReminderMessageEvent(Integer chatId, PSQL psql) throws SQLException, TelegramApiException {
+    private void runReminderMessageEvent(User user, PSQL psql) throws SQLException, TelegramApiException {
         //find the groups this person is in.
-        User user = psql.getUserDataResultSet(chatId);
         System.out.println("No. of groups for " + user.name + " is " + user.groups.size());
 
         //Get has_sent_initial_msg
-        BirthdayManagement bdayMgmt = psql.getBirthdayManagementDataResultSet(chatId);
+        BirthdayManagement bdayMgmt = psql.getBirthdayManagementDataResultSet(user.chatId);
         System.out.println("Has sent initial msg for " + bdayMgmt.user.name + "? " + bdayMgmt.hasSentInitialMessage);
 
 
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
-            List<User> users = psql.getUsersFromGroupExceptUser(group.code, chatId);
+            List<User> users = psql.getUsersFromGroupExceptUser(group.code, user.chatId);
             String reminderToSendOut = this.generateBirthdayReminder(bdayMgmt, group);
             for (User otherUser : users) {
                 //send a msg to these ppl to send a msg to the user chatId
@@ -124,7 +123,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
 
         //Update has_sent_initial to true
-        if (!bdayMgmt.hasSentInitialMessage) psql.updateHasSentInitialBirthdayManagement(chatId, true);
+        if (!bdayMgmt.hasSentInitialMessage) psql.updateHasSentInitialBirthdayManagement(user.chatId, true);
 
     }
 
