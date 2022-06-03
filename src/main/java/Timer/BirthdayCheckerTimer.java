@@ -57,13 +57,17 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 Date dateOneWeekFromNow = Date.valueOf(LocalDate.now().plusDays(7));
 
                 for (User user : users) {
+                    if (user.getDob().equals("null")) continue;
+                    
+                    //User birthday
+                    Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
+                    System.out.println(birthday.toString());
                     //TESTING
 //                    this.runReminderMessageEvent(user.chatId, psql);
 
                     //Within 7 Days
-                    if (!user.getDob().equals("null") &&
-                            user.dob.after(dateNow) &&
-                            (user.dob.before(dateOneWeekFromNow) || user.dob.equals(dateOneWeekFromNow))) {
+                    if (birthday.after(dateNow) &&
+                            (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
 //                        SendMessage message = new SendMessage();
 //                        message.setChatId(user.chatId.toString());
 //                        message.setChatId("107270014");
@@ -77,13 +81,12 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     }
 
                     //Birthday has passed
-                    if (!user.getDob().equals("null") && user.dob.before(dateNow)) {
+                    if (birthday.before(dateNow)) {
                         System.out.println("User: " + user.name + " bday has passed.");
                     }
 
                     //Today is birthday
-                    if (!user.getDob().equals("null") &&
-                            user.dob.equals(dateNow)) {
+                    if (birthday.equals(dateNow)) {
                         SendMessage message = new SendMessage();
 //                        message.setChatId(user.chatId.toString());
                         message.setChatId("107270014");
