@@ -109,14 +109,17 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         for (Group group : user.groups) {
             List<User> users = psql.getUsersFromGroupExceptUser(group.code, chatId);
 
-            //send a msg to these ppl to send a msg to the user chatId
-            SendMessage message = new SendMessage();
+            for (User otherUser : users) {
+                //send a msg to these ppl to send a msg to the user chatId
+                SendMessage message = new SendMessage();
 //            message.setChatId(user.chatId.toString());
-            message.setChatId("107270014");
-            message.enableHtml(true);
+                message.setChatId("107270014");
+                message.enableHtml(true);
 
-            message.setText("Hello " + user.name + " testing, this msg will appear when someone bday is a week from now and you are reminded to send a msg to them!");
-            super.getBot().execute(message);
+                message.setText("Hello " + user.name + " testing, this msg will appear when someone bday is a week from now and you are reminded to send a msg to them!");
+                super.getBot().execute(message);
+            }
+
         }
 
 
