@@ -110,27 +110,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 message.enableHtml(true);
                 message.setText(reminderToSendOut);
                 super.getBot().execute(message);
+
+                SendMessage message2 = new SendMessage();
+                message2.setChatId("107270014");
+                message2.enableHtml(true);
+                message2.setText(reminderToSendOut);
+                super.getBot().execute(message2);
             }
         }
 
         //Update has_sent_initial to true
         if (!bdayMgmt.hasSentInitialMessage) psql.updateHasSentInitialBirthdayManagement(user.chatId, true);
 
-    }
-
-    private String generateBirthdayReminder(BirthdayManagement bdayMgmt, Group group) {
-        String msg = "";
-        if (bdayMgmt.hasSentInitialMessage) {
-            //Simple reminder
-            msg = "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her!";
-        } else {
-            //Sending it for the first time
-            msg = "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is in one week's time! please send a birthday message to him/her!";
-        }
-
-        msg += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
-
-        return msg;
     }
 
     private Runnable checkBirthDateHasBeenUpdated() {
@@ -146,9 +137,14 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //                        message.setChatId(user.chatId.toString());
                         message.setChatId(user.chatId.toString());
                         message.enableHtml(true);
-                        message.setText("Hi, you have not set your date of birth. To do so, enter:<pre>  /update &lt;date_of_birth&gt;</pre>");
-
+                        message.setText(this.generateSetBirthdayReminder(user));
                         super.getBot().execute(message);
+
+                        SendMessage message2 = new SendMessage();
+                        message2.setChatId("107270014");
+                        message2.enableHtml(true);
+                        message2.setText(this.generateSetBirthdayReminder(user));
+                        super.getBot().execute(message2);
                     }
                 }
 
@@ -178,6 +174,25 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
             return ONE_DAY - (ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM);
         }
+    }
+
+    private String generateBirthdayReminder(BirthdayManagement bdayMgmt, Group group) {
+        String msg = "";
+        if (bdayMgmt.hasSentInitialMessage) {
+            //Simple reminder
+            msg = "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her!";
+        } else {
+            //Sending it for the first time
+            msg = "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is in one week's time! please send a birthday message to him/her!";
+        }
+
+        msg += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+
+        return msg;
+    }
+
+    private String generateSetBirthdayReminder(User user) {
+        return "Hi " + user.name + ", you have not set your date of birth. To do so, enter:<pre>  /update &lt;date_of_birth&gt;</pre>";
     }
 
     private boolean isBeforeChosenHour(int hourNow) {
