@@ -81,11 +81,10 @@ public class UpdateCommand extends Command {
 
             super.getBot().execute(message);
         } else if (actualCommand.equals("/update")) {
-            //Update name and dob tgt
-            String name = arr[1];
-            String dob = arr[2];
-
             if (validateUpdateNameAndDOB(text)) {
+                //Update name and dob tgt
+                String name = arr[1];
+                String dob = arr[2];
                 super.getPSQL().updateUserNameAndDOB(super.getChatId(), name, dob);
 
                 message.setText("Successfully updated your name and dob: " + name + ", " + dob + ".");

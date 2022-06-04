@@ -40,7 +40,11 @@ public class SendCommand extends Command {
 
     private void runActualCommand(SendMessage message, String text) throws TelegramApiException, SQLException {
 
-        if (!validateMessage(text)) return;
+        if (!validateMessage(text)) {
+            message.setText("Sorry, invalid code or formatting. Please try again.");
+            super.getBot().execute(message);
+            return;
+        }
 
         String[] arr = text.split(" ");
         String receiverCode = arr[1];

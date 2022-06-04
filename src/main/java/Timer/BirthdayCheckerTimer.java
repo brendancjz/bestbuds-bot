@@ -192,7 +192,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
     }
 
     private String generateSetBirthdayReminder(User user) {
-        return "Hi " + user.name + ", you have not set your date of birth. To do so, enter:<pre>  /update &lt;date_of_birth&gt;</pre>";
+        return "Hi " + user.name + ", you have not set your date of birth. To do so, enter:<pre>  /update_dob yyyy-MM-dd</pre>";
     }
 
     private boolean isBeforeChosenHour(int hourNow) {
