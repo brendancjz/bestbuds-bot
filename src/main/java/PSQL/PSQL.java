@@ -55,7 +55,6 @@ public class PSQL {
 
     public Group addNewGroup(int chatId, String groupName) throws SQLException {
         boolean userExists = isUserRegistered(chatId);
-        System.out.println(userExists);
         if (!userExists) return null;
         System.out.println("Adding new Group");
 
@@ -92,7 +91,6 @@ public class PSQL {
 
     public Boolean addUserIntoGroup(Integer chatId, String groupCode) throws SQLException {
         Boolean userExists = isUserRegistered(chatId);
-        System.out.println(userExists);
         if (!userExists) return false;
         if (isGroupCodeUnique(groupCode)) return false;
 
@@ -118,7 +116,6 @@ public class PSQL {
 
     public Boolean addUserIntoBirthdayManagement(Integer chatId, Date birthday) throws SQLException {
         Boolean userExists = isUserRegistered(chatId);
-        System.out.println(userExists);
         if (!userExists) return false;
         if (isUserAlreadyInBirthdayManagement(chatId)) return false;
 
@@ -139,6 +136,53 @@ public class PSQL {
             System.out.println("Unsuccessful entry in bday mgmt.");
             return false;
         }
+    }
+
+    public Boolean addMessage(String receiverCode, Integer chatId, String senderMessage) throws SQLException {
+        Boolean userExists = isUserRegistered(chatId);
+        User otherUser = getUserDataResultSet(receiverCode);
+        if (!userExists || User.isNull(otherUser)) return false;
+
+        User user = getUserDataResultSet(chatId);
+
+        if (isUserAlreadyInBirthdayManagement(otherUser.chatId) && isUserSameGroupAsOtherUser(chatId, otherUser.chatId)) {
+            String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, user.code);
+            preparedStatement.setString(2, otherUser.code);
+            preparedStatement.setString(3, senderMessage);
+            preparedStatement.setBoolean(4, false);
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Successful adding entry to messages");
+                return true;
+            } else {
+                System.out.println("Unsuccessful entry in messages.");
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isUserSameGroupAsOtherUser(Integer chatId, Integer otherChatId) throws SQLException {
+        System.out.println("PSQL.isUserSameGroupAsOtherUser()");
+        String sql = "SELECT * FROM GroupUsers gu1 INNER JOIN GroupUsers gu2 ON gu1.group_code = gu2.group_code WHERE gu1.chat_id = ? AND gu2.chat_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, chatId);
+        statement.setInt(2, otherChatId);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        boolean isSameGroup = false;
+
+        while (resultSet.next()) {
+            isSameGroup = true;
+        }
+
+        return isSameGroup;
     }
 
     private boolean isUserAlreadyInBirthdayManagement(Integer chatId) throws SQLException {
