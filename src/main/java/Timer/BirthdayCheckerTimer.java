@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.BirthdayManagement;
 import resource.Entity.Group;
+import resource.Entity.Message;
 import resource.Entity.User;
 
 import java.net.URISyntaxException;
@@ -78,11 +79,17 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     //Today is birthday
                     if (birthday.equals(dateNow)) {
                         SendMessage message = new SendMessage();
-//                        message.setChatId(user.chatId.toString());
-                        message.setChatId("107270014");
+                        message.setChatId(user.chatId.toString());
+//                        message.setChatId("107270014");
                         message.enableHtml(true);
-                        message.setText("Hi, your birthday is today!");
-                        //super.getBot().execute(message);
+                        message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+                        super.getBot().execute(message);
+
+                        List<Message> messages = psql.getUserMessages(user.code);
+                        for (Message msg : messages) {
+                            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+                            super.getBot().execute(message);
+                        }
                         continue;
                     }
                 }

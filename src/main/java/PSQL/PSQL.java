@@ -3,6 +3,7 @@ package PSQL;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import resource.Entity.BirthdayManagement;
 import resource.Entity.Group;
+import resource.Entity.Message;
 import resource.Entity.User;
 
 import java.net.URI;
@@ -146,13 +147,14 @@ public class PSQL {
         User user = getUserDataResultSet(chatId);
 
         if (isUserAlreadyInBirthdayManagement(otherUser.chatId) && isUserSameGroupAsOtherUser(chatId, otherUser.chatId)) {
-            String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on) VALUES (?, ?, ?, ?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setString(1, user.code);
             preparedStatement.setString(2, otherUser.code);
             preparedStatement.setString(3, senderMessage);
             preparedStatement.setBoolean(4, false);
+            preparedStatement.setDate(4, Date.valueOf(LocalDate.now()));
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -483,6 +485,36 @@ public class PSQL {
         }
 
         return groups;
+    }
+
+    public List<Message> getUserMessages(String userCode) throws SQLException {
+        System.out.println("PSQL.getUserMessages()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND message_sent = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, userCode);
+        statement.setBoolean(2, false);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<Message> messages = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Message message = this.convertResultSetToMessage(resultSet);
+            messages.add(message);
+        }
+
+        return messages;
+    }
+
+    private Message convertResultSetToMessage(ResultSet resultSet) throws SQLException {
+        Message message = new Message();
+        message.message = resultSet.getString("message");
+        message.hasSent = resultSet.getBoolean("message_sent");
+        message.createdOn = resultSet.getDate("created_on");
+        message.userFrom = this.getUserDataResultSet(resultSet.getString("user_code_from"));
+        message.userTo = this.getUserDataResultSet(resultSet.getString("user_code_to"));
+
+        return message;
     }
 
     private User convertResultSetToUser(ResultSet resultSet) throws SQLException {
