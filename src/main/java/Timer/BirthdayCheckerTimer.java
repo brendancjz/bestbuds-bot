@@ -190,10 +190,13 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             msg = "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her!";
         } else {
             //Sending it for the first time
-            msg = "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is in one week's time! please send a birthday message to him/her!";
+            int numOfDaysAway = bdayMgmt.birthday.toLocalDate().compareTo(LocalDate.now());
+            System.out.println("Num of Days away: " + numOfDaysAway);
+
+            msg = "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> coming up on " + bdayMgmt.getBirthday() + "! please send a birthday message to him/her!";
         }
 
-        msg += "<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
+        msg += "\n<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
 
         return msg;
     }
