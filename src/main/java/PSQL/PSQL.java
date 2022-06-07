@@ -154,7 +154,7 @@ public class PSQL {
             preparedStatement.setString(2, otherUser.code);
             preparedStatement.setString(3, senderMessage);
             preparedStatement.setBoolean(4, false);
-            preparedStatement.setDate(4, Date.valueOf(LocalDate.now()));
+            preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
