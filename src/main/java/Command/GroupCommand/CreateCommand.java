@@ -47,12 +47,7 @@ public class CreateCommand extends Command {
                 message.setText("Something went wrong. Please contact developer.");
             }
 
-            //TODO Use Callback to confirm the group name and creation of group
-            //TODO add this new group into the db
-            //TODO add the user into this db. If user, not register, register the man in there.
-
             super.getBot().execute(message);
-
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
@@ -102,7 +97,7 @@ public class CreateCommand extends Command {
     private Boolean validateGroupName(String text) {
         String[] arr = text.split(" ");
 
-        return arr.length >= 2;
+        return arr.length >= 2 && !text.contains("<") && !text.contains(">");
     }
 
     private String generateGroupDetails(Group group) throws SQLException {

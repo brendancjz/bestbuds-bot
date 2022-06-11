@@ -116,7 +116,11 @@ public class SubscribeCommand extends Command {
         instruction += "<pre>  /share_code &lt;group_code&gt;[optional]</pre>\n\n\n";
         instruction += "<b>Group Owner Commands</b> \n\n";
         instruction += "<em>Remove a BestBud</em>\n";
-        instruction += "<pre>  /remove  &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
+        instruction += "<pre>  /remove &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
+        instruction += "<em>Upgrade a BestBud to Admin</em>\n";
+        instruction += "<pre>  /upgrade &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
+        instruction += "<em>Downgrade a BestBud to Admin</em>\n";
+        instruction += "<pre>  /downgrade &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
 
         return instruction;
     }
