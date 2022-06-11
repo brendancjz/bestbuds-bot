@@ -114,6 +114,30 @@ public class PSQL {
         }
     }
 
+    public Boolean makeUserAdminInGroup(Integer chatId, String groupCode) throws SQLException {
+        Boolean userExists = isUserRegistered(chatId);
+        if (!userExists) return false;
+        if (isGroupCodeUnique(groupCode)) return false;
+
+        System.out.println("Make User an Admin to Group");
+
+        String sql = "UPDATE GroupUsers SET is_admin = 'True' WHERE group_code = ? AND chat_id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setString(1, groupCode);
+        preparedStatement.setInt(2, chatId);
+
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful in making admin in Groups.");
+            System.out.println("[" + chatId + "] is now admin in Group " + groupCode + ".");
+            return true;
+        } else {
+            System.out.println("Unsuccessful in making admin in Groups.");
+            return false;
+        }
+    }
+
 
     public Boolean addUserIntoBirthdayManagement(Integer chatId, Date birthday) throws SQLException {
         Boolean userExists = isUserRegistered(chatId);

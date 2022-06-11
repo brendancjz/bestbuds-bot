@@ -77,6 +77,7 @@ public class CreateCommand extends Command {
             if (confirmationResult.equals("YES")) {
                 Group newGroup = super.getPSQL().addNewGroup(super.getChatId(), groupName);
                 super.getPSQL().addUserIntoGroup(super.getChatId(), newGroup.code);
+                super.getPSQL().makeUserAdminInGroup(super.getChatId(), newGroup.code);
                 newMessage.setText("You are the owner of a new BestBuds Group: " + groupName);
                 super.getBot().execute(newMessage);
 

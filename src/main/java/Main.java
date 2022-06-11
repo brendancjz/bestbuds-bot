@@ -15,10 +15,6 @@ public class Main {
             BestBudsBot bestBudsBot = new BestBudsBot();
             telegramBotsApi.registerBot(bestBudsBot); //botSession has started.
 
-            //Send Happy Birthday
-//            HappyBirthdayTimer timer = new HappyBirthdayTimer(bestBudsBot);
-//            timer.start();
-
             BirthdayCheckerTimer timer = new BirthdayCheckerTimer(bestBudsBot);
             timer.start();
         } catch (TelegramApiException | SQLException | URISyntaxException e) {

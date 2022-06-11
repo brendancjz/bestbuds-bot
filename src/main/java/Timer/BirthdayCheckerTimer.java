@@ -14,14 +14,13 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.concurrent.*;
 
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
-    private static final int CHOSEN_HOUR = 12;
+    private static final int AFTERNOON = 12;
+    private static final int MIDNIGHT = 0;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
     private static final int ONE_DAY = 60 * 60 * 24;
@@ -37,13 +36,52 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         //Schedule a daily check if anyone has not inputted their birthdate.
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
 
-        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(AFTERNOON), ONE_DAY, TimeUnit.SECONDS);
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
-        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(), ONE_DAY, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(AFTERNOON), ONE_DAY, TimeUnit.SECONDS);
+        //Schedule a daily check if anyone's birthday is today 12am.
+        scheduler.scheduleAtFixedRate(checkBirthdayToday(), setDelayTillNextChosenHour(MIDNIGHT), ONE_DAY, TimeUnit.SECONDS);
 //        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), 0, ONE_MINUTE, TimeUnit.SECONDS);
         //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
 
         //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
+    }
+
+    private Runnable checkBirthdayToday() {
+        return () -> {
+            System.out.println("Checking User Birthdays 12am.");
+            try {
+                PSQL psql = new PSQL();
+                List<User> users = psql.getAllUsers();
+
+                //Check if birthday is coming up
+                Date dateNow = Date.valueOf(LocalDate.now());
+
+                for (User user : users) {
+                    if (user.getDob().equals("null")) continue;
+                    //User birthday
+                    Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
+                    //Today is birthday
+                    if (birthday.equals(dateNow)) {
+                        SendMessage message = new SendMessage();
+                        message.setChatId(user.chatId.toString());
+                        message.enableHtml(true);
+                        message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+                        super.getBot().execute(message);
+
+                        List<Message> messages = psql.getUserMessages(user.code);
+                        for (Message msg : messages) {
+                            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+                            super.getBot().execute(message);
+                        }
+                    }
+                }
+
+                psql.closeConnection();
+            } catch (SQLException | URISyntaxException | TelegramApiException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
     private Runnable checkIncomingBirthdays() {
@@ -162,22 +200,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         };
     }
 
-    private Long setDelayTillNextChosenHour() {
+    private Long setDelayTillNextChosenHour(int chosenHour) {
         LocalDateTime dateNow = LocalDateTime.now();
-        int yearNow = dateNow.getYear();
-        int monthNow = dateNow.getMonthValue();
-        int dayOfMonthNow = dateNow.getDayOfMonth();
         int hourNow = dateNow.getHour();
         int minNow = dateNow.getMinute();
-        int secNow = dateNow.getSecond();
 
-        if (isBeforeChosenHour(hourNow)) { //Before timing
-            long numOfHoursUntil12PM = (CHOSEN_HOUR - 1) - ((hourNow + 8) % 24);
+        if (isBeforeChosenHour(chosenHour, hourNow)) { //Before timing
+            long numOfHoursUntil12PM = (chosenHour - 1) - ((hourNow + 8) % 24);
             long numOfMinutesUntil12PM = 60 - minNow;
 
             return ONE_MINUTE * numOfMinutesUntil12PM + ONE_HOUR * numOfHoursUntil12PM;
         } else {
-            long numOfHoursFrom12PM = ((hourNow + 8) % 24) - CHOSEN_HOUR;
+            long numOfHoursFrom12PM = ((hourNow + 8) % 24) - chosenHour;
 
             return ONE_DAY - (ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM);
         }
@@ -205,7 +239,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         return "Hi " + user.name + ", you have not set your date of birth. To do so, enter:<pre>  /update_dob yyyy-MM-dd</pre>";
     }
 
-    private boolean isBeforeChosenHour(int hourNow) {
-        return ((hourNow + 8) % 24) < CHOSEN_HOUR;
+    private boolean isBeforeChosenHour(int chosenHour, int hourNow) {
+        return ((hourNow + 8) % 24) < chosenHour;
     }
 }
