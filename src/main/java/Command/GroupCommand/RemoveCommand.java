@@ -46,7 +46,7 @@ public class RemoveCommand extends Command {
 
                     String callData = "" + user.chatId + "_" + group.code;
                     message.setReplyMarkup(KeyboardMarkup.confirmationKB(COMMAND, callData));
-                    message.setText("Confirm removing " + user.name + "  from " + group.name);
+                    message.setText("Confirm removing " + user.name + " from " + group.name);
                 } else {
                     message.setText("Sorry, you're not the owner of the group.");
                 }
@@ -83,8 +83,14 @@ public class RemoveCommand extends Command {
 
                 super.getPSQL().removeUserFromGroup(Integer.parseInt(chatId), groupCode);
 
-                newMessage.setText("You have removed " + user.name + "  from " + group.name);
+                newMessage.setText("You have removed " + user.name + " from " + group.name);
                 super.getBot().execute(newMessage);
+
+                SendMessage message2 = new SendMessage();
+                message2.setChatId(chatId);
+                message2.enableHtml(true);
+                message2.setText("Hello " + user.name + ", you have been removed from " + group.name);
+                super.getBot().execute(message2);
 
             } else { //NO
                 newMessage.setText("Cancelled BestBud removal.");
