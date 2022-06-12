@@ -316,6 +316,30 @@ public class PSQL {
         return false;
     }
 
+    public Boolean isUserOwnerOfGroup(Integer chatId, String groupCode) throws SQLException {
+        boolean userExists = isUserRegistered(chatId);
+        System.out.println(userExists);
+        if (!userExists) return false;
+        if (isGroupCodeUnique(groupCode)) return false;
+
+        System.out.println("PSQL.isUserOwnerOfGroup()");
+
+        User user = this.getUserDataResultSet(chatId);
+
+        String sql = "SELECT * FROM Groups WHERE code = ? AND created_by = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, groupCode);
+        statement.setString(2, user.code);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void updateUserDOB(int chatId, String text) throws SQLException {
         String sql = "UPDATE Users SET dob=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
