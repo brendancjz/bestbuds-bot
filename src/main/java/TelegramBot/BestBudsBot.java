@@ -103,6 +103,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
                     command = new JoinCommand(this, update, psql);
                 } else if (commandStr.equals("exit")) {
                     command = new ExitCommand(this, update, psql);
+                } else if (commandStr.equals("remove")) {
+                    command = new RemoveCommand(this, update, psql);
                 }
                 command.runCallback();
                 return;
@@ -235,6 +237,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/downgrade")) {
                 System.out.println("=== Downgrade Event Called === ");
                 command = new DowngradeCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/remove")) {
+                System.out.println("=== Remove Event Called === ");
+                command = new RemoveCommand(this, update, psql);
                 command.runCommand();
             }
             else if (text.startsWith("/update")) {

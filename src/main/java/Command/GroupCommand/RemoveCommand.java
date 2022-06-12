@@ -4,10 +4,12 @@ import Command.Command;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
 import resource.Entity.User;
+import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -42,9 +44,9 @@ public class RemoveCommand extends Command {
                     User user = super.getPSQL().getUserDataResultSet(userCode);
                     Group group = super.getPSQL().getGroupDataResultSet(groupCode);
 
-                    super.getPSQL().makeUserNormalInGroup(user.chatId, group.code);
-                    message.setText("Downgraded " + user.name + " to a normal BestBud for " + group.name);
-
+                    String callData = "" + user.chatId + "_" + group.code;
+                    message.setReplyMarkup(KeyboardMarkup.confirmationKB(COMMAND, callData));
+                    message.setText("Confirm removing " + user.name + "  from " + group.name);
                 } else {
                     message.setText("Sorry, you're not the owner of the group.");
                 }
@@ -55,6 +57,44 @@ public class RemoveCommand extends Command {
             super.getBot().execute(message);
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+
+    @Override
+    public void runCallback() {
+        try {
+            System.out.println("RemoveCommand.runCallback()");
+            Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
+            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
+            String callData = super.getUpdate().getCallbackQuery().getData();
+
+            EditMessageText newMessage = new EditMessageText();
+            newMessage.setChatId(super.getChatId().toString());
+            newMessage.setMessageId(messageId);
+            newMessage.enableHtml(true);
+
+            String confirmationResult = callData.split("_")[2];
+            String chatId = callData.split("_")[3];
+            String groupCode = callData.split("_")[4];
+
+            if (confirmationResult.equals("YES")) {
+                User user = super.getPSQL().getUserDataResultSet(Integer.parseInt(chatId));
+                Group group = super.getPSQL().getGroupDataResultSet(groupCode);
+
+                super.getPSQL().removeUserFromGroup(Integer.parseInt(chatId), groupCode);
+
+                newMessage.setText("You have removed " + user.name + "  from " + group.name);
+                super.getBot().execute(newMessage);
+
+            } else { //NO
+                newMessage.setText("Cancelled BestBud removal.");
+                super.getBot().execute(newMessage);
+
+            }
+
+            super.getBot().execute(newMessage);
+        } catch (TelegramApiException | SQLException e) {
+            e.printStackTrace();
         }
     }
 
