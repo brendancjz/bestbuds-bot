@@ -45,7 +45,7 @@ public class UpgradeCommand extends Command {
                 Group group = super.getPSQL().getGroupDataResultSet(groupCode);
 
                 super.getPSQL().makeUserAdminInGroup(user.chatId, group.code);
-                message.setText("Upgraded " + user.name + " to an Administrator for " + group.name + "?");
+                message.setText("Upgraded " + user.name + " to an Administrator for " + group.name);
             } else {
                 message.setText("Something went wrong. Please contact developer.");
             }

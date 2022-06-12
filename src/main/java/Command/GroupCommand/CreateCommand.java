@@ -42,7 +42,7 @@ public class CreateCommand extends Command {
                 String groupName = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
 
                 message.setReplyMarkup(KeyboardMarkup.confirmationKB(COMMAND, groupName));
-                message.setText("Confirm creating a BestBuds Group: " + groupName + "?");
+                message.setText("Confirm creating a BestBuds Group: " + groupName);
             } else {
                 message.setText("Something went wrong. Please contact developer.");
             }
