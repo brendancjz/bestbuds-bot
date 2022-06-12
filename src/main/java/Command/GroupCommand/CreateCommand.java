@@ -32,7 +32,7 @@ public class CreateCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(false);
 
-            if (text.equals("/create")) { //Bad command. Missing arguments
+            if (text.equals("/" + COMMAND)) { //Bad command. Missing arguments
                 missingArgumentsMessage(message);
                 return;
             }

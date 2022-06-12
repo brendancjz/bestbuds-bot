@@ -4,27 +4,24 @@ import Command.Command;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
 import resource.Entity.User;
-import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.Arrays;
 
-public class UpgradeCommand extends Command {
-    private static final String COMMAND = "upgrade";
-    public UpgradeCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
+public class DowngradeCommand extends Command {
+    private static final String COMMAND = "downgrade";
+    public DowngradeCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
     }
 
     @Override
     public void runCommand() {
         try {
-            System.out.println("UpgradeCommand.runCommand()");
+            System.out.println("DowngradeCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText().trim();
 
             SendMessage message = new SendMessage();
@@ -44,8 +41,8 @@ public class UpgradeCommand extends Command {
                 User user = super.getPSQL().getUserDataResultSet(userCode);
                 Group group = super.getPSQL().getGroupDataResultSet(groupCode);
 
-                super.getPSQL().makeUserAdminInGroup(user.chatId, group.code);
-                message.setText("Upgraded " + user.name + " to an Administrator for " + group.name);
+                super.getPSQL().makeUserNormalInGroup(user.chatId, group.code);
+                message.setText("Downgraded " + user.name + " to a normal BestBud for " + group.name);
             } else {
                 message.setText("Something went wrong. Please contact developer.");
             }
