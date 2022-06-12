@@ -41,11 +41,15 @@ public class UpgradeCommand extends Command {
                 String userCode = arr[1];
                 String groupCode = arr[2];
 
-                User user = super.getPSQL().getUserDataResultSet(userCode);
-                Group group = super.getPSQL().getGroupDataResultSet(groupCode);
+                if (super.getPSQL().isUserOwnerOfGroup(super.getChatId(), groupCode)) {
+                    User user = super.getPSQL().getUserDataResultSet(userCode);
+                    Group group = super.getPSQL().getGroupDataResultSet(groupCode);
 
-                super.getPSQL().makeUserAdminInGroup(user.chatId, group.code);
-                message.setText("Upgraded " + user.name + " to an Administrator for " + group.name);
+                    super.getPSQL().makeUserAdminInGroup(user.chatId, group.code);
+                    message.setText("Upgraded " + user.name + " to an Administrator for " + group.name);
+                } else {
+                    message.setText("Sorry, you're not the owner of the group.");
+                }
             } else {
                 message.setText("Something went wrong. Please contact developer.");
             }
