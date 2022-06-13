@@ -411,6 +411,20 @@ public class PSQL {
         }
     }
 
+    public void updateUserMessageToSent(Integer id) throws SQLException {
+        String sql = "UPDATE Messages SET message_sent = ? WHERE message_id = ?";
+        PreparedStatement statement= connection.prepareStatement(sql);
+        statement.setBoolean(1, true);
+        statement.setInt(2, id);
+        int rowsInserted = statement.executeUpdate();
+
+        if ((rowsInserted > 0)) {
+            System.out.println("[Messages for " + id + "] Update query successful.");
+        } else {
+            System.out.println("[Messages for " + id + "] Update query failed.");
+        }
+    }
+
     public List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM Users";
@@ -558,6 +572,24 @@ public class PSQL {
         return groups;
     }
 
+    public List<User> getAdminsFromGroup(String groupCode) throws SQLException {
+        System.out.println("PSQL.getAdminsFromGroup");
+        String sql = "SELECT * FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers WHERE group_code = ? AND is_admin = ?)";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, groupCode);
+        statement.setBoolean(2, true);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<User> users = new ArrayList<>();
+
+        while (resultSet.next()) {
+            User user = this.convertResultSetToUser(resultSet);
+            users.add(user);
+        }
+
+        return users;
+    }
+
     public List<Message> getUserMessages(String userCode) throws SQLException {
         System.out.println("PSQL.getUserMessages()");
         // Obtaining user information from USERS
@@ -577,8 +609,35 @@ public class PSQL {
         return messages;
     }
 
+    public List<Message> getUserMessagesFromUsersOfGroup(String bdayUserCode, String groupCode) throws SQLException {
+        //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
+        System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");
+        // Obtaining user information from USERS
+        String sql = "SELECT message FROM Messages WHERE user_code_to = ? AND message_sent = ? and " +
+                "user_code_from = ANY (SELECT code FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers " +
+                "WHERE group_code = ? AND chat_id = ANY (SELECT chat_id FROM Users " +
+                "WHERE code = ANY (SELECT user_code_from FROM Messages m WHERE user_code_to = ? AND message_sent = ?))))";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, bdayUserCode);
+        statement.setBoolean(2, false);
+        statement.setString(3, groupCode);
+        statement.setString(4, bdayUserCode);
+        statement.setBoolean(5, false);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<Message> messages = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Message message = this.convertResultSetToMessage(resultSet);
+            messages.add(message);
+        }
+
+        return messages;
+    }
+
     private Message convertResultSetToMessage(ResultSet resultSet) throws SQLException {
         Message message = new Message();
+        message.id = resultSet.getInt("message_id");
         message.message = resultSet.getString("message");
         message.hasSent = resultSet.getBoolean("message_sent");
         message.createdOn = resultSet.getDate("created_on");

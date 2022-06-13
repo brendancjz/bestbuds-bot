@@ -3,7 +3,6 @@ package Command.UserCommand;
 import Command.Command;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
-import Timer.HappyBirthdayTimer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;

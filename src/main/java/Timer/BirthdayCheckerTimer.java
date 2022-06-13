@@ -94,6 +94,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 //Check if birthday is coming up
                 Date dateNow = Date.valueOf(LocalDate.now());
                 Date dateOneWeekFromNow = Date.valueOf(LocalDate.now().plusDays(7));
+                Date dateTwoDaysFromNow = Date.valueOf(LocalDate.now().plusDays(2));
 
                 for (User user : users) {
                     if (user.getDob().equals("null")) continue;
@@ -105,6 +106,11 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                             (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
                         psql.addUserIntoBirthdayManagement(user.chatId, birthday);
                         this.runReminderMessageEvent(user, psql);
+
+                        //If birthday is two days from now, send the msges collated to all the admins.
+                        if (birthday.equals(dateTwoDaysFromNow)) {
+                            this.runSendMessageToAdminsEvent(user, psql);
+                        }
                         continue;
                     }
 
@@ -127,6 +133,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         for (Message msg : messages) {
                             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
                             super.getBot().execute(message);
+                            psql.updateUserMessageToSent(msg.id);
                         }
                         continue;
                     }
@@ -137,6 +144,33 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 e.printStackTrace();
             }
         };
+    }
+
+    private void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException {
+        //Get everyone from these groups except for the user himself
+        for (Group group : user.groups) {
+            List<User> admins = psql.getAdminsFromGroup(group.code);
+
+            //send all collated msges so far of this user's birthday to the admins of the groups he is in.
+            List<Message> msges = psql.getUserMessagesFromUsersOfGroup(user.code, group.code);
+            for (User admin : admins) {
+                SendMessage message = new SendMessage();
+                message.setChatId(admin.chatId.toString());
+//                message.setChatId("107270014");
+                message.enableHtml(true);
+                message.setText(collateMessages(msges));
+                super.getBot().execute(message);
+            }
+        }
+    }
+
+    private String collateMessages(List<Message> msges) {
+        String message = "";
+        for (Message msg : msges) {
+            message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\n\n";
+        }
+
+        return message;
     }
 
     private void runReminderMessageEvent(User user, PSQL psql) throws SQLException, TelegramApiException {

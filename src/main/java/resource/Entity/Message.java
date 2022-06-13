@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Message {
     public String message;
+    public Integer id;
     public User userTo;
     public User userFrom;
     public Boolean hasSent;
@@ -11,6 +12,7 @@ public class Message {
 
     public Message() {
         message = "";
+        id = null;
         userTo = null;
         userFrom = null;
         hasSent = false;
