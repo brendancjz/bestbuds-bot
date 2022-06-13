@@ -141,12 +141,5 @@ public class SubscribeCommand extends Command {
 
         return instruction;
     }
-
-    private void scheduleBirthdayMessage(int chatId) throws URISyntaxException, SQLException {
-        //TODO: The scheduling
-        //Send Happy Birthday
-        HappyBirthdayTimer timer = new HappyBirthdayTimer(super.getBot());
-        timer.startForUser(chatId);
-    }
 }
 
