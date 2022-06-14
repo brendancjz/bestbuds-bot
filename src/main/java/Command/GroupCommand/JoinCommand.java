@@ -71,7 +71,7 @@ public class JoinCommand extends Command {
 
             if (confirmationResult.equals("YES")) {
                 Group group = new Group();
-                if (super.getPSQL().addUserIntoGroup(super.getChatId(), groupCode)) {
+                if (!super.getPSQL().isUserInGroup(super.getChatId(), groupCode) && super.getPSQL().addUserIntoGroup(super.getChatId(), groupCode)) {
                     group = super.getPSQL().getGroupDataResultSet(groupCode);
                     newMessage.setText("You have joined the BestBuds Group: " + group.name);
                     super.getBot().execute(newMessage);
