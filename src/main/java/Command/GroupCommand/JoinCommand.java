@@ -75,17 +75,16 @@ public class JoinCommand extends Command {
                     group = super.getPSQL().getGroupDataResultSet(groupCode);
                     newMessage.setText("You have joined the BestBuds Group: " + group.name);
                     super.getBot().execute(newMessage);
+
+                    SendMessage message2 = new SendMessage();
+                    message2.setChatId(super.getChatId().toString());
+                    message2.enableHtml(true);
+                    message2.setText(generateGroupDetails(group));
+                    super.getBot().execute(message2);
                 } else {
                     newMessage.setText("Sorry, something went wrong. Please feedback this to the developer.");
                     super.getBot().execute(newMessage);
                 }
-
-
-                SendMessage message2 = new SendMessage();
-                message2.setChatId(super.getChatId().toString());
-                message2.enableHtml(true);
-                message2.setText(generateGroupDetails(group));
-                super.getBot().execute(message2);
 
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");

@@ -693,6 +693,31 @@ public class PSQL {
         return chatIds;
     }
 
+
+    public boolean hasUserSentBdayMessageToUser(String senderCode, String receiverCode, BirthdayManagement bdayMgmt) throws SQLException {
+        System.out.println("PSQL.hasUserSentBdayMessageToUser()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND user_code_from = ? AND message_sent = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, receiverCode);
+        statement.setString(2, senderCode);
+        statement.setBoolean(3, false);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<Message> messages = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Message message = this.convertResultSetToMessage(resultSet);
+            messages.add(message);
+        }
+
+        for (Message msg : messages) {
+            if (msg.createdOn.toLocalDate().getYear() == bdayMgmt.birthday.toLocalDate().getYear()) return true;
+        }
+
+        return false;
+    }
+
     public boolean isUserRegistered(int chatId) throws SQLException {
         System.out.println("PSQL.isUserRegistered()");
         User user = this.getUserDataResultSet(chatId);

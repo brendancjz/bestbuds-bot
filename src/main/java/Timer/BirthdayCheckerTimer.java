@@ -180,21 +180,19 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
             List<User> users = psql.getUsersFromGroupExceptUser(group.code, user.chatId);
-            String reminderToSendOut = this.generateBirthdayReminder(bdayMgmt, group);
-            for (User otherUser : users) {
-                //send a msg to these ppl to send a msg to the user chatId
-                SendMessage message = new SendMessage();
-                message.setChatId(otherUser.chatId.toString());
-//                message.setChatId("107270014");
-                message.enableHtml(true);
-                message.setText(reminderToSendOut);
-                super.getBot().execute(message);
 
-                SendMessage message2 = new SendMessage();
-                message2.setChatId("107270014");
-                message2.enableHtml(true);
-                message2.setText(reminderToSendOut);
-                super.getBot().execute(message2);
+            for (User otherUser : users) {
+                //check if user alr send a msg to the person. if have, no need send reminder
+                boolean hasSentBdayMsg = psql.hasUserSentBdayMessageToUser(otherUser.code, user.code, bdayMgmt);
+                if (!hasSentBdayMsg) {
+                    //send a msg to these ppl to send a msg to the user chatId
+                    SendMessage message = new SendMessage();
+                    message.setChatId(otherUser.chatId.toString());
+    //                message.setChatId("107270014");
+                    message.enableHtml(true);
+                    message.setText(this.generateBirthdayReminder(bdayMgmt, group));
+                    super.getBot().execute(message);
+                }
             }
         }
 
@@ -218,12 +216,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         message.enableHtml(true);
                         message.setText(this.generateSetBirthdayReminder(user));
                         super.getBot().execute(message);
-
-                        SendMessage message2 = new SendMessage();
-                        message2.setChatId("107270014");
-                        message2.enableHtml(true);
-                        message2.setText(this.generateSetBirthdayReminder(user));
-                        super.getBot().execute(message2);
                     }
                 }
 
@@ -258,6 +250,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             msg = "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her!";
         } else {
             //Sending it for the first time
+            //TODO Replace this with a better msg
             int numOfDaysAway = bdayMgmt.birthday.toLocalDate().compareTo(LocalDate.now());
             System.out.println("Num of Days away: " + numOfDaysAway);
 
