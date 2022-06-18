@@ -216,6 +216,36 @@ public class PSQL {
         return false;
     }
 
+    public Boolean addTestMessage(String receiverCode, Integer chatId, String senderMessage) throws SQLException {
+        Boolean userExists = isUserRegistered(chatId);
+        User otherUser = getUserDataResultSet(receiverCode);
+        if (!userExists || User.isNull(otherUser)) return false;
+
+        User user = getUserDataResultSet(chatId);
+
+        if (isUserSameGroupAsOtherUser(chatId, otherUser.chatId)) {
+            String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on) VALUES (?, ?, ?, ?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, user.code);
+            preparedStatement.setString(2, otherUser.code);
+            preparedStatement.setString(3, senderMessage);
+            preparedStatement.setBoolean(4, false);
+            preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Successful adding entry to messages");
+                return true;
+            } else {
+                System.out.println("Unsuccessful entry in messages.");
+                return false;
+            }
+        }
+
+        return false;
+    }
+
     private boolean isUserSameGroupAsOtherUser(Integer chatId, Integer otherChatId) throws SQLException {
         System.out.println("PSQL.isUserSameGroupAsOtherUser()");
         String sql = "SELECT * FROM GroupUsers gu1 INNER JOIN GroupUsers gu2 ON gu1.group_code = gu2.group_code WHERE gu1.chat_id = ? AND gu2.chat_id = ?";

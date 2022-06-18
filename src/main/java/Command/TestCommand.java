@@ -51,7 +51,7 @@ public class TestCommand extends Command {
         String receiverCode = arr[1];
         String senderMessage = String.join(" ", Arrays.copyOfRange(arr, 2, arr.length));
 
-        if (super.getPSQL().addMessage(receiverCode, super.getChatId(), senderMessage)) {
+        if (super.getPSQL().addTestMessage(receiverCode, super.getChatId(), senderMessage)) {
             message.setText("Message sent! I'm sure your BestBud will appreciate this message: \n\n" + senderMessage);
         } else {
             message.setText("Something went wrong in sending. Perhaps BestBud's birthday is not coming yet or y'all do not share the same BestBuds Group.");
