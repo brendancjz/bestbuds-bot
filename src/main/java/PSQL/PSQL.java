@@ -702,7 +702,7 @@ public class PSQL {
         //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
         System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");
         // Obtaining user information from USERS
-        String sql = "SELECT message FROM Messages WHERE user_code_to = ? AND message_sent = ? and " +
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND message_sent = ? and " +
                 "user_code_from = ANY (SELECT code FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers " +
                 "WHERE group_code = ? AND chat_id = ANY (SELECT chat_id FROM Users " +
                 "WHERE code = ANY (SELECT user_code_from FROM Messages m WHERE user_code_to = ? AND message_sent = ?))))";
