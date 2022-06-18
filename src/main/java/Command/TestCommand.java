@@ -37,7 +37,9 @@ public class TestCommand extends Command {
                 return;
             }
 
-            runTestSendCommand(message, text);
+            //runTestSendCommand(message, text);
+            User birthdayUser = super.getPSQL().getUserDataResultSet(107270014);
+            runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
