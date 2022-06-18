@@ -35,16 +35,11 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
         //Schedule a daily check if anyone has not inputted their birthdate.
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
-
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(AFTERNOON), ONE_DAY, TimeUnit.SECONDS);
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
         scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(AFTERNOON), ONE_DAY, TimeUnit.SECONDS);
         //Schedule a daily check if anyone's birthday is today 12am.
         scheduler.scheduleAtFixedRate(checkBirthdayToday(), setDelayTillNextChosenHour(MIDNIGHT), ONE_DAY, TimeUnit.SECONDS);
-//        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), 0, ONE_MINUTE, TimeUnit.SECONDS);
-        //Schedule a daily check for people to send a msg to the person's incoming birthday. Need a new db table for this. Send msg to everyone else to collate msges. Or remind them
-
-        //Schedule a daily check if anyone's birthday is today. If so, collate all the msges and send.
     }
 
     private Runnable checkBirthdayToday() {
@@ -73,6 +68,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         for (Message msg : messages) {
                             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
                             super.getBot().execute(message);
+                        }
+
+                        //Send a message to other bestbuds to inform them that today is who's birthday
+                        for (Group group : user.groups) {
+                            List<User> otherUsers = psql.getUsersFromGroupExceptUser(group.code, user.chatId);
+                            for (User otherUser : otherUsers) {
+                                SendMessage userBdayTdyMsg = new SendMessage();
+                                userBdayTdyMsg.setChatId(otherUser.chatId.toString());
+                                message.enableHtml(true);
+                                message.setText("Hi, today is " + user.name + " from " + group.name + " birthday!");
+                                super.getBot().execute(message);
+                            }
                         }
                     }
                 }
@@ -109,6 +116,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                         //If birthday is two days from now, send the msges collated to all the admins.
                         if (birthday.equals(dateTwoDaysFromNow)) {
+                            System.out.println("Birthday is two days from now. Sending to admins.");
                             this.runSendMessageToAdminsEvent(user, psql);
                         }
                         continue;
@@ -117,24 +125,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     //Birthday has passed
                     if (birthday.before(dateNow)) {
                         psql.removeUserFromBirthdayManagement(user.chatId);
-                        continue;
-                    }
-
-                    //Today is birthday
-                    if (birthday.equals(dateNow)) {
-                        SendMessage message = new SendMessage();
-                        message.setChatId(user.chatId.toString());
-//                        message.setChatId("107270014");
-                        message.enableHtml(true);
-                        message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
-                        super.getBot().execute(message);
-
-                        List<Message> messages = psql.getUserMessages(user.code);
-                        for (Message msg : messages) {
-                            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-                            super.getBot().execute(message);
-                            psql.updateUserMessageToSent(msg.id);
-                        }
                         continue;
                     }
                 }
