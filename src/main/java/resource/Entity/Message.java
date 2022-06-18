@@ -19,4 +19,7 @@ public class Message {
         createdOn = null;
     }
 
+    public static Boolean isNull(Message message) {
+        return message.id == null;
+    }
 }

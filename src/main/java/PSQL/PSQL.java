@@ -194,23 +194,62 @@ public class PSQL {
         User user = getUserDataResultSet(chatId);
 
         if (isUserAlreadyInBirthdayManagement(otherUser.chatId) && isUserSameGroupAsOtherUser(chatId, otherUser.chatId)) {
-            String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on) VALUES (?, ?, ?, ?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, user.code);
-            preparedStatement.setString(2, otherUser.code);
-            preparedStatement.setString(3, senderMessage);
-            preparedStatement.setBoolean(4, false);
-            preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+            if (hasUserAlreadySentBirthdayMessage(receiverCode, user.code)) {
+                String sql = "UPDATE Messages SET message = ? WHERE user_code_from = ? AND user_code_to = ? AND message_sent = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Successful adding entry to messages");
-                return true;
+                preparedStatement.setString(1, senderMessage);
+                preparedStatement.setString(2, user.code);
+                preparedStatement.setString(3, otherUser.code);
+                preparedStatement.setBoolean(4, false);
+
+                int rowsInserted = preparedStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Successful adding entry to messages");
+                    return true;
+                } else {
+                    System.out.println("Unsuccessful entry in messages.");
+                    return false;
+                }
             } else {
-                System.out.println("Unsuccessful entry in messages.");
-                return false;
+                String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on) VALUES (?, ?, ?, ?,?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+                preparedStatement.setString(1, user.code);
+                preparedStatement.setString(2, otherUser.code);
+                preparedStatement.setString(3, senderMessage);
+                preparedStatement.setBoolean(4, false);
+                preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+
+                int rowsInserted = preparedStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Successful adding entry to messages");
+                    return true;
+                } else {
+                    System.out.println("Unsuccessful entry in messages.");
+                    return false;
+                }
             }
+        }
+
+        return false;
+    }
+
+    private boolean hasUserAlreadySentBirthdayMessage(String receiverCode, String senderCode) throws SQLException {
+        String sql = "SELECT * FROM Messages WHERE user_code_from = ? AND user_code_to = ? AND message_sent = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setString(1, senderCode);
+        preparedStatement.setString(2, receiverCode);
+        preparedStatement.setBoolean(3, false);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while (resultSet.next()) {
+            Message message = this.convertResultSetToMessage(resultSet);
+
+            if (!Message.isNull(message)) return true;
         }
 
         return false;
@@ -224,22 +263,42 @@ public class PSQL {
         User user = getUserDataResultSet(chatId);
 
         if (isUserSameGroupAsOtherUser(chatId, otherUser.chatId)) {
-            String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on) VALUES (?, ?, ?, ?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, user.code);
-            preparedStatement.setString(2, otherUser.code);
-            preparedStatement.setString(3, senderMessage);
-            preparedStatement.setBoolean(4, false);
-            preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+            if (hasUserAlreadySentBirthdayMessage(receiverCode, user.code)) {
+                String sql = "UPDATE Messages SET message = ? WHERE user_code_from = ? AND user_code_to = ? AND message_sent = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Successful adding entry to messages");
-                return true;
+                preparedStatement.setString(1, senderMessage);
+                preparedStatement.setString(2, user.code);
+                preparedStatement.setString(3, otherUser.code);
+                preparedStatement.setBoolean(4, false);
+
+                int rowsInserted = preparedStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Successful adding entry to messages");
+                    return true;
+                } else {
+                    System.out.println("Unsuccessful entry in messages.");
+                    return false;
+                }
             } else {
-                System.out.println("Unsuccessful entry in messages.");
-                return false;
+                String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on) VALUES (?, ?, ?, ?,?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+                preparedStatement.setString(1, user.code);
+                preparedStatement.setString(2, otherUser.code);
+                preparedStatement.setString(3, senderMessage);
+                preparedStatement.setBoolean(4, false);
+                preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+
+                int rowsInserted = preparedStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Successful adding entry to messages");
+                    return true;
+                } else {
+                    System.out.println("Unsuccessful entry in messages.");
+                    return false;
+                }
             }
         }
 
