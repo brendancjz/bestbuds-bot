@@ -47,20 +47,16 @@ public class ViewBestBudsCommand extends Command {
                 return;
             }
 
-            if (validateGroupCode(text, super.getChatId())) {
+            if (validateGroupCodeAndUserInGroup(text, super.getChatId())) {
                 String[] arr = text.split(" ");
                 String groupCode = arr[1];
-
                 Group group = super.getPSQL().getGroupDataResultSet(groupCode);
-
                 message.setText(this.generateBestBudsDetails(group));
-
             } else {
                 message.setText("Sorry, it seems like the group code does not exist or you did not join this group.");
             }
 
             super.getBot().execute(message);
-
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -71,7 +67,6 @@ public class ViewBestBudsCommand extends Command {
         try {
             System.out.println("ViewBestBudsCommand.runCallback()");
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
-            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
             String callData = super.getUpdate().getCallbackQuery().getData();
 
             EditMessageText newMessage = new EditMessageText();
@@ -89,14 +84,6 @@ public class ViewBestBudsCommand extends Command {
         } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private Boolean validateGroupCode(String text, Integer chatId) throws SQLException {
-        String[] arr = text.split(" ");
-        System.out.println("Is arr length 2? " + (arr.length == 2));
-        System.out.println("Is Group Code Unique? " + super.getPSQL().isGroupCodeUnique(arr[1]));
-
-        return arr.length == 2 && !super.getPSQL().isGroupCodeUnique(arr[1]) && super.getPSQL().isUserInGroup(chatId, arr[1]);
     }
 
     private String generateBestBudsDetails(Group group) throws SQLException {

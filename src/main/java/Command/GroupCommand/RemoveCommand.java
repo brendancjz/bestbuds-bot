@@ -35,7 +35,7 @@ public class RemoveCommand extends Command {
                 return;
             }
 
-            if (validate(text)) {
+            if (validateUserCodeGroupCodeAndUserInGroup(text)) {
                 String[] arr = text.split(" ");
                 String userCode = arr[1];
                 String groupCode = arr[2];
@@ -91,24 +91,14 @@ public class RemoveCommand extends Command {
                 message2.enableHtml(true);
                 message2.setText("Hello " + user.name + ", you have been removed from " + group.name);
                 super.getBot().execute(message2);
-
             } else { //NO
                 newMessage.setText("Cancelled BestBud removal.");
                 super.getBot().execute(newMessage);
-
             }
 
             super.getBot().execute(newMessage);
         } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private Boolean validate(String text) throws SQLException {
-        String[] arr = text.split(" ");
-
-        return arr.length == 3 &&
-                !User.isNull(super.getPSQL().getUserDataResultSet(arr[1])) &&
-                super.getPSQL().isUserInGroup(super.getPSQL().getUserDataResultSet(arr[1]).chatId, arr[2]);
     }
 }

@@ -28,7 +28,6 @@ public class SubscribeCommand extends Command {
         try {
             System.out.println("SubscribeCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText().trim();
-            int chatId = Integer.parseInt(super.getUpdate().getMessage().getChatId().toString());
 
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
@@ -37,19 +36,15 @@ public class SubscribeCommand extends Command {
             if (NUM_OF_PAGES != FIRST_PAGE) message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
             if (text.equals("/" + COMMAND)) { //Instructions to create or join a Group
-
                 message.setText(generateSubscribeInstruction(FIRST_PAGE));
                 super.getBot().execute(message);
 
             } else {
                 invalidMessage(message, text);
             }
-
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
-
-
     }
 
     @Override

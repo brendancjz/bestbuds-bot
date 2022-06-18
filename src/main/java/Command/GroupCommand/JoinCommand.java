@@ -58,7 +58,6 @@ public class JoinCommand extends Command {
         try {
             System.out.println("JoinCommand.runCallback()");
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
-            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
             String callData = super.getUpdate().getCallbackQuery().getData();
 
             EditMessageText newMessage = new EditMessageText();
@@ -96,14 +95,6 @@ public class JoinCommand extends Command {
         } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private Boolean validateGroupCode(String text) throws SQLException {
-        String[] arr = text.split(" ");
-        System.out.println("Is arr length 2? " + (arr.length == 2));
-        System.out.println("Is Group Code Unique? " + super.getPSQL().isGroupCodeUnique(arr[1]));
-
-        return arr.length == 2 && !super.getPSQL().isGroupCodeUnique(arr[1]);
     }
 
     private String generateGroupDetails(Group group) throws SQLException {

@@ -35,7 +35,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
                 SendMessage message = new SendMessage();
-
                 message.setChatId(update.getMessage().getChatId().toString());
                 message.enableHtml(true);
 
@@ -44,14 +43,13 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 //Personal Chats have positive chatId while Group Chats have negative chatId
                 if (chatId > 0) {
-                    personalChatMessage(message, update, chatId, psql);
+                    personalChatMessage(message, update, psql);
                 } else {
                     groupChatMessage(message);
                 }
 
                 psql.closeConnection();
             } else if (update.hasCallbackQuery()) {
-
                 Integer chatId = Integer.parseInt(update.getCallbackQuery().getMessage().getChatId().toString());
                 PSQL psql = new PSQL();
 
@@ -68,7 +66,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
         } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
-
     }
 
     private void groupChatCallback(Update update, Integer chatId, PSQL psql) {
@@ -87,13 +84,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
             Command command = null;
 
-//            SendMessage message = new SendMessage();
-//            message.setChatId(chatId.toString());
-//            message.setText("Hello world");
-//            execute(message);
-
-            if (callData.startsWith("confirmation")) { //TODO Abstract out the create command to join too
-
+            if (callData.startsWith("confirmation")) {
                 String[] callBackArr = update.getCallbackQuery().getData().split("_");
                 String commandStr = callBackArr[1];
                 
@@ -106,8 +97,9 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 } else if (commandStr.equals("remove")) {
                     command = new RemoveCommand(this, update, psql);
                 }
+
+                assert command != null;
                 command.runCallback();
-                return;
             } else if (callData.startsWith("select_")) {
                 String[] callBackArr = update.getCallbackQuery().getData().split("_");
                 String commandStr = callBackArr[1];
@@ -120,39 +112,29 @@ public class BestBudsBot extends TelegramLongPollingBot {
                     command = new ShareCodeCommand(this, update, psql);
                 }
 
+                assert command != null;
                 command.runCallback();
-                return;
-
             } else if (callData.startsWith("start_page")) {
-
                 System.out.println("=== Start Event Called === ");
                 command = new StartCommand(this, update, psql);
                 command.runCallback();
-                return;
             } else if (callData.startsWith("subscribe_page")) {
-
                 System.out.println("=== Subscribe Event Called === ");
                 command = new SubscribeCommand(this, update, psql);
                 command.runCallback();
-                return;
             } else if (callData.startsWith("profile_page")) {
-
                 System.out.println("=== Profile Event Called === ");
                 command = new ProfileCommand(this, update, psql);
                 command.runCallback();
-                return;
             } else if (callData.startsWith("message_page")) {
-
                 System.out.println("=== Message Event Called === ");
                 command = new MessageComand(this, update, psql);
                 command.runCallback();
-                return;
             }
         } catch (SQLException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
-
 
     private void groupChatMessage(SendMessage message) {
         try {
@@ -164,26 +146,31 @@ public class BestBudsBot extends TelegramLongPollingBot {
         }
     }
 
-    private void personalChatMessage(SendMessage message, Update update, int chatId, PSQL psql) {
+    private void personalChatMessage(SendMessage message, Update update, PSQL psql) {
         try {
             String text = update.getMessage().getText().trim();
-
-            runPersonalChatMessageRouter(this, update, psql);
-
             Command command;
             //Universal Commands. No need to update Query and check User.
+            if (text.startsWith("/test")) {
+                System.out.println("=== Testing Event Called ===");
+                command = new TestCommand(this, update, psql);
+                command.runCommand();
+                return;
+            }
             if (text.startsWith("/start")) {
                 System.out.println("=== Start Event Called === ");
                 command = new StartCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
+
             if (text.startsWith("/help")) {
                 System.out.println("=== Help Event Called === ");
                 command = new HelpCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
+
             if (text.startsWith("/subscribe")) {
                 System.out.println("=== Subscribe Event Called === ");
                 command = new SubscribeCommand(this, update, psql);
@@ -269,29 +256,10 @@ public class BestBudsBot extends TelegramLongPollingBot {
         }
     }
 
-    private void runPersonalChatMessageRouter(BestBudsBot bestBudsBot, Update update, PSQL psql) {
-    }
-
     private void executeMessage(SendMessage message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void runScheduleHappyBirthdayMessage(int chatId) {
-        try {
-            PSQL psql = new PSQL();
-
-            SendMessage message = new SendMessage();
-            message.setChatId("" + chatId);
-
-            message.setText("Happy Birthday!");
-
-            execute(message);
-            psql.closeConnection();
-        } catch (URISyntaxException | SQLException | TelegramApiException e) {
             e.printStackTrace();
         }
     }

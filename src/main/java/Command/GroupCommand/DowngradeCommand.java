@@ -14,6 +14,7 @@ import java.sql.SQLException;
 
 public class DowngradeCommand extends Command {
     private static final String COMMAND = "downgrade";
+
     public DowngradeCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
     }

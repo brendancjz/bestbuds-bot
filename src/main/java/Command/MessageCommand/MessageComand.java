@@ -42,12 +42,9 @@ public class MessageComand extends Command {
             } else {
                 invalidMessage(message, text);
             }
-
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
-
-
     }
 
     @Override

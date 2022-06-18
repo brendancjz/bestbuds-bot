@@ -45,16 +45,12 @@ public class ProfileCommand extends Command {
 
                 message.setText(generateProfileInformation(FIRST_PAGE));
                 super.getBot().execute(message);
-
             } else {
                 invalidMessage(message, text);
             }
-
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
     }
 
     @Override

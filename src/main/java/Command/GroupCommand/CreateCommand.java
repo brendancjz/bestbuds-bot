@@ -19,7 +19,6 @@ public class CreateCommand extends Command {
 
     public CreateCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
-
     }
 
     @Override
@@ -58,7 +57,6 @@ public class CreateCommand extends Command {
         try {
             System.out.println("CreateCommand.runCallback()");
             Integer messageId = super.getUpdate().getCallbackQuery().getMessage().getMessageId();
-            String firstName = super.getUpdate().getCallbackQuery().getMessage().getChat().getFirstName();
             String callData = super.getUpdate().getCallbackQuery().getData();
 
             EditMessageText newMessage = new EditMessageText();
@@ -85,7 +83,6 @@ public class CreateCommand extends Command {
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");
                 super.getBot().execute(newMessage);
-
             }
 
             super.getBot().execute(newMessage);

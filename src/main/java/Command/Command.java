@@ -5,6 +5,7 @@ import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.User;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -36,10 +37,6 @@ public class Command {
         return this.update.getMessage().getChat().getFirstName();
     }
 
-    public String getUsername() {
-        return this.update.getMessage().getChat().getUserName();
-    }
-
     public Update getUpdate() {
         return this.update;
     }
@@ -56,14 +53,8 @@ public class Command {
         System.out.println("Command runCommand()");
     }
 
-    public void notRegisteredMessage(SendMessage message) throws TelegramApiException {
-        message.setText("You're not registered yet.");
-        this.bot.execute(message);
-    }
-
-    public void wrongDateFormatMessage(SendMessage message) throws TelegramApiException {
-        message.setText("Wrong date format. Try again with dd-MM-yyyy");
-        this.bot.execute(message);
+    public void runCallback() {
+        System.out.println("Command runCallback()");
     }
 
     public void missingArgumentsMessage(SendMessage message) throws TelegramApiException {
@@ -78,20 +69,39 @@ public class Command {
 
     public boolean validateDate(String date) {
         DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-//        DateFormat dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
-//        DateFormat dateFormat3 = new SimpleDateFormat("yyyy/MM/dd");
-//        DateFormat dateFormat4 = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             Date d = dateFormat1.parse(date);
-//            Date d2 = dateFormat2.parse(date);
-//            Date d3 = dateFormat3.parse(date);
-//            Date d4 = dateFormat4.parse(date);
         } catch (ParseException e) {
             return false;
         }
         return true;
+    }
 
+    public Boolean validateGroupCode(String text) throws SQLException {
+        String[] arr = text.split(" ");
+        return arr.length == 2 && !psql.isGroupCodeUnique(arr[1]);
+    }
+
+    public Boolean validateGroupCodeAndUserInGroup(String text, Integer chatId) throws SQLException {
+        String[] arr = text.split(" ");
+
+        return arr.length == 2 && !psql.isGroupCodeUnique(arr[1]) && psql.isUserInGroup(chatId, arr[1]);
+    }
+
+    public Boolean validateUserCodeGroupCodeAndUserInGroup(String text) throws SQLException {
+        String[] arr = text.split(" ");
+
+        return arr.length == 3 &&
+                !User.isNull(psql.getUserDataResultSet(arr[1])) &&
+                psql.isUserInGroup(psql.getUserDataResultSet(arr[1]).chatId, arr[2]);
+    }
+
+    public boolean validateMessage(String text) throws SQLException {
+        String[] arr = text.split(" ");
+        String receiverCode = arr[1];
+
+        return arr.length >= 3 && !User.isNull(psql.getUserDataResultSet(receiverCode));
     }
 
     public String generateBBB() {
@@ -112,7 +122,5 @@ public class Command {
         return desc;
     }
 
-    public void runCallback() {
-        System.out.println("Command runCallback()");
-    }
+
 }

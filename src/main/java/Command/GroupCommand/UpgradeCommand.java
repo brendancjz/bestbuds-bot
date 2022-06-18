@@ -36,7 +36,7 @@ public class UpgradeCommand extends Command {
                 return;
             }
 
-            if (validate(text)) {
+            if (validateUserCodeGroupCodeAndUserInGroup(text)) {
                 String[] arr = text.split(" ");
                 String userCode = arr[1];
                 String groupCode = arr[2];
@@ -58,13 +58,5 @@ public class UpgradeCommand extends Command {
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
-    }
-
-    private Boolean validate(String text) throws SQLException {
-        String[] arr = text.split(" ");
-
-        return arr.length == 3 &&
-                !User.isNull(super.getPSQL().getUserDataResultSet(arr[1])) &&
-                super.getPSQL().isUserInGroup(super.getPSQL().getUserDataResultSet(arr[1]).chatId, arr[2]);
     }
 }
