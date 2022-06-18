@@ -144,6 +144,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             //send all collated msges so far of this user's birthday to the admins of the groups he is in.
             List<Message> msges = psql.getUserMessagesFromUsersOfGroup(user.code, group.code);
             for (User admin : admins) {
+                //DO not send msg to the user if he is the admin too. This is because its premature sending him a happy birthday
+                if (admin.code.equals(user.code)) continue;
+
                 SendMessage message = new SendMessage();
                 message.setChatId(admin.chatId.toString());
 //                message.setChatId("107270014");
