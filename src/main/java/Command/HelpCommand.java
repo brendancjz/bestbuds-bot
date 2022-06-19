@@ -39,6 +39,8 @@ public class HelpCommand extends Command {
         String help = "";
 
         help += "<b>Help</b>\n\n";
+        help += "<u>Where can I find the set up steps?</u>\n";
+        help += "Enter /start command to get started.\n\n";
         help += "<u>What do I do after following the set up steps?</u>\n";
         help += "You're all set! Await a message from BestBuds Bot.\n\n";
         help += "<u>Where can I clarify my doubts or give feedback?</u>\n";

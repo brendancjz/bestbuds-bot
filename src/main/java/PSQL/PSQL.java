@@ -187,6 +187,7 @@ public class PSQL {
     }
 
     public Boolean addMessage(String receiverCode, Integer chatId, String senderMessage) throws SQLException {
+        System.out.println("PSQL.addMessage()");
         Boolean userExists = isUserRegistered(chatId);
         User otherUser = getUserDataResultSet(receiverCode);
         if (!userExists || User.isNull(otherUser)) return false;
