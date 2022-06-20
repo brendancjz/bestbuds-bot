@@ -58,7 +58,8 @@ public class TestCommand extends Command {
         Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), birthdayUser.dob.toLocalDate().getMonthValue(), birthdayUser.dob.toLocalDate().getDayOfMonth()));
 
         String msg = "";
-        msg += "Timestamp Now: " + Timestamp.valueOf((LocalDateTime.now())).toString() + "\n";
+        msg += "Date Now: " + Timestamp.valueOf(String.valueOf(LocalDateTime.now().plusHours(8))).toString() + "\n";
+        msg += "Date Now: " + Date.valueOf(String.valueOf(LocalDateTime.now().plusHours(8))).toString() + "\n";
         msg += "Birthday: " + birthday.toString() + "\n";
         msg += "Bday is today: " + birthday.equals(dateNow);
 
