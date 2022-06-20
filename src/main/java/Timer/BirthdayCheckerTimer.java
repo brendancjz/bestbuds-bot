@@ -50,7 +50,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 List<User> users = psql.getAllUsers();
 
                 //Check if birthday is coming up
-                Date dateNow = Date.valueOf(LocalDate.now());
+                Date dateNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate());
 
                 for (User user : users) {
                     if (user.getDob().equals("null")) continue;
@@ -100,9 +100,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 List<User> users = psql.getAllUsers();
 
                 //Check if birthday is coming up
-                Date dateNow = Date.valueOf(LocalDate.now());
-                Date dateOneWeekFromNow = Date.valueOf(LocalDate.now().plusDays(7));
-                Date dateTwoDaysFromNow = Date.valueOf(LocalDate.now().plusDays(2));
+                Date dateNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate());
+                Date dateOneWeekFromNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate().plusDays(7));
+                Date dateTwoDaysFromNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate().plusDays(2));
 
                 for (User user : users) {
                     if (user.getDob().equals("null")) continue;
