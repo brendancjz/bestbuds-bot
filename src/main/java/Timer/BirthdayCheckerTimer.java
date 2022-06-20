@@ -44,7 +44,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
     private Runnable checkBirthdayToday() {
         return () -> {
-            System.out.println("Checking User Birthdays 12am.");
+            System.out.println("Checking User Birthdays 12am. Today is: " + LocalDate.now().toString());
             try {
                 PSQL psql = new PSQL();
                 List<User> users = psql.getAllUsers();
@@ -58,6 +58,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
                     //Today is birthday
                     if (birthday.equals(dateNow)) {
+                        System.out.println("User " + user.name + " birthday is today, " + birthday.toString());
                         SendMessage message = new SendMessage();
                         message.setChatId(user.chatId.toString());
                         message.enableHtml(true);
@@ -112,11 +113,12 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     if (birthday.after(dateNow) &&
                             (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
                         psql.addUserIntoBirthdayManagement(user.chatId, birthday);
+                        System.out.println("User " + user.name + " birthday is within the week.");
                         this.runReminderMessageEvent(user, psql);
 
                         //If birthday is two days from now, send the msges collated to all the admins.
                         if (birthday.equals(dateTwoDaysFromNow)) {
-                            System.out.println("Birthday is two days from now. Sending to admins.");
+                            System.out.println("User " + user.name + " birthday is two days from now. Sending to admins.");
                             this.runSendMessageToAdminsEvent(user, psql);
                         }
                         continue;
@@ -124,6 +126,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                     //Birthday has passed
                     if (birthday.before(dateNow)) {
+                        System.out.println("User " + user.name + " birthday has passed");
                         psql.removeUserFromBirthdayManagement(user.chatId);
                         continue;
                     }
