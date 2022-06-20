@@ -11,7 +11,9 @@ import resource.Entity.User;
 import resource.KeyboardMarkup;
 
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,10 +41,26 @@ public class TestCommand extends Command {
 
             //runTestSendCommand(message, text);
             User birthdayUser = super.getPSQL().getUserDataResultSet(107270014);
-            runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
+
+            message.setText(runTest());
+            super.getBot().execute(message);
+            //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private String runTest() throws SQLException {
+        User birthdayUser = super.getPSQL().getUserDataResultSet(107270014);
+        Date dateNow = Date.valueOf(LocalDate.now());
+        Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), birthdayUser.dob.toLocalDate().getMonthValue(), birthdayUser.dob.toLocalDate().getDayOfMonth()));
+
+        String msg = "";
+        msg += "Date Now: " + Date.valueOf(LocalDate.now()).toString() + "\n";
+        msg += "Birthday: " + birthday.toString() + "\n";
+        msg += "Bday is today: " + birthday.equals(dateNow);
+
+        return msg;
     }
 
     private void runTestSendCommand(SendMessage message, String text) throws TelegramApiException, SQLException {
