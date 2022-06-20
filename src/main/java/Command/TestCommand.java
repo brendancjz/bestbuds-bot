@@ -13,7 +13,9 @@ import resource.KeyboardMarkup;
 import java.net.URISyntaxException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class TestCommand extends Command {
         Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), birthdayUser.dob.toLocalDate().getMonthValue(), birthdayUser.dob.toLocalDate().getDayOfMonth()));
 
         String msg = "";
-        msg += "Date Now: " + Date.valueOf(LocalDate.now()).toString() + "\n";
+        msg += "Timestamp Now: " + Timestamp.valueOf((LocalDateTime.now())).toString() + "\n";
         msg += "Birthday: " + birthday.toString() + "\n";
         msg += "Bday is today: " + birthday.equals(dateNow);
 
