@@ -54,6 +54,7 @@ public class TestCommand extends Command {
 
         String msg = "";
         //msg += "Timestamp Now: " + Timestamp.valueOf(LocalDateTime.now().plusHours(8)).toString() + "\n";
+        msg += "Time now: " + LocalDateTime.now().plusHours(8).toString() + "\n";
         msg += "Date Now: " + Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate()).toString() + "\n";
         msg += "Birthday: " + birthday.toString() + "\n";
         msg += "Bday is today: " + birthday.equals(dateNow);
