@@ -62,10 +62,13 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         SendMessage message = new SendMessage();
                         message.setChatId(user.chatId.toString());
                         message.enableHtml(true);
-                        message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
-                        super.getBot().execute(message);
 
                         List<Message> messages = psql.getUserMessages(user.code);
+                        if (messages.size() > 0) {
+                            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+                            super.getBot().execute(message);
+                        }
+
                         for (Message msg : messages) {
                             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
                             super.getBot().execute(message);
