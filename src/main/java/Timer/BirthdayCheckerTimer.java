@@ -80,9 +80,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                             for (User otherUser : otherUsers) {
                                 SendMessage userBdayTdyMsg = new SendMessage();
                                 userBdayTdyMsg.setChatId(otherUser.chatId.toString());
-                                message.enableHtml(true);
-                                message.setText("Hi, today is " + user.name + " from " + group.name + " birthday!");
-                                super.getBot().execute(message);
+                                userBdayTdyMsg.enableHtml(true);
+                                userBdayTdyMsg.setText("Hi, today is " + user.name + " from " + group.name + " birthday!");
+                                super.getBot().execute(userBdayTdyMsg);
                             }
                         }
                     }
