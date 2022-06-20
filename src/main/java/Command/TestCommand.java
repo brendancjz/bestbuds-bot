@@ -36,11 +36,6 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
 
-            if (text.equals("/" + COMMAND)) { //Bad command. Missing arguments
-                missingArgumentsMessage(message);
-                return;
-            }
-
             //runTestSendCommand(message, text);
             User birthdayUser = super.getPSQL().getUserDataResultSet(107270014);
 
@@ -59,7 +54,7 @@ public class TestCommand extends Command {
 
         String msg = "";
         //msg += "Timestamp Now: " + Timestamp.valueOf(LocalDateTime.now().plusHours(8)).toString() + "\n";
-        msg += "Date Now: " + Date.valueOf(String.valueOf(LocalDateTime.now().plusHours(8))).toString() + "\n";
+        msg += "Date Now: " + Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate()).toString() + "\n";
         msg += "Birthday: " + birthday.toString() + "\n";
         msg += "Bday is today: " + birthday.equals(dateNow);
 
