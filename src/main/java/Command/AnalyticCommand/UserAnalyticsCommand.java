@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class UserAnalyticsCommand extends Command {
-    private static final Integer NUM_OF_PAGES = 3;
+    private static final Integer NUM_OF_PAGES = 1;
     private static final Integer FIRST_PAGE = 1;
     private static final String COMMAND = "userAnalytics";
 
