@@ -33,15 +33,6 @@ public class UserAnalyticsCommand extends Command {
 
             String analyticsMsg = generateAnalytics(FIRST_PAGE);
 
-            if (super.getPSQL().isUserRegistered(super.getChatId())) {
-                analyticsMsg += " <em>It looks like you are already registered in the database!</em>";
-            } else {
-
-                super.getPSQL().addNewUser(super.getChatId(), super.getFirstName());
-                analyticsMsg += " <em>You have been registered!</em>";
-
-            }
-
             message.setText(analyticsMsg);
             super.getBot().execute(message);
 
