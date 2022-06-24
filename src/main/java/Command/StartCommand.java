@@ -46,15 +46,12 @@ public class StartCommand extends Command {
             }
 
             message.setText(startMsg);
-            System.out.println("Executing Message");
             super.getBot().execute(message);
 
         } catch (SQLException | TelegramApiException throwables) {
             System.out.println("Unexpected error occurred.");
             throwables.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -88,8 +85,6 @@ public class StartCommand extends Command {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void setCorrectKeyboard(EditMessageText newMessage, Integer pageNo) {

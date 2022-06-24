@@ -1,6 +1,7 @@
 package TelegramBot;
 
 import Command.*;
+import Command.AnalyticCommand.UserAnalyticsCommand;
 import Command.GroupCommand.*;
 import Command.MessageCommand.MessageComand;
 import Command.MessageCommand.SendCommand;
@@ -154,6 +155,12 @@ public class BestBudsBot extends TelegramLongPollingBot {
             if (text.startsWith("/test")) {
                 System.out.println("=== Testing Event Called ===");
                 command = new TestCommand(this, update, psql);
+                command.runCommand();
+                return;
+            }
+            if (text.startsWith("/user_analytics")) {
+                System.out.println("=== Analytics Event Called ===");
+                command = new UserAnalyticsCommand(this, update, psql);
                 command.runCommand();
                 return;
             }

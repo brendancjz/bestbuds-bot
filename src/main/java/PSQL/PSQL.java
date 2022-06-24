@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -527,6 +528,23 @@ public class PSQL {
         }
 
         return users;
+    }
+
+    public List<Group> getAllGroups() throws SQLException {
+        System.out.println("PSQL.getAllGroups()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Groups";
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<Group> groups = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Group group = this.convertResultSetToGroup(resultSet);
+            groups.add(group);
+        }
+
+        return groups;
     }
 
     public User getUserDataResultSet(int chatId) throws SQLException {
