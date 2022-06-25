@@ -119,6 +119,7 @@ public class ProfileCommand extends Command {
     private String generateCommandList(Integer pageNo) {
         String instruction = "";
         instruction += "<b>BestBuds User Commands - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
+        instruction += "Copy the commands below to update your BestBud details.\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n";
         instruction += "<em>If you're on desktop, triple click on the command to copy the text.</em>\n\n";
         instruction += "<em>Update Name</em>\n";
