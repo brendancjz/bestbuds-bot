@@ -68,7 +68,6 @@ public class StartCommand extends Command {
             newMessage.enableHtml(true);
 
             Integer currentPageNumber = Integer.parseInt(callData.split("_")[2]);
-            System.out.println("Page " + currentPageNumber);
 
             setCorrectKeyboard(newMessage, currentPageNumber);
 
