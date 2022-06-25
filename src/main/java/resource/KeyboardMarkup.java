@@ -180,6 +180,23 @@ public class KeyboardMarkup {
         return inlineKeyboard;
     }
 
+    public static InlineKeyboardMarkup refreshKB(String groupSelection, String command) {
+        List<InlineKeyboardButton> row = new ArrayList<>();
+
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        InlineKeyboardButton button1 = new InlineKeyboardButton();
+        button1.setText("REFRESH CONTENT");
+        button1.setCallbackData("select_" + command + "_" + groupSelection);
+        row.add(button1);
+
+        keyboard.add(row);
+
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+        inlineKeyboard.setKeyboard(keyboard);
+        return inlineKeyboard;
+    }
+
     //KeyboardMarkUps
     public static InlineKeyboardMarkup financeKB(YearMonth prevMonth, YearMonth currMonth, YearMonth nextMonth) {
 

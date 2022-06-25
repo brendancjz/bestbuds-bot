@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 
 public class StartCommand extends Command {
-
     private static final Integer NUM_OF_PAGES = 3;
     private static final Integer FIRST_PAGE = 1;
     private static final String COMMAND = "start";

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBestBudsCommand extends Command {
+    private static final Integer NUM_OF_PAGES = 3;
+    private static final Integer FIRST_PAGE = 1;
     private static final String COMMAND = "viewBestBuds";
 
     public ViewBestBudsCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
@@ -33,7 +35,7 @@ public class ViewBestBudsCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-            if (text.equals("/view_bestbuds")) { //TODO allow user to choose which group he wants to see
+            if (text.equals("/view_bestbuds")) {
                 List<Group> groups = super.getPSQL().getGroupsFromUser(super.getChatId());
 
                 message.setText(generateGroupSelection(groups));
@@ -74,11 +76,15 @@ public class ViewBestBudsCommand extends Command {
             newMessage.setMessageId(messageId);
             newMessage.enableHtml(true);
 
-            String groupSelection = callData.split("_")[2];
+            String callbackData = callData.split("_")[2];
 
-            Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
-
-            newMessage.setText(this.generateBestBudsDetails(group));
+            if (!Group.isNull(super.getPSQL().getGroupDataResultSet(callbackData))) {
+                //First page after selecting the group to view the bestbuds
+                String groupSelection = callbackData;
+                Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
+                newMessage.setText(this.generateBestBudsDetails(group));
+                newMessage.setReplyMarkup(KeyboardMarkup.refreshKB(groupSelection, COMMAND));
+            }
 
             super.getBot().execute(newMessage);
         } catch (TelegramApiException | SQLException e) {
