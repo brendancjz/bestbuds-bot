@@ -1,6 +1,6 @@
 # BestBudsBot
 
-<img src="https://raw.githubusercontent.com/brendancjz/bestbuds-bot/main/BestBudsBot_Logo.png" alt="bestbuds-bot" width="200">
+<img src="https://raw.githubusercontent.com/brendancjz/bestbuds-bot/main/BestBudsBot_Logo.png" alt="bestbuds-bot" width="250">
 
 It is a hassle to discreetly collate birthday messages for a friend in a group. You will need to private message everyone else in the group.
 
