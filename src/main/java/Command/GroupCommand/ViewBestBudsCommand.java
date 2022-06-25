@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBestBudsCommand extends Command {
-    private static final Integer NUM_OF_PAGES = 3;
+    private static final Integer NUM_OF_USERS_PER_PAGE = 4;
     private static final Integer FIRST_PAGE = 1;
     private static final String COMMAND = "viewBestBuds";
 
@@ -53,7 +53,7 @@ public class ViewBestBudsCommand extends Command {
                 String[] arr = text.split(" ");
                 String groupCode = arr[1];
                 Group group = super.getPSQL().getGroupDataResultSet(groupCode);
-                message.setText(this.generateBestBudsDetails(group));
+                message.setText(this.generateBestBudsDetails(group, FIRST_PAGE));
             } else {
                 message.setText("Sorry, it seems like the group code does not exist or you did not join this group.");
             }
@@ -77,13 +77,30 @@ public class ViewBestBudsCommand extends Command {
             newMessage.enableHtml(true);
 
             String callbackData = callData.split("_")[2];
-
+            String groupSelection;
             if (!Group.isNull(super.getPSQL().getGroupDataResultSet(callbackData))) {
-                //First page after selecting the group to view the bestbuds
-                String groupSelection = callbackData;
+                //First page after selecting the group to view the bestbuds OR Refreshing content
+                groupSelection = callbackData;
                 Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
-                newMessage.setText(this.generateBestBudsDetails(group));
-                newMessage.setReplyMarkup(KeyboardMarkup.refreshKB(groupSelection, COMMAND));
+                newMessage.setText(this.generateBestBudsDetails(group, FIRST_PAGE));
+
+                if (group.users.size() > NUM_OF_USERS_PER_PAGE) {
+                    newMessage.setReplyMarkup(KeyboardMarkup.refreshNavigationKB(groupSelection, COMMAND, FIRST_PAGE, false));
+                } else {
+                    newMessage.setReplyMarkup(KeyboardMarkup.refreshNavigationKB(groupSelection, COMMAND, FIRST_PAGE, true));
+
+                }
+            } else {
+                //This should be the callback from navigating
+                Integer pageNo = Integer.valueOf(callData.split("_")[3]);
+                groupSelection = callData.split("_")[4];
+                Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
+                newMessage.setText(this.generateBestBudsDetails(group, pageNo));
+                if (pageNo * NUM_OF_USERS_PER_PAGE >= group.users.size()) {
+                    newMessage.setReplyMarkup(KeyboardMarkup.refreshNavigationKB(groupSelection, COMMAND, pageNo, true));
+                } else {
+                    newMessage.setReplyMarkup(KeyboardMarkup.refreshNavigationKB(groupSelection, COMMAND, pageNo, false));
+                }
             }
 
             super.getBot().execute(newMessage);
@@ -92,20 +109,28 @@ public class ViewBestBudsCommand extends Command {
         }
     }
 
-    private String generateBestBudsDetails(Group group) throws SQLException {
+    private String generateBestBudsDetails(Group group, Integer pageNo) throws SQLException {
         StringBuilder deeds = new StringBuilder();
 
         if (group != null) {
-            deeds.append("<b><u>Your BestBuds Group Details:</u></b>\n\n");
-            deeds.append("<em>Name:</em> ").append(group.name).append("\n");
-            deeds.append("<em>Code:</em>  ").append(group.code).append("\n");
-            deeds.append("<em>Created By:</em> ").append(group.createdBy).append("\n");
-            deeds.append("<em>Created On:</em> ").append(group.getCreatedOn()).append("\n");
-            deeds.append("<em>Description:</em> ").append(group.description).append("\n\n");
+            if (pageNo == 1) {
+                deeds.append("<b><u>Your BestBuds Group Details:</u></b>\n\n");
+                deeds.append("<em>Name:</em> ").append(group.name).append("\n");
+                deeds.append("<em>Code:</em>  ").append(group.code).append("\n");
+                deeds.append("<em>Created By:</em> ").append(group.createdBy).append("\n");
+                deeds.append("<em>Created On:</em> ").append(group.getCreatedOn()).append("\n");
+                deeds.append("<em>Description:</em> ").append(group.description).append("\n\n");
+            }
 
             deeds.append("<b><u>BestBuds Details: </u></b>\n");
+            int count = 1;
             for (User user : group.users) {
-                deeds.append(generateProfileDetails(user));
+                count++;
+                //Only a certain number of the users will be shown
+                if (count <= (pageNo * NUM_OF_USERS_PER_PAGE) &&
+                        count > ((pageNo - 1) * NUM_OF_USERS_PER_PAGE)) {
+                    deeds.append(generateProfileDetails(user));
+                }
             }
 
         } else {

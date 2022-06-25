@@ -180,11 +180,39 @@ public class KeyboardMarkup {
         return inlineKeyboard;
     }
 
-    public static InlineKeyboardMarkup refreshKB(String groupSelection, String command) {
-        List<InlineKeyboardButton> row = new ArrayList<>();
-
+    public static InlineKeyboardMarkup refreshNavigationKB(String groupSelection, String command, Integer currentPageNumber, Boolean isLastPage) {
+        List<InlineKeyboardButton> row;
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
 
+        if (currentPageNumber == 1 && !isLastPage) {
+            row = new ArrayList<>();
+            InlineKeyboardButton button1 = new InlineKeyboardButton();
+            button1.setText("CONTINUE TO NEXT PAGE");
+            button1.setCallbackData(command + "_page_2_" + groupSelection);
+            row.add(button1);
+            keyboard.add(row);
+        } else if (currentPageNumber > 1 && isLastPage) {
+            row = new ArrayList<>();
+            InlineKeyboardButton button1 = new InlineKeyboardButton();
+            button1.setText("BACK TO PREVIOUS PAGE");
+            button1.setCallbackData(command + "_page_" + (currentPageNumber - 1) + "_" + groupSelection);
+            row.add(button1);
+            keyboard.add(row);
+        } else {
+            row = new ArrayList<>();
+            InlineKeyboardButton button1 = new InlineKeyboardButton();
+            button1.setText("BACK");
+            button1.setCallbackData(command + "_page_" + (currentPageNumber - 1) + "_" + groupSelection);
+            row.add(button1);
+
+            InlineKeyboardButton button2 = new InlineKeyboardButton();
+            button2.setText("NEXT PAGE");
+            button2.setCallbackData(command + "_page_" + (currentPageNumber + 1) + "_" + groupSelection);
+            row.add(button2);
+            keyboard.add(row);
+        }
+
+        row = new ArrayList<>();
         InlineKeyboardButton button1 = new InlineKeyboardButton();
         button1.setText("REFRESH CONTENT");
         button1.setCallbackData("select_" + command + "_" + groupSelection);
