@@ -121,13 +121,12 @@ public class ProfileCommand extends Command {
         instruction += "<b>BestBuds User Commands - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n";
         instruction += "<em>If you're on desktop, triple click on the command to copy the text.</em>\n\n";
-        instruction += "<pre>&lt;date_of_birth&gt;</pre> format: yyyy-MM-dd\n\n";
         instruction += "<em>Update Self Description</em>\n";
         instruction += "<pre>  /update_desc &lt;description&gt;</pre>\n\n";
         instruction += "<em>Update Name</em>\n";
         instruction += "<pre>  /update_name &lt;first_name&gt;</pre>\n\n";
         instruction += "<em>Update DOB</em>\n";
-        instruction += "<pre>  /update_dob &lt;date_of_birth&gt;</pre>\n\n";
+        instruction += "<pre>  /update_dob &lt;yyyy-MM-dd&gt;</pre>\n\n";
         instruction += "<em>View BestBud Details</em>\n";
         instruction += "<pre>  /view_user &lt;user_code&gt;</pre>\n\n\n";
 
