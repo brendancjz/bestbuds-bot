@@ -94,7 +94,8 @@ public class ViewBestBudsCommand extends Command {
             deeds.append("<em>Name:</em> ").append(group.name).append("\n");
             deeds.append("<em>Code:</em>  ").append(group.code).append("\n");
             deeds.append("<em>Created By:</em> ").append(group.createdBy).append("\n");
-            deeds.append("<em>Created On:</em> ").append(group.getCreatedOn()).append("\n\n");
+            deeds.append("<em>Created On:</em> ").append(group.getCreatedOn()).append("\n");
+            deeds.append("<em>Description:</em> ").append(group.description).append("\n\n");
 
             deeds.append("<b><u>BestBuds Details: </u></b>\n");
             for (User user : group.users) {
@@ -102,7 +103,7 @@ public class ViewBestBudsCommand extends Command {
             }
 
         } else {
-            deeds = new StringBuilder("Missing profile details.");
+            deeds = new StringBuilder("Missing group details.");
         }
 
         return deeds.toString();

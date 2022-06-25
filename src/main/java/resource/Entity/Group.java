@@ -12,6 +12,7 @@ public class Group {
     public String code;
     public String createdBy;
     public Date createdOn;
+    public String description;
     public List<User> users;
 
     public Group() {
@@ -20,15 +21,17 @@ public class Group {
         this.code = "null";
         this.createdBy = "null";
         this.createdOn = null;
+        this.description = "null";
         this.users = new ArrayList<>();
     }
 
-    public Group(String name, String code, String createdBy, Date createdOn) {
+    public Group(String name, String code, String createdBy, Date createdOn, String description) {
         this.id = null;
         this.name = name;
         this.code = code;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
+        this.description = description;
         this.users = new ArrayList<>();
     }
 

@@ -488,6 +488,20 @@ public class PSQL {
         }
     }
 
+    public void updateGroupDesc(String groupCode, String desc) throws SQLException {
+        String sql = "UPDATE Groups SET description=? WHERE code=? ";
+        PreparedStatement statement= connection.prepareStatement(sql);
+        statement.setString(1, desc);
+        statement.setString(2, groupCode);
+        int rowsInserted = statement.executeUpdate();
+
+        if ((rowsInserted > 0)) {
+            System.out.println("[Desc] Update query successful.");
+        } else {
+            System.out.println("[Desc] Update query failed.");
+        }
+    }
+
     public void updateHasSentInitialBirthdayManagement(Integer chatId, Boolean hasSentInitial) throws SQLException {
         String sql = "UPDATE BirthdayManagement SET has_sent_initial=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
@@ -773,6 +787,7 @@ public class PSQL {
         group.code = resultSet.getString("code");
         group.createdBy = resultSet.getString("created_by");
         group.createdOn = resultSet.getDate("created_on");
+        group.description = resultSet.getString("description");
 
         return group;
     }

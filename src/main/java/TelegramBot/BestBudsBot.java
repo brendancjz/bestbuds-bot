@@ -238,6 +238,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new RemoveCommand(this, update, psql);
                 command.runCommand();
             }
+            else if (text.startsWith("/update_group_desc")) {
+                System.out.println("=== Update Group Desc Event Called === ");
+                command = new UpdateDescriptionCommand(this, update, psql);
+                command.runCommand();
+            }
             else if (text.startsWith("/update")) {
                 System.out.println("=== Update Event Called === ");
                 command = new UpdateCommand(this, update, psql);
