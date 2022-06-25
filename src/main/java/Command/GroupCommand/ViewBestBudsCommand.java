@@ -94,7 +94,9 @@ public class ViewBestBudsCommand extends Command {
                 //This should be the callback from navigating
                 System.out.println("Navigating: " + callData);
                 Integer pageNo = Integer.valueOf(callData.split("_")[3]);
+                System.out.println("PageNo: " + pageNo);
                 groupSelection = callData.split("_")[4];
+                System.out.println("GroupName: " + groupSelection);
                 Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
                 newMessage.setText(this.generateBestBudsDetails(group, pageNo));
                 if (pageNo * NUM_OF_USERS_PER_PAGE >= group.users.size()) {
