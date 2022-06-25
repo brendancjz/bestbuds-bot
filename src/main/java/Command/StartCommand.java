@@ -36,14 +36,15 @@ public class StartCommand extends Command {
             String startMsg = generateIntro(super.getFirstName(), FIRST_PAGE);
 
             if (super.getPSQL().isUserRegistered(super.getChatId())) {
+                System.out.println("code enters here");
                 startMsg += " <em>It looks like you are already registered in the database!</em>";
             } else {
-
+                System.out.println("or here");
                 super.getPSQL().addNewUser(super.getChatId(), super.getFirstName());
                 startMsg += " <em>You have been registered!</em>";
 
             }
-
+            System.out.println(startMsg);
             message.setText(startMsg);
             super.getBot().execute(message);
 
