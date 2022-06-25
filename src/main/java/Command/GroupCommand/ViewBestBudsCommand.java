@@ -92,6 +92,7 @@ public class ViewBestBudsCommand extends Command {
                 }
             } else {
                 //This should be the callback from navigating
+                System.out.println("Navigating: " + callData);
                 Integer pageNo = Integer.valueOf(callData.split("_")[3]);
                 groupSelection = callData.split("_")[4];
                 Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
@@ -123,7 +124,7 @@ public class ViewBestBudsCommand extends Command {
             }
 
             deeds.append("<b><u>BestBuds Details: </u></b>\n");
-            int count = 1;
+            int count = 0;
             for (User user : group.users) {
                 count++;
                 //Only a certain number of the users will be shown
