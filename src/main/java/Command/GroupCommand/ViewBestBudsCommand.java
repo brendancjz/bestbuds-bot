@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBestBudsCommand extends Command {
-    private static final Integer NUM_OF_USERS_PER_PAGE = 3;
+    private static final Integer NUM_OF_USERS_PER_PAGE = 5;
     private static final Integer FIRST_PAGE = 1;
     private static final String COMMAND = "viewBestBuds";
 
