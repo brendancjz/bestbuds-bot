@@ -34,16 +34,8 @@ public class StartCommand extends Command {
             if (NUM_OF_PAGES != FIRST_PAGE) message.setReplyMarkup(KeyboardMarkup.continueKB(COMMAND));
 
             String startMsg = generateIntro(super.getFirstName(), FIRST_PAGE);
+            startMsg += getRegisteredMsg();
 
-            if (super.getPSQL().isUserRegistered(super.getChatId())) {
-                System.out.println("code enters here");
-                startMsg += " <em>It looks like you are already registered in the database!</em>";
-            } else {
-                System.out.println("or here");
-                super.getPSQL().addNewUser(super.getChatId(), super.getFirstName());
-                startMsg += " <em>You have been registered!</em>";
-
-            }
             System.out.println(startMsg);
             message.setText(startMsg);
             super.getBot().execute(message);
@@ -73,16 +65,25 @@ public class StartCommand extends Command {
             setCorrectKeyboard(newMessage, currentPageNumber);
 
             if (currentPageNumber == 1) {
-                newMessage.setText(generateIntro(firstName, currentPageNumber));
+                newMessage.setText(generateIntro(firstName, currentPageNumber) + getRegisteredMsg());
             } else if (currentPageNumber == 2) {
-                newMessage.setText(generateGetStarted(currentPageNumber));
+                newMessage.setText(generateGetStarted(currentPageNumber) + getRegisteredMsg());
             } else if (currentPageNumber == 3) {
-                newMessage.setText(generateDemo(currentPageNumber));
+                newMessage.setText(generateDemo(currentPageNumber) + getRegisteredMsg());
             }
 
             super.getBot().execute(newMessage);
-        } catch (TelegramApiException e) {
+        } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private String getRegisteredMsg() throws SQLException {
+        if (super.getPSQL().isUserRegistered(super.getChatId())) {
+            return " <em>It looks like you are already registered in the database!</em>";
+        } else {
+            super.getPSQL().addNewUser(super.getChatId(), super.getFirstName());
+            return " <em>You have been registered!</em>";
         }
     }
 
