@@ -198,7 +198,7 @@ public class KeyboardMarkup {
             button1.setCallbackData(command + "_page_" + (currentPageNumber - 1) + "_" + groupSelection);
             row.add(button1);
             keyboard.add(row);
-        } else {
+        } else if (currentPageNumber > 1) {
             row = new ArrayList<>();
             InlineKeyboardButton button1 = new InlineKeyboardButton();
             button1.setText("BACK");

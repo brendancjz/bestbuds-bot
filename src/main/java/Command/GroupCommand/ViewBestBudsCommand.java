@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewBestBudsCommand extends Command {
-    private static final Integer NUM_OF_USERS_PER_PAGE = 4;
+    private static final Integer NUM_OF_USERS_PER_PAGE = 3;
     private static final Integer FIRST_PAGE = 1;
     private static final String COMMAND = "viewBestBuds";
 
@@ -92,11 +92,8 @@ public class ViewBestBudsCommand extends Command {
                 }
             } else {
                 //This should be the callback from navigating
-                System.out.println("Navigating: " + callData);
                 Integer pageNo = Integer.valueOf(callData.split("_")[2]);
-                System.out.println("PageNo: " + pageNo);
                 groupSelection = callData.split("_")[3];
-                System.out.println("GroupName: " + groupSelection);
                 Group group = super.getPSQL().getGroupDataResultSet(groupSelection);
                 newMessage.setText(this.generateBestBudsDetails(group, pageNo));
                 if (pageNo * NUM_OF_USERS_PER_PAGE >= group.users.size()) {
