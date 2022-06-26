@@ -52,7 +52,8 @@ public class User {
     }
 
     public String getBirthday() {
-        return this.dob.toLocalDate().getDayOfMonth() + " " + this.dob.toLocalDate().getMonth().toString();
+        if (this.dob != null) return this.dob.toLocalDate().getDayOfMonth() + " " + this.dob.toLocalDate().getMonth().toString();
+        return "null";
     }
 
     public static Boolean isNull(User user) {
