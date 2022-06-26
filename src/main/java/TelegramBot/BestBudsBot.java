@@ -10,8 +10,10 @@ import Command.UserCommand.UpdateCommand;
 import Command.UserCommand.ViewBestBudCommand;
 import PSQL.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.mime.Header;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -90,7 +92,9 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
                 HttpResponse httpresponse = httpclient.execute(httpget);
                 InputStream inputStream = httpresponse.getEntity().getContent();
-
+                for (HeaderElement elem : httpresponse.getEntity().getContentType().getElements()) {
+                    System.out.println(elem.getName());
+                }
                 java.io.File file = null;
 
                 FileUtils.copyInputStreamToFile(inputStream, file);
