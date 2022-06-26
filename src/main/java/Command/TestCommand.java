@@ -8,8 +8,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
 import resource.Entity.Message;
 import resource.Entity.User;
+import resource.GoogleDriveAPI.UploadBasic;
 import resource.KeyboardMarkup;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -36,20 +38,11 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
 
-            //runTestSendCommand(message, text);
-            User birthdayUser = super.getPSQL().getUserDataResultSet(107270014);
+            UploadBasic.uploadBasic();
 
-            //message.setText(runTest());
-            message.setText(sendMsg());
-            super.getBot().execute(message);
-
-            message.setText("Happy birthday brother, hope you have a great day ahead!\uD83E\uDD1F\uD83E\uDD1F\n\nFrom: Bernie");
-            super.getBot().execute(message);
-
-            message.setText("God bless you on your special day! Catch up with you soon. \uD83D\uDE4F\uD83D\uDE4F\n\nFrom: Brendan");
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
-        } catch (TelegramApiException | SQLException throwables) {
+        } catch (TelegramApiException | IOException throwables) {
             throwables.printStackTrace();
         }
     }
