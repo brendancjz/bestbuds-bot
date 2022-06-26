@@ -12,11 +12,14 @@ import PSQL.*;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Document;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class BestBudsBot extends TelegramLongPollingBot {
 
@@ -69,9 +72,20 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("onUpdateReceived.hasEditedMessage()");
             } else if (update.hasMessage() && update.getMessage().hasDocument()) {
                 System.out.println("onUpdateReceived.hasDocument()");
+
+                Document document = update.getMessage().getDocument();
+                System.out.println("Document: " + document.getFileId());
+
             } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
                 System.out.println("onUpdateReceived.hasPhoto()");
+
+                List<PhotoSize> photos = update.getMessage().getPhoto();
+                for (PhotoSize photo : photos) {
+
+                }
             } else if (update.hasMessage() && update.getMessage().hasVideo()) {
+                System.out.println("onUpdateReceived.hasVideo()");
+            } else if (update.hasMessage() && update.getMessage().hasSticker()) {
                 System.out.println("onUpdateReceived.hasVideo()");
             }
         } catch (SQLException | URISyntaxException throwables) {
