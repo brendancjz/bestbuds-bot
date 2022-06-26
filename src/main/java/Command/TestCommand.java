@@ -38,7 +38,8 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
 
-            UploadBasic.uploadBasic();
+            java.io.File filePath = new java.io.File("photo.jpg");
+            UploadBasic.uploadBasic("photo.jpg", filePath);
 
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
