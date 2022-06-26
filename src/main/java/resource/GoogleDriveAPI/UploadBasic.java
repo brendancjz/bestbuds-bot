@@ -47,7 +47,7 @@ public class UploadBasic {
         File fileMetadata = new File();
         fileMetadata.setName("photo.jpg");
         // File's content.
-        java.io.File filePath = new java.io.File("files/photo.jpg");
+        java.io.File filePath = new java.io.File("/files/photo.jpg");
         // Specify media type and file-path for file.
         FileContent mediaContent = new FileContent("image/jpeg", filePath);
         try {
