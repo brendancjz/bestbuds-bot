@@ -74,9 +74,11 @@ public class UploadBasic {
     static AccessToken refreshAccessToken() throws IOException {
             TokenResponse response = new GoogleRefreshTokenRequest(
                     new NetHttpTransport(), new GsonFactory(),
-                    "4/0AX4XfWhdcOK0NjjEZdXxgMwv7FyTHhu2-XkcrY6A5UXsdw9-8CIMMMhWTXChEFC9DOtU0Q",
+                    "1//045CaSzGXNXwxCgYIARAAGAQSNwF-L9IrKl1WNaobB4rDJYOOxQmhILhDSHGYsU8Qakbas9V4yaCpJ0U-eUfKuDFhASGkCUGDjoE",
                     "514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
-                    "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").execute();
+                    "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").setGrantType("refresh_token").execute();
+
+
             System.out.println("Access token: " + response.getAccessToken());
 
             return new AccessToken(response.getAccessToken(), null);
