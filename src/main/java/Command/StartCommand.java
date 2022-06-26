@@ -36,7 +36,6 @@ public class StartCommand extends Command {
             String startMsg = generateIntro(super.getFirstName(), FIRST_PAGE);
             startMsg += getRegisteredMsg();
 
-            System.out.println(startMsg);
             message.setText(startMsg);
             super.getBot().execute(message);
 
