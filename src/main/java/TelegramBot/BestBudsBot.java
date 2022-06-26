@@ -16,7 +16,9 @@ import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.GoogleDriveAPI.UploadBasic;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.List;
@@ -76,6 +78,9 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 Document document = update.getMessage().getDocument();
                 System.out.println("Document: " + document.getFileId());
 
+                java.io.File filePath = new java.io.File(getDocumentPathURL(document.getFileId()));
+                UploadBasic.uploadBasic(document.getFileName(), filePath);
+
             } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
                 System.out.println("onUpdateReceived.hasPhoto()");
 
@@ -88,9 +93,13 @@ public class BestBudsBot extends TelegramLongPollingBot {
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
                 System.out.println("onUpdateReceived.hasVideo()");
             }
-        } catch (SQLException | URISyntaxException throwables) {
+        } catch (SQLException | URISyntaxException | IOException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private String getDocumentPathURL(String fileId) {
+        return "https://api.telegram.org/bot" + System.getenv("BOT_TOKEN") + "/getFile?file_id=" + fileId;
     }
 
     private void groupChatCallback(Update update, Integer chatId, PSQL psql) {
