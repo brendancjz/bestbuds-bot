@@ -98,6 +98,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 java.io.File file = null;
 
                 FileUtils.copyInputStreamToFile(inputStream, file);
+                System.out.println(file == null);
                 UploadBasic.uploadBasic(document.getFileName(), file);
 
             } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
