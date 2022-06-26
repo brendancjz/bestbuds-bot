@@ -145,7 +145,7 @@ public class ViewBestBudsCommand extends Command {
 
         deeds += "<em>Name:</em> " + user.name + "\n";
         deeds += "<em>Code:</em>  " + user.code + "\n";
-        deeds += "<em>D.O.B:</em> " + user.getDob() + "\n";
+        deeds += "<em>Birthday:</em> " + user.getBirthday() + "\n";
         deeds += "<em>Description:</em> " + user.desc + "\n\n";
 
 
