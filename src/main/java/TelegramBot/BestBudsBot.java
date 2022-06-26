@@ -9,6 +9,11 @@ import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
 import Command.UserCommand.ViewBestBudCommand;
 import PSQL.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -19,6 +24,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.GoogleDriveAPI.UploadBasic;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.List;
@@ -78,8 +84,17 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 Document document = update.getMessage().getDocument();
                 System.out.println("Document: " + document.getFileId());
 
-                java.io.File filePath = new java.io.File(getDocumentPathURL(document.getFileId()));
-                UploadBasic.uploadBasic(document.getFileName(), filePath);
+
+
+                CloseableHttpClient httpclient = HttpClients.createDefault();
+                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
+                HttpResponse httpresponse = httpclient.execute(httpget);
+                InputStream inputStream = httpresponse.getEntity().getContent();
+
+                java.io.File file = null;
+
+                FileUtils.copyInputStreamToFile(inputStream, file);
+                UploadBasic.uploadBasic(document.getFileName(), file);
 
             } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
                 System.out.println("onUpdateReceived.hasPhoto()");
