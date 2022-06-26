@@ -42,6 +42,12 @@ public class TestCommand extends Command {
             //message.setText(runTest());
             message.setText(sendMsg());
             super.getBot().execute(message);
+
+            message.setText("Happy birthday brother, hope you have a great day ahead!\uD83E\uDD1F\uD83E\uDD1F\n\nFrom: Bernie");
+            super.getBot().execute(message);
+
+            message.setText("God bless you on your special day! Catch up with you soon. \uD83D\uDE4F\uD83D\uDE4F\n\nFrom: Brendan");
+            super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
@@ -49,10 +55,7 @@ public class TestCommand extends Command {
     }
 
     private String sendMsg() {
-        return "Message sent! I'm sure your BestBud will appreciate this message: \n" +
-                "\n" +
-                "\n" +
-                "Happy birthday brother, hope you have a great day ahead!\uD83E\uDD1F\uD83E\uDD1F";
+        return "Hi, today's your birthday! Here's what your BestBuds have to say about ya!";
     }
 
     private String runTest() throws SQLException {
