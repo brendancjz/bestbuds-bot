@@ -97,7 +97,9 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 try {
                     try(OutputStream outputStream = new FileOutputStream(file)){
+                        System.out.println("Trying");
                         IOUtils.copy(inputStream, outputStream);
+                        System.out.println("Done");
                     }
                 } catch (IOException e) {
                     // handle exception here
