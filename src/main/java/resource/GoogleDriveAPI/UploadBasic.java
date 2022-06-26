@@ -1,5 +1,6 @@
 package resource.GoogleDriveAPI;
 import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleRefreshTokenRequest;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.FileContent;
@@ -42,17 +43,21 @@ public class UploadBasic {
         }
 
         GoogleCredentials credentials = GoogleCredentials.create(accessToken).createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
+        System.out.println(credentials == null);
+        System.out.println(credentials.getAccessToken());
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
                 credentials);
 
-        credentials.refreshIfExpired();
+        System.out.println(requestInitializer.toString());
+
 
         // Build a new authorized API client service.
         Drive service = new Drive.Builder(new NetHttpTransport(),
                 GsonFactory.getDefaultInstance(),
                 requestInitializer)
-                .setApplicationName("Drive samples")
+                .setApplicationName("BestBuds Bot Drive")
                 .build();
+
         // Upload file photo.jpg on drive.
         File fileMetadata = new File();
         fileMetadata.setName("photo.jpg");
@@ -78,6 +83,29 @@ public class UploadBasic {
                 refreshToken, clientId, clientSecret).setScopes(Arrays.asList(DriveScopes.DRIVE_FILE)).setGrantType("refresh_token").execute();
 
         return tokenResponse.getAccessToken();
+    }
+
+    static void refreshAccessToken() throws IOException {
+        try {
+            TokenResponse response = new GoogleRefreshTokenRequest(
+                    new NetHttpTransport(), new GsonFactory(),
+                    "4/0AX4XfWhdcOK0NjjEZdXxgMwv7FyTHhu2-XkcrY6A5UXsdw9-8CIMMMhWTXChEFC9DOtU0Q",
+                    "514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
+                    "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").execute();
+            System.out.println("Access token: " + response.getAccessToken());
+        } catch (TokenResponseException e) {
+            if (e.getDetails() != null) {
+                System.err.println("Error: " + e.getDetails().getError());
+                if (e.getDetails().getErrorDescription() != null) {
+                    System.err.println(e.getDetails().getErrorDescription());
+                }
+                if (e.getDetails().getErrorUri() != null) {
+                    System.err.println(e.getDetails().getErrorUri());
+                }
+            } else {
+                System.err.println(e.getMessage());
+            }
+        }
     }
 
 }
