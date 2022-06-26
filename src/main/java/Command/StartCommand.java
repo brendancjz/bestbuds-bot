@@ -147,13 +147,9 @@ public class StartCommand extends Command {
         demo += "<b>Demostration - Page " + pageNo + " out of " + NUM_OF_PAGES + "</b>\n";
         demo += generateBBB();
         demo += "<b>New User</b>\n";
-        demo += "<pre>  /update Brendan 1999-01-01</pre>\n";
+        demo += "<pre>  /update_name Brendan Chia</pre>\n";
+        demo += "<pre>  /update_dob 1999-01-01</pre>\n";
         demo += "<pre>  /update_desc Hit me up with tech project ideas! \uD83D\uDE04</pre>\n\n";
-
-        demo += "<b>Existing User</b>\n";
-        demo += "<pre>  /update_name Bren</pre>\n";
-        demo += "<pre>  /update_dob 1999-05-12</pre>\n";
-        demo += "<pre>  /update_desc I want Apple Airpods Pro please!</pre>\n\n";
 
         demo += "<b>Join a BestBuds Group</b>\n";
         demo += "<pre>  /join SAMPLE_GRP_CODE</pre>\n\n";
