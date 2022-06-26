@@ -94,6 +94,9 @@ public class ViewGroupCommand extends Command {
             deeds += "<em>Code:</em>  " + group.code + "\n";
             deeds += "<em>Created By:</em> " + group.createdBy + "\n";
             deeds += "<em>Created On:</em> " + group.getCreatedOn() + "\n";
+            deeds += "<em>Population:</em> " + group.users.size() + " BestBuds\n";
+            deeds += "<em>Description:</em> " + group.description + "\n";
+
 
         } else {
             deeds = "Missing profile details.";

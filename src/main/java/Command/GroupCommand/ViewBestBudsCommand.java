@@ -122,7 +122,7 @@ public class ViewBestBudsCommand extends Command {
                 deeds.append("<em>Description:</em> ").append(group.description).append("\n\n");
             }
 
-            deeds.append("<b><u>BestBuds Details: </u></b>\n");
+            deeds.append("<b><u>BestBuds Details: ["+ group.users.size() +" BestBuds]</u></b>\n");
             int count = 0;
             for (User user : group.users) {
                 count++;
