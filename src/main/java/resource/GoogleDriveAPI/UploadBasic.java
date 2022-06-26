@@ -1,4 +1,6 @@
 package resource.GoogleDriveAPI;
+import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.googleapis.auth.oauth2.GoogleRefreshTokenRequest;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -13,6 +15,7 @@ import com.google.auth.oauth2.ClientId;
 import com.google.auth.oauth2.GoogleCredentials;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /* Class to demonstrate use of Drive insert file API */
@@ -28,14 +31,17 @@ public class UploadBasic {
         // TODO(developer) - See https://developers.google.com/identity for
         // guides on implementing OAuth2 for your application.
 
-        AccessToken accessToken = new AccessToken("ya29.a0ARrdaM_SM21JQ1u_Y_9dXYafSAxzjdC9t1HRsdYgRx5S2kt2hme0e8eLyBuRitKa3BhlZvOzpfSEzKBo0Mr39ueRNicWkGUI1L83bYqltcWfqgzETjDqmrzHRMGa-CIkiXkTyXRgpB-4riGncdxtfehekF9V", null);
-        //AccessToken refreshToken = new AccessToken("1//04QOX2gcP5KKACgYIARAAGAQSNwF-L9IroXiV_bxOwWb-9JKgc9A5fATY9N4PzZAFGEqlkrXkpHF4AiqFUi1li_CABFw-TdPJgJI", null);
-        ClientId clientId = ClientId.of("514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
-                "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");
+        AccessToken accessToken = new AccessToken("ya29.a0ARrdaM-1sZ-ZtFPm7uBc8EPH_6kLcI22pt48fyE723Z_DrRJo-m66r8PIgL1OAtqzXWxNubW3_mskEPJP-W7mtJqR-PxEbqFJPE4y2ELLHWdg-XaVv10rULQq1FUkRosq_c6Px9GpBAvRf57YC7Yas81FpSi", null);
+
+        System.out.println("NEW TOKEN: " + getNewToken("4/0AX4XfWhdcOK0NjjEZdXxgMwv7FyTHhu2-XkcrY6A5UXsdw9-8CIMMMhWTXChEFC9DOtU0Q",
+                "514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
+                "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"));
 
         GoogleCredentials credentials = GoogleCredentials.create(accessToken).createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
                 credentials);
+
+        credentials.refreshIfExpired();
 
         // Build a new authorized API client service.
         Drive service = new Drive.Builder(new NetHttpTransport(),
@@ -62,4 +68,12 @@ public class UploadBasic {
             throw e;
         }
     }
+
+    public static String getNewToken(String refreshToken, String clientId, String clientSecret) throws IOException {
+        TokenResponse tokenResponse = new GoogleRefreshTokenRequest(new NetHttpTransport(), GsonFactory.getDefaultInstance(),
+                refreshToken, clientId, clientSecret).setScopes(Arrays.asList(DriveScopes.DRIVE_FILE)).setGrantType("refresh_token").execute();
+
+        return tokenResponse.getAccessToken();
+    }
+
 }
