@@ -52,7 +52,11 @@ public class User {
     }
 
     public String getBirthday() {
-        if (this.dob != null) return this.dob.toLocalDate().getDayOfMonth() + " " + this.dob.toLocalDate().getMonth().toString();
+        if (this.dob != null) {
+            String birthdayMonth = this.dob.toLocalDate().getMonth().toString();
+            return this.dob.toLocalDate().getDayOfMonth() + " " + birthdayMonth.charAt(0) + birthdayMonth.substring(1).toLowerCase();
+
+        }
         return "null";
     }
 
