@@ -67,6 +67,12 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 psql.closeConnection();
             } else if (update.hasEditedMessage()) {
                 System.out.println("onUpdateReceived.hasEditedMessage()");
+            } else if (update.hasMessage() && update.getMessage().hasDocument()) {
+                System.out.println("onUpdateReceived.hasDocument()");
+            } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
+                System.out.println("onUpdateReceived.hasPhoto()");
+            } else if (update.hasMessage() && update.getMessage().hasVideo()) {
+                System.out.println("onUpdateReceived.hasVideo()");
             }
         } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
