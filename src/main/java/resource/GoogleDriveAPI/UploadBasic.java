@@ -33,9 +33,13 @@ public class UploadBasic {
 
         AccessToken accessToken = new AccessToken("ya29.a0ARrdaM-1sZ-ZtFPm7uBc8EPH_6kLcI22pt48fyE723Z_DrRJo-m66r8PIgL1OAtqzXWxNubW3_mskEPJP-W7mtJqR-PxEbqFJPE4y2ELLHWdg-XaVv10rULQq1FUkRosq_c6Px9GpBAvRf57YC7Yas81FpSi", null);
 
-        System.out.println("NEW TOKEN: " + getNewToken("4/0AX4XfWhdcOK0NjjEZdXxgMwv7FyTHhu2-XkcrY6A5UXsdw9-8CIMMMhWTXChEFC9DOtU0Q",
-                "514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
-                "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"));
+        try {
+            System.out.println("NEW TOKEN: " + getNewToken("4/0AX4XfWhdcOK0NjjEZdXxgMwv7FyTHhu2-XkcrY6A5UXsdw9-8CIMMMhWTXChEFC9DOtU0Q",
+                    "514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
+                    "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"));
+        } catch (IOException e) {
+            System.out.println("Cannot create net token");
+        }
 
         GoogleCredentials credentials = GoogleCredentials.create(accessToken).createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
