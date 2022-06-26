@@ -39,12 +39,20 @@ public class TestCommand extends Command {
             //runTestSendCommand(message, text);
             User birthdayUser = super.getPSQL().getUserDataResultSet(107270014);
 
-            message.setText(runTest());
+            //message.setText(runTest());
+            message.setText(sendMsg());
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private String sendMsg() {
+        return "Message sent! I'm sure your BestBud will appreciate this message: \n" +
+                "\n" +
+                "\n" +
+                "Happy birthday brother, hope you have a great day ahead!\uD83E\uDD1F\uD83E\uDD1F";
     }
 
     private String runTest() throws SQLException {
