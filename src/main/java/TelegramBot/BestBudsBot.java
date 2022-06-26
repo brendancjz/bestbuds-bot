@@ -35,6 +35,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
         System.out.println("onUpdateReceived called.");
         try {
             if (update.hasMessage() && update.getMessage().hasText()) {
+                System.out.println("onUpdateReceived.hasMessage && hasText()");
                 SendMessage message = new SendMessage();
                 message.setChatId(update.getMessage().getChatId().toString());
                 message.enableHtml(true);
@@ -51,6 +52,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 psql.closeConnection();
             } else if (update.hasCallbackQuery()) {
+                System.out.println("onUpdateReceived.hasCallbackQuery()");
                 Integer chatId = Integer.parseInt(update.getCallbackQuery().getMessage().getChatId().toString());
                 PSQL psql = new PSQL();
 
@@ -63,6 +65,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 }
 
                 psql.closeConnection();
+            } else if (update.hasEditedMessage()) {
+                System.out.println("onUpdateReceived.hasEditedMessage()");
             }
         } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
