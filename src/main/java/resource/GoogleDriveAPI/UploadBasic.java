@@ -32,24 +32,10 @@ public class UploadBasic {
         // TODO(developer) - See https://developers.google.com/identity for
         // guides on implementing OAuth2 for your application.
 
-        AccessToken accessToken = new AccessToken("ya29.a0ARrdaM-1sZ-ZtFPm7uBc8EPH_6kLcI22pt48fyE723Z_DrRJo-m66r8PIgL1OAtqzXWxNubW3_mskEPJP-W7mtJqR-PxEbqFJPE4y2ELLHWdg-XaVv10rULQq1FUkRosq_c6Px9GpBAvRf57YC7Yas81FpSi", null);
-
-        try {
-            System.out.println("NEW TOKEN: " + getNewToken("4/0AX4XfWhdcOK0NjjEZdXxgMwv7FyTHhu2-XkcrY6A5UXsdw9-8CIMMMhWTXChEFC9DOtU0Q",
-                    "514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
-                    "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"));
-        } catch (IOException e) {
-            System.out.println("Cannot create net token");
-        }
-
-        GoogleCredentials credentials = GoogleCredentials.create(accessToken).createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
-        System.out.println(credentials == null);
+        GoogleCredentials credentials = GoogleCredentials.create(refreshAccessToken()).createScoped(Arrays.asList(DriveScopes.DRIVE_FILE));
         System.out.println(credentials.getAccessToken());
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
                 credentials);
-
-        System.out.println(requestInitializer.toString());
-
 
         // Build a new authorized API client service.
         Drive service = new Drive.Builder(new NetHttpTransport(),
@@ -85,27 +71,15 @@ public class UploadBasic {
         return tokenResponse.getAccessToken();
     }
 
-    static void refreshAccessToken() throws IOException {
-        try {
+    static AccessToken refreshAccessToken() throws IOException {
             TokenResponse response = new GoogleRefreshTokenRequest(
                     new NetHttpTransport(), new GsonFactory(),
                     "4/0AX4XfWhdcOK0NjjEZdXxgMwv7FyTHhu2-XkcrY6A5UXsdw9-8CIMMMhWTXChEFC9DOtU0Q",
                     "514287612123-774mkhq9l83c7ieppf0b51brv4vhbhbk.apps.googleusercontent.com",
                     "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").execute();
             System.out.println("Access token: " + response.getAccessToken());
-        } catch (TokenResponseException e) {
-            if (e.getDetails() != null) {
-                System.err.println("Error: " + e.getDetails().getError());
-                if (e.getDetails().getErrorDescription() != null) {
-                    System.err.println(e.getDetails().getErrorDescription());
-                }
-                if (e.getDetails().getErrorUri() != null) {
-                    System.err.println(e.getDetails().getErrorUri());
-                }
-            } else {
-                System.err.println(e.getMessage());
-            }
-        }
+
+            return new AccessToken(response.getAccessToken(), null);
     }
 
 }
