@@ -30,8 +30,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 public class BestBudsBot extends TelegramLongPollingBot {
