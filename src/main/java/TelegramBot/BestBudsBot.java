@@ -9,16 +9,13 @@ import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
 import Command.UserCommand.ViewBestBudCommand;
 import PSQL.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.mime.Header;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Document;
@@ -28,8 +25,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.GoogleDriveAPI.UploadBasic;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 public class BestBudsBot extends TelegramLongPollingBot {
@@ -89,15 +91,23 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("FileSze: " + document.getFileSize());
                 System.out.println("MimeType: " + document.getMimeType());
 
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(new URI(getDocumentPathURL(document.getFileId())))
+                        .version(HttpClient.Version.HTTP_2)
+                        .GET()
+                        .build();
 
+                java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
 
-                CloseableHttpClient httpclient = HttpClients.createDefault();
-                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
-                HttpResponse httpresponse = httpclient.execute(httpget);
-                InputStream inputStream = httpresponse.getEntity().getContent();
-                for (HeaderElement elem : httpresponse.getEntity().getContentType().getElements()) {
-                    System.out.println(elem.getName());
-                }
+                InputStream inputStream = res.body();
+
+//                CloseableHttpClient httpclient = HttpClients.createDefault();
+//                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
+//                HttpResponse httpresponse = httpclient.execute(httpget);
+//                InputStream inputStream = httpresponse.getEntity().getContent();
+//                for (HeaderElement elem : httpresponse.getEntity().getContentType().getElements()) {
+//                    System.out.println(elem.getName());
+//                }
                 System.out.println("InputStream size: " + inputStream.available());
                 java.io.File file = new java.io.File(document.getFileName());
                 System.out.println("File Size before converting: " + file.length());
@@ -126,7 +136,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
                 System.out.println("onUpdateReceived.hasVideo()");
             }
-        } catch (SQLException | URISyntaxException | IOException throwables) {
+        } catch (SQLException | URISyntaxException | IOException | InterruptedException throwables) {
             throwables.printStackTrace();
         }
     }
