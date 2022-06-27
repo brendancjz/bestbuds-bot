@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
 import resource.Entity.Message;
 import resource.Entity.User;
-import resource.GoogleDriveAPI.UploadBasic;
 import resource.KeyboardMarkup;
 
 import java.io.IOException;
@@ -40,12 +39,9 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
 
-            java.io.File filePath = new java.io.File("photo.jpg");
-            UploadBasic.uploadBasic("photo.jpg", filePath);
-
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
-        } catch (TelegramApiException | IOException throwables) {
+        } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
     }
