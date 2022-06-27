@@ -15,11 +15,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.Document;
-import org.telegram.telegrambots.meta.api.objects.PhotoSize;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.*;
+import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.GoogleDriveAPI.UploadBasic;
 
@@ -85,42 +85,61 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("onUpdateReceived.hasDocument()");
 
                 Document document = update.getMessage().getDocument();
+                System.out.println("File ID: " + document.getFileId());
                 System.out.println("FileName: " + document.getFileName());
                 System.out.println("FileSze: " + document.getFileSize());
                 System.out.println("MimeType: " + document.getMimeType());
+                System.out.println("BOTTOKEN: " + System.getenv("BOT_TOKEN"));
 
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(getDocumentPathURL(document.getFileId())))
-                        .version(HttpClient.Version.HTTP_2)
-                        .GET()
-                        .build();
+                int chatId = Integer.parseInt(update.getMessage().getChatId().toString());
+                SendDocument doc = new SendDocument();
+                doc.setChatId(Integer.toString(chatId));
 
-                java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
+                File mediaFile = new File();
+                mediaFile.setFileId(document.getFileId());
+                mediaFile.setFileUniqueId(document.getFileUniqueId());
+                mediaFile.setFileSize(document.getFileSize());
+                mediaFile.setFilePath(document.getFileName());
+                mediaFile.getFileUrl(System.getenv("BOT_TOKEN"));
 
-                InputStream inputStream = res.body();
 
-//                CloseableHttpClient httpclient = HttpClients.createDefault();
-//                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
-//                HttpResponse httpresponse = httpclient.execute(httpget);
-//                InputStream inputStream = httpresponse.getEntity().getContent();
-//                for (HeaderElement elem : httpresponse.getEntity().getContentType().getElements()) {
-//                    System.out.println(elem.getName());
+                InputFile newDoc = new InputFile();
+                java.io.File file = new java.io.File("hello.pdf");
+                newDoc.setMedia(file, "hello");
+                //newDoc.setMedia(mediaFile, mediaFile.getFilePath());
+
+//                HttpRequest request = HttpRequest.newBuilder()
+//                        .uri(new URI(getDocumentPathURL(document.getFileId())))
+//                        .version(HttpClient.Version.HTTP_2)
+//                        .GET()
+//                        .build();
+
+//                java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
+//
+//                InputStream inputStream = res.body();
+//
+////                CloseableHttpClient httpclient = HttpClients.createDefault();
+////                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
+////                HttpResponse httpresponse = httpclient.execute(httpget);
+////                InputStream inputStream = httpresponse.getEntity().getContent();
+////                for (HeaderElement elem : httpresponse.getEntity().getContentType().getElements()) {
+////                    System.out.println(elem.getName());
+////                }
+//                System.out.println("InputStream size: " + inputStream.readAllBytes().length);
+//                java.io.File file = new java.io.File(document.getFileName());
+//                System.out.println("File Size before converting: " + file.length());
+//                System.out.println("File Name: " + file.getName());
+//                try {
+//                    try(OutputStream outputStream = new FileOutputStream(file)){
+//                        IOUtils.copy(inputStream, outputStream);
+//                        System.out.println("File Size after converting: " + file.length());
+//                    }
+//                } catch (IOException e) {
+//                    // handle exception here
+//                    System.out.println(e.getMessage());
 //                }
-                System.out.println("InputStream size: " + inputStream.readAllBytes().length);
-                java.io.File file = new java.io.File(document.getFileName());
-                System.out.println("File Size before converting: " + file.length());
-                System.out.println("File Name: " + file.getName());
-                try {
-                    try(OutputStream outputStream = new FileOutputStream(file)){
-                        IOUtils.copy(inputStream, outputStream);
-                        System.out.println("File Size after converting: " + file.length());
-                    }
-                } catch (IOException e) {
-                    // handle exception here
-                    System.out.println(e.getMessage());
-                }
-                System.out.println(file == null);
-                UploadBasic.uploadBasic(document.getFileName(), file);
+//                System.out.println(file == null);
+//                UploadBasic.uploadBasic(document.getFileName(), file);
 
             } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
                 System.out.println("onUpdateReceived.hasPhoto()");
@@ -134,7 +153,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
                 System.out.println("onUpdateReceived.hasVideo()");
             }
-        } catch (SQLException | URISyntaxException | IOException | InterruptedException throwables) {
+        } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
     }

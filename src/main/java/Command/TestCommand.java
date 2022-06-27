@@ -2,7 +2,10 @@ package Command;
 
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.File;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
@@ -32,7 +35,6 @@ public class TestCommand extends Command {
         try {
             System.out.println("TestCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText().trim();
-            int chatId = Integer.parseInt(super.getUpdate().getMessage().getChatId().toString());
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
