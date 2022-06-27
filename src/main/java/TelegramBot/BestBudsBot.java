@@ -21,7 +21,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import resource.GoogleDriveAPI.UploadBasic;
+import resource.FileResource;
 
 import java.io.*;
 import java.net.URI;
@@ -86,67 +86,24 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("onUpdateReceived.hasDocument()");
 
                 Document document = update.getMessage().getDocument();
-                String filePath = getFilePathOfUploadedFileByUser(document);
+
+                String filePath = FileResource.getFilePathOfUploadedFileByUser(document);
 
                 //TODO Save this filePath and match this to the user on his birthday
 
-                //Get File
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(getFile(filePath)))
-                        .version(HttpClient.Version.HTTP_2)
-                        .GET()
-                        .build();
 
-                java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
-
-                InputStream inputStream = res.body();
-                java.io.File file = new java.io.File(document.getFileName());
-                try {
-                    try(OutputStream outputStream = new FileOutputStream(file)){
-                        IOUtils.copy(inputStream, outputStream);
-                        System.out.println("File Size after converting: " + file.length());
-                    }
-                } catch (IOException e) {
-                    // handle exception here
-                    System.out.println(e.getMessage());
-                }
-                InputFile inputFile = new InputFile();
-                inputFile.setMedia(file, file.getName());
                 SendDocument doc = new SendDocument();
                 doc.setChatId(String.valueOf(update.getMessage().getChatId()));
-                doc.setDocument(inputFile);
+                doc.setDocument(FileResource.getInputFile(filePath));
 
                 execute(doc);
-//
-////                CloseableHttpClient httpclient = HttpClients.createDefault();
-////                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
-////                HttpResponse httpresponse = httpclient.execute(httpget);
-////                InputStream inputStream = httpresponse.getEntity().getContent();
-////                for (HeaderElement elem : httpresponse.getEntity().getContentType().getElements()) {
-////                    System.out.println(elem.getName());
-////                }
-//                System.out.println("InputStream size: " + inputStream.readAllBytes().length);
-//                java.io.File file = new java.io.File(document.getFileName());
-//                System.out.println("File Size before converting: " + file.length());
-//                System.out.println("File Name: " + file.getName());
-//                try {
-//                    try(OutputStream outputStream = new FileOutputStream(file)){
-//                        IOUtils.copy(inputStream, outputStream);
-//                        System.out.println("File Size after converting: " + file.length());
-//                    }
-//                } catch (IOException e) {
-//                    // handle exception here
-//                    System.out.println(e.getMessage());
-//                }
-//                System.out.println(file == null);
-//                UploadBasic.uploadBasic(document.getFileName(), file);
 
             } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
                 System.out.println("onUpdateReceived.hasPhoto()");
 
                 List<PhotoSize> photos = update.getMessage().getPhoto();
                 for (PhotoSize photo : photos) {
-
+                    System.out.println("Photo File Path: " + photo.getFilePath());
                 }
             } else if (update.hasMessage() && update.getMessage().hasVideo()) {
                 System.out.println("onUpdateReceived.hasVideo()");
@@ -156,31 +113,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
         } catch (SQLException | URISyntaxException | TelegramApiException | IOException | InterruptedException throwables) {
             throwables.printStackTrace();
         }
-    }
-
-    private String getFilePathOfUploadedFileByUser(Document document) throws IOException, URISyntaxException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(getURLForFilePath(document.getFileId())))
-                .version(HttpClient.Version.HTTP_2)
-                .GET()
-                .build();
-
-        java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
-
-        InputStream inputStream = res.body();
-        String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        System.out.println("InputStream Result: " + result);
-        String filePathKey = "\"file_path\":\"";
-        int idx = result.indexOf(filePathKey);
-        return result.substring(idx + filePathKey.length()).replace("\"}}", "");
-    }
-
-    private String getURLForFilePath(String fileId) {
-        return "https://api.telegram.org/bot" + System.getenv("BOT_TOKEN") + "/getFile?file_id=" + fileId;
-    }
-
-    private String getFile(String filePath) {
-        return "https://api.telegram.org/file/bot" + System.getenv("BOT_TOKEN") + "/" + filePath;
     }
 
     private void groupChatCallback(Update update, Integer chatId, PSQL psql) {
