@@ -18,6 +18,7 @@ import org.apache.http.entity.mime.Header;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Document;
@@ -88,6 +89,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("FileSze: " + document.getFileSize());
                 System.out.println("MimeType: " + document.getMimeType());
 
+
+
                 CloseableHttpClient httpclient = HttpClients.createDefault();
                 HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
                 HttpResponse httpresponse = httpclient.execute(httpget);
@@ -97,7 +100,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 }
 
                 java.io.File file = new java.io.File(document.getFileName());
-
+                System.out.println("File Size before converting: " + file.length());
+                System.out.println("File Name: " + file.getName());
                 try {
                     try(OutputStream outputStream = new FileOutputStream(file)){
                         IOUtils.copy(inputStream, outputStream);
