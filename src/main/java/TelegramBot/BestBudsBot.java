@@ -85,6 +85,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 Document document = update.getMessage().getDocument();
                 System.out.println("FileName: " + document.getFileName());
+                System.out.println("FileSze: " + document.getFileSize());
+                System.out.println("MimeType: " + document.getMimeType());
 
                 CloseableHttpClient httpclient = HttpClients.createDefault();
                 HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
@@ -98,9 +100,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 try {
                     try(OutputStream outputStream = new FileOutputStream(file)){
-                        System.out.println("Trying");
                         IOUtils.copy(inputStream, outputStream);
-                        System.out.println("Done");
+                        System.out.println("File Size after converting: " + file.length());
                     }
                 } catch (IOException e) {
                     // handle exception here
