@@ -84,6 +84,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("onUpdateReceived.hasDocument()");
 
                 Document document = update.getMessage().getDocument();
+                System.out.println("FileName: " + document.getFileName());
 
                 CloseableHttpClient httpclient = HttpClients.createDefault();
                 HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
@@ -93,7 +94,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                     System.out.println(elem.getName());
                 }
 
-                java.io.File file = null;
+                java.io.File file = new java.io.File(document.getFileName());
 
                 try {
                     try(OutputStream outputStream = new FileOutputStream(file)){
