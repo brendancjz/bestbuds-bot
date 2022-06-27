@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -108,15 +109,17 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 newDoc.setMedia(file, "hello");
                 //newDoc.setMedia(mediaFile, mediaFile.getFilePath());
 
-//                HttpRequest request = HttpRequest.newBuilder()
-//                        .uri(new URI(getDocumentPathURL(document.getFileId())))
-//                        .version(HttpClient.Version.HTTP_2)
-//                        .GET()
-//                        .build();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(new URI(getURLForFilePath(document.getFileId())))
+                        .version(HttpClient.Version.HTTP_2)
+                        .GET()
+                        .build();
 
-//                java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
-//
-//                InputStream inputStream = res.body();
+                java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
+
+                InputStream inputStream = res.body();
+                String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+                System.out.println("RESULT: " + result);
 //
 ////                CloseableHttpClient httpclient = HttpClients.createDefault();
 ////                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
@@ -155,11 +158,19 @@ public class BestBudsBot extends TelegramLongPollingBot {
             }
         } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private String getDocumentPathURL(String fileId) {
+    private String getURLForFilePath(String fileId) {
         return "https://api.telegram.org/bot" + System.getenv("BOT_TOKEN") + "/getFile?file_id=" + fileId;
+    }
+
+    private String getFile(String filePath) {
+        return "https://api.telegram.org/file/bot" + System.getenv("BOT_TOKEN") + "/" + filePath;
     }
 
     private void groupChatCallback(Update update, Integer chatId, PSQL psql) {
