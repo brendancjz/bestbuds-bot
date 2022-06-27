@@ -111,6 +111,8 @@ public class StartCommand extends Command {
                 "BestBuds Bot helps to automate this process.\n\n";
         intro += "<u>How do I use this bot?</u>\n";
         intro += "There are useful commands available to navigate and use BestBuds Bot. Continue to the next page to find out more.\n\n";
+        intro += "<u>A friend asked me to join a BestBuds group, what should I do?</u>\n";
+        intro += "You should have the command to join the group. It looks something like /join Grp1234. Simply copy and paste that command below and send the message.\n\n";
         intro += "<u>Who created this bot?</u>\n";
         intro += "<a href='brendanchia.com'>Brendan</a>\n\n\n";
         intro += "<em>You have established a connection with the server. This connection is 24/7.</em>";
