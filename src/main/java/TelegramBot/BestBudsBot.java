@@ -86,31 +86,13 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("onUpdateReceived.hasDocument()");
 
                 Document document = update.getMessage().getDocument();
-                System.out.println("File ID: " + document.getFileId());
-                System.out.println("FileName: " + document.getFileName());
-                System.out.println("FileSze: " + document.getFileSize());
-                System.out.println("MimeType: " + document.getMimeType());
-                System.out.println("BOTTOKEN: " + System.getenv("BOT_TOKEN"));
+                String filePath = getFilePathOfUploadedFileByUser(document);
 
-                int chatId = Integer.parseInt(update.getMessage().getChatId().toString());
-                SendDocument doc = new SendDocument();
-                doc.setChatId(Integer.toString(chatId));
+                //TODO Save this filePath and match this to the user on his birthday
 
-                File mediaFile = new File();
-                mediaFile.setFileId(document.getFileId());
-                mediaFile.setFileUniqueId(document.getFileUniqueId());
-                mediaFile.setFileSize(document.getFileSize());
-                mediaFile.setFilePath(document.getFileName());
-                mediaFile.getFileUrl(System.getenv("BOT_TOKEN"));
-
-
-                InputFile newDoc = new InputFile();
-                java.io.File file = new java.io.File("hello.pdf");
-                newDoc.setMedia(file, "hello");
-                //newDoc.setMedia(mediaFile, mediaFile.getFilePath());
-
+                //Get File
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(new URI(getURLForFilePath(document.getFileId())))
+                        .uri(new URI(getFile(filePath)))
                         .version(HttpClient.Version.HTTP_2)
                         .GET()
                         .build();
@@ -118,7 +100,23 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
 
                 InputStream inputStream = res.body();
-                String filePath = getFilePathFromInputStream(inputStream);
+                java.io.File file = new java.io.File(document.getFileName());
+                try {
+                    try(OutputStream outputStream = new FileOutputStream(file)){
+                        IOUtils.copy(inputStream, outputStream);
+                        System.out.println("File Size after converting: " + file.length());
+                    }
+                } catch (IOException e) {
+                    // handle exception here
+                    System.out.println(e.getMessage());
+                }
+                InputFile inputFile = new InputFile();
+                inputFile.setMedia(file, file.getName());
+                SendDocument doc = new SendDocument();
+                doc.setChatId(String.valueOf(update.getMessage().getChatId()));
+                doc.setDocument(inputFile);
+
+                execute(doc);
 //
 ////                CloseableHttpClient httpclient = HttpClients.createDefault();
 ////                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
@@ -155,23 +153,26 @@ public class BestBudsBot extends TelegramLongPollingBot {
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
                 System.out.println("onUpdateReceived.hasVideo()");
             }
-        } catch (SQLException | URISyntaxException throwables) {
+        } catch (SQLException | URISyntaxException | TelegramApiException | IOException | InterruptedException throwables) {
             throwables.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private String getFilePathFromInputStream(InputStream inputStream) throws IOException {
+    private String getFilePathOfUploadedFileByUser(Document document) throws IOException, URISyntaxException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(getURLForFilePath(document.getFileId())))
+                .version(HttpClient.Version.HTTP_2)
+                .GET()
+                .build();
+
+        java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
+
+        InputStream inputStream = res.body();
         String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        System.out.println("InputStream Result: " + result);
         String filePathKey = "\"file_path\":\"";
         int idx = result.indexOf(filePathKey);
-        String filePath = result.substring(idx + filePathKey.length()).replace("\"}}", "");
-        System.out.println("ACTUAL FILE PATH:" + filePath);
-        return filePath;
-
+        return result.substring(idx + filePathKey.length()).replace("\"}}", "");
     }
 
     private String getURLForFilePath(String fileId) {
