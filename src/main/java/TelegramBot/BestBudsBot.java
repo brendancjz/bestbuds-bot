@@ -98,7 +98,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 for (HeaderElement elem : httpresponse.getEntity().getContentType().getElements()) {
                     System.out.println(elem.getName());
                 }
-
+                System.out.println("InputStream size: " + inputStream.available());
                 java.io.File file = new java.io.File(document.getFileName());
                 System.out.println("File Size before converting: " + file.length());
                 System.out.println("File Name: " + file.getName());
