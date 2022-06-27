@@ -104,11 +104,13 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 List<PhotoSize> photos = update.getMessage().getPhoto();
                 for (PhotoSize photo : photos) {
                     System.out.println("Photo File Path: " + photo.getFilePath());
+                    System.out.println("Photo File Id: " + photo.getFileId());
+                    System.out.println("Photo File Size: " + photo.getFileSize());
                 }
             } else if (update.hasMessage() && update.getMessage().hasVideo()) {
                 System.out.println("onUpdateReceived.hasVideo()");
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
-                System.out.println("onUpdateReceived.hasVideo()");
+                System.out.println("onUpdateReceived.hasSticker()");
             }
         } catch (SQLException | URISyntaxException | TelegramApiException | IOException | InterruptedException throwables) {
             throwables.printStackTrace();
