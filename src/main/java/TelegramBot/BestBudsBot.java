@@ -118,8 +118,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
 
                 InputStream inputStream = res.body();
-                String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-                System.out.println("RESULT: " + result);
+                String filePath = getFilePathFromInputStream(inputStream);
 //
 ////                CloseableHttpClient httpclient = HttpClients.createDefault();
 ////                HttpGet httpget = new HttpGet(getDocumentPathURL(document.getFileId()));
@@ -163,6 +162,16 @@ public class BestBudsBot extends TelegramLongPollingBot {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getFilePathFromInputStream(InputStream inputStream) throws IOException {
+        String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
+        String filePathKey = "\"file_path\":\"";
+        int idx = result.indexOf(filePathKey);
+        String filePath = result.substring(idx + filePathKey.length()).replace("\"}}", "");
+        System.out.println("ACTUAL FILE PATH:" + filePath);
+        return filePath;
+
     }
 
     private String getURLForFilePath(String fileId) {
