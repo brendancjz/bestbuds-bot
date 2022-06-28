@@ -17,9 +17,9 @@ import java.nio.charset.StandardCharsets;
 public class FileResource {
 
 
-    public static String getFilePathOfUploadedFileByUser(Document document) throws IOException, URISyntaxException, InterruptedException {
+    public static String getFilePathOfUploadedFileByUser(String fileId) throws IOException, URISyntaxException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(getURLForFilePath(document.getFileId())))
+                .uri(new URI(getURLForFilePath(fileId)))
                 .version(HttpClient.Version.HTTP_2)
                 .GET()
                 .build();

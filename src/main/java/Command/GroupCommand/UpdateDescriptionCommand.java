@@ -41,6 +41,8 @@ public class UpdateDescriptionCommand extends Command {
                 super.getPSQL().updateGroupDesc(groupCode, desc);
                 Group updatedGroup = super.getPSQL().getGroupDataResultSet(groupCode);
                 message.setText("Successfully updated <em>" + updatedGroup.name + "</em> description:\n" + desc);
+            } else {
+                message.setText("Sorry, incorrect formatting or group does not exist. Please try again.");
             }
 
             super.getBot().execute(message);

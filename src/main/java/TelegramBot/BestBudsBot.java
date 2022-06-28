@@ -17,6 +17,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.File;
@@ -87,7 +88,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 Document document = update.getMessage().getDocument();
 
-                String filePath = FileResource.getFilePathOfUploadedFileByUser(document);
+                String filePath = FileResource.getFilePathOfUploadedFileByUser(document.getFileId());
 
                 //TODO Save this filePath and match this to the user on his birthday
 
@@ -102,11 +103,23 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("onUpdateReceived.hasPhoto()");
 
                 List<PhotoSize> photos = update.getMessage().getPhoto();
+                String chosenFileId = "";
+                Integer chosenFileSize = -1;
                 for (PhotoSize photo : photos) {
+                    chosenFileSize = Math.max(photo.getFileSize(), chosenFileSize);
+                    if (chosenFileSize == photo.getFileSize()) chosenFileId = photo.getFileId();
                     System.out.println("Photo File Path: " + photo.getFilePath());
                     System.out.println("Photo File Id: " + photo.getFileId());
                     System.out.println("Photo File Size: " + photo.getFileSize());
                 }
+
+                System.out.println("Chosen File Size: " + chosenFileSize);
+                String filePath = FileResource.getFilePathOfUploadedFileByUser(chosenFileId);
+
+                SendPhoto photo = new SendPhoto();
+                photo.setChatId(String.valueOf(update.getMessage().getChatId()));
+                photo.setPhoto(FileResource.getInputFile(filePath));
+                execute(photo);
             } else if (update.hasMessage() && update.getMessage().hasVideo()) {
                 System.out.println("onUpdateReceived.hasVideo()");
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
