@@ -107,7 +107,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 Integer chosenFileSize = -1;
                 for (PhotoSize photo : photos) {
                     chosenFileSize = Math.max(photo.getFileSize(), chosenFileSize);
-                    if (chosenFileSize == photo.getFileSize()) chosenFileId = photo.getFileId();
+                    if (chosenFileSize.equals(photo.getFileSize())) chosenFileId = photo.getFileId();
                     System.out.println("Photo File Path: " + photo.getFilePath());
                     System.out.println("Photo File Id: " + photo.getFileId());
                     System.out.println("Photo File Size: " + photo.getFileSize());
