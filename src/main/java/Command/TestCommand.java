@@ -14,7 +14,11 @@ import resource.Entity.User;
 import resource.KeyboardMarkup;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -41,8 +45,23 @@ public class TestCommand extends Command {
 
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
-        } catch (TelegramApiException throwables) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("https://api.telegram.org/file/bot5225985858:AAELHLAKvBfIDQuEKlNCCImrQFb_7ob7v7Y/documents/file_27.jpg"))
+                    .version(HttpClient.Version.HTTP_2)
+                    .GET()
+                    .build();
+
+            java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
+            InputStream inputStream = res.body();
+            System.out.println("InputStream: " + inputStream.available());
+        } catch (TelegramApiException | URISyntaxException throwables) {
             throwables.printStackTrace();
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException Called");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("IOException Called");
+            e.printStackTrace();
         }
     }
 
