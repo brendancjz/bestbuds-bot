@@ -54,7 +54,7 @@ public class TestCommand extends Command {
 
             java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
             InputStream inputStream = res.body();
-            System.out.println("InputStream: " + inputStream.available());
+            System.out.println("InputStream.readAllBytes: " + inputStream.readAllBytes().length);
         } catch (TelegramApiException | URISyntaxException throwables) {
             throwables.printStackTrace();
         } catch (InterruptedException e) {
