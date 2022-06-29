@@ -795,6 +795,24 @@ public class PSQL {
         return files;
     }
 
+
+    public Message getMessageByMessageText(String receiverCode, String text) throws SQLException {
+        System.out.println("PSQL.getMessageByMessageText()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Message WHERE user_code_to = ? message = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, receiverCode);
+        statement.setString(2, text);
+
+        ResultSet resultSet = statement.executeQuery();
+        Message message = new Message();
+        while (resultSet.next()) {
+            message = this.convertResultSetToMessage(resultSet);
+        }
+
+        return message;
+    }
+
     private File convertResultSetToFile(ResultSet resultSet) throws SQLException {
         File file = new File();
         file.id = resultSet.getInt("file_id");
@@ -975,5 +993,4 @@ public class PSQL {
         }
 
     }
-
 }

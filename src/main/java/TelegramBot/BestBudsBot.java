@@ -5,6 +5,7 @@ import Command.AnalyticCommand.UserAnalyticsCommand;
 import Command.GroupCommand.*;
 import Command.MessageCommand.MessageComand;
 import Command.MessageCommand.SendCommand;
+import Command.MessageCommand.SendFileCommand;
 import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
 import Command.UserCommand.ViewBestBudCommand;
@@ -83,35 +84,17 @@ public class BestBudsBot extends TelegramLongPollingBot {
             } else if (update.hasEditedMessage()) {
                 System.out.println("onUpdateReceived.hasEditedMessage()");
             } else if (doesMessageContainsFile(update)) {
-                String filePath = FileResource.getFilePathOfUploadedFileByUser(FileResource.getFileIdFromUpdate(update));
-
-                //TODO Save this filePath and match this to the user on his birthday
-                String chatId = update.getMessage().getChatId().toString();
-                String fileType = getFileType(update);
-                FileResource.sendFileToUser(this, chatId, fileType, filePath);
+                //User can send files to other users for their birthday message.
+                //Only continue if latest_text of user is "/send" message
+                //If not, just set a text saying that files are accepted only after the /send msg
+                PSQL psql = new PSQL();
+                Command sendFileCommand = new SendFileCommand(this, update, psql);
+                sendFileCommand.runCommand();
+                psql.closeConnection();
             }
-        } catch (SQLException | URISyntaxException | IOException | InterruptedException | TelegramApiException throwables) {
+        } catch (SQLException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
-    }
-
-    private String getFileType(Update update) {
-        String fileId = "";
-        if (update.getMessage().hasDocument()) {
-            System.out.println("onUpdateReceived.hasDocument()");
-            fileId = File.DOCUMENT;
-        } else if (update.getMessage().hasPhoto()) {
-            System.out.println("onUpdateReceived.hasPhoto()");
-            fileId = File.PHOTO;
-        } else if (update.getMessage().hasVideo()) {
-            System.out.println("onUpdateReceived.hasVideo()");
-            fileId = File.VIDEO;
-        } else if (update.getMessage().hasSticker()) {
-            System.out.println("onUpdateReceived.hasSticker()");
-            fileId = File.STICKER;
-        }
-
-        return fileId;
     }
 
     private void groupChatCallback(Update update, Integer chatId, PSQL psql) {

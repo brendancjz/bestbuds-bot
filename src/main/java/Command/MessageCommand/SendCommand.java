@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class SendCommand extends Command {
+    public static final String COMMAND = "send";
     public SendCommand(BestBudsBot bot, Update update, PSQL psql) throws URISyntaxException, SQLException {
         super(bot, update, psql);
     }
