@@ -74,4 +74,9 @@ public class FileResource {
         System.out.println(url.replace(System.getenv("BOT_TOKEN"), "<bot_token>"));
         return url;
     }
+
+    public static InputFile getBirthdaySticker() throws InterruptedException, IOException, URISyntaxException {
+        String bdayStickerBlueBird = "stickers/file_35.webp";
+        return getInputFile(bdayStickerBlueBird);
+    }
 }

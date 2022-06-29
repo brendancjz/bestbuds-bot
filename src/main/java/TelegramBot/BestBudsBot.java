@@ -83,74 +83,74 @@ public class BestBudsBot extends TelegramLongPollingBot {
             } else if (update.hasEditedMessage()) {
                 System.out.println("onUpdateReceived.hasEditedMessage()");
             } else if (doesMessageContainsFile(update)) {
-                System.out.println("onUpdateReceived.hasDocument()");
-
-                Document document = update.getMessage().getDocument();
-
-                String filePath = FileResource.getFilePathOfUploadedFileByUser(document.getFileId());
+                String filePath = FileResource.getFilePathOfUploadedFileByUser(getFileIdFromUpdate(update));
 
                 //TODO Save this filePath and match this to the user on his birthday
-
-// TO BE DONE WHEN USER"S BIRTHDAY
-//                SendDocument doc = new SendDocument();
-//                doc.setChatId(String.valueOf(update.getMessage().getChatId()));
-//                doc.setDocument(FileResource.getInputFile(filePath));
-//
-//                execute(doc);
-
-            } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
-                System.out.println("onUpdateReceived.hasPhoto()");
-
-                List<PhotoSize> photos = update.getMessage().getPhoto();
-                String chosenFileId = "";
-                Integer chosenFileSize = -1;
-                for (PhotoSize photo : photos) {
-                    chosenFileSize = Math.max(photo.getFileSize(), chosenFileSize);
-                    if (chosenFileSize.equals(photo.getFileSize())) chosenFileId = photo.getFileId();
-                }
-
-                String filePath = FileResource.getFilePathOfUploadedFileByUser(chosenFileId);
-
-                //TODO Save this filePath and match this to the user on his birthday
-
-                // TO BE DONE WHEN USER"S BIRTHDAY
-//                SendPhoto photo = new SendPhoto();
-//                photo.setChatId(String.valueOf(update.getMessage().getChatId()));
-//                photo.setPhoto(FileResource.getInputFile(filePath));
-//                execute(photo);
-            } else if (update.hasMessage() && update.getMessage().hasVideo()) {
-                System.out.println("onUpdateReceived.hasVideo()");
-
-                Video video = update.getMessage().getVideo();
-
-                String filePath = FileResource.getFilePathOfUploadedFileByUser(video.getFileId());
-
-                SendVideo vid = new SendVideo();
-                vid.setChatId(String.valueOf(update.getMessage().getChatId()));
-                vid.setVideo(FileResource.getInputFile(filePath));
-                execute(vid);
-
-            } else if (update.hasMessage() && update.getMessage().hasSticker()) {
-                System.out.println("onUpdateReceived.hasSticker()");
-
-                Sticker sticker = update.getMessage().getSticker();
-
-                String filePath = FileResource.getFilePathOfUploadedFileByUser(sticker.getFileId());
-
-                SendSticker stick = new SendSticker();
-                stick.setChatId(String.valueOf(update.getMessage().getChatId()));
-                stick.setSticker(FileResource.getInputFile(filePath));
-                execute(stick);
+                this.sendFileToUser(update, filePath);
             }
         } catch (SQLException | URISyntaxException | IOException | InterruptedException | TelegramApiException throwables) {
             throwables.printStackTrace();
         }
     }
 
+    private String getFileIdFromUpdate(Update update) {
+        String fileId = "";
+        if (update.getMessage().hasDocument()) {
+            System.out.println("onUpdateReceived.hasDocument()");
+            fileId = update.getMessage().getDocument().getFileId();
+        } else if (update.getMessage().hasPhoto()) {
+            System.out.println("onUpdateReceived.hasPhoto()");
+            List<PhotoSize> photos = update.getMessage().getPhoto();
+            Integer chosenFileSize = -1;
+            for (PhotoSize photo : photos) {
+                chosenFileSize = Math.max(photo.getFileSize(), chosenFileSize);
+                if (chosenFileSize.equals(photo.getFileSize())) fileId = photo.getFileId();
+            }
+        } else if (update.getMessage().hasVideo()) {
+            System.out.println("onUpdateReceived.hasVideo()");
+            fileId = update.getMessage().getVideo().getFileId();
+        } else if (update.getMessage().hasSticker()) {
+            System.out.println("onUpdateReceived.hasSticker()");
+            fileId = update.getMessage().getSticker().getFileId();
+        }
+
+        return fileId;
+    }
+
+    private void sendFileToUser(Update update, String filePath) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        if (update.getMessage().hasDocument()) {
+            System.out.println("onUpdateReceived.hasDocument()");
+            SendDocument doc = new SendDocument();
+            doc.setChatId(String.valueOf(update.getMessage().getChatId()));
+            doc.setDocument(FileResource.getInputFile(filePath));
+            execute(doc);
+            //
+        } else if (update.getMessage().hasPhoto()) {
+            System.out.println("onUpdateReceived.hasPhoto()");
+            SendPhoto photo = new SendPhoto();
+            photo.setChatId(String.valueOf(update.getMessage().getChatId()));
+            photo.setPhoto(FileResource.getInputFile(filePath));
+            execute(photo);
+        } else if (update.getMessage().hasVideo()) {
+            System.out.println("onUpdateReceived.hasVideo()");
+            SendVideo vid = new SendVideo();
+            vid.setChatId(String.valueOf(update.getMessage().getChatId()));
+            vid.setVideo(FileResource.getInputFile(filePath));
+            execute(vid);
+        } else if (update.getMessage().hasSticker()) {
+            System.out.println("onUpdateReceived.hasSticker()");
+            SendSticker stick = new SendSticker();
+            stick.setChatId(String.valueOf(update.getMessage().getChatId()));
+            stick.setSticker(FileResource.getInputFile(filePath));
+            execute(stick);
+        }
+    }
+
     private boolean doesMessageContainsFile(Update update) {
-        return update.hasMessage() && update.getMessage().hasDocument() ||
-                update.hasMessage() && update.getMessage().hasPhoto() ||
-                update.hasMessage() && update.getMessage().hasVideo();
+        return update.hasMessage() && (update.getMessage().hasDocument() ||
+                update.getMessage().hasPhoto() ||
+                update.getMessage().hasVideo() ||
+                update.getMessage().hasSticker());
 
     }
 

@@ -3,12 +3,15 @@ package Timer;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.BirthdayManagement;
 import resource.Entity.Group;
 import resource.Entity.Message;
 import resource.Entity.User;
+import resource.FileResource;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -65,6 +68,11 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                         List<Message> messages = psql.getUserMessages(user.code);
                         if (messages.size() > 0) {
+                            //Send happy birthday sticker
+                            SendSticker bdaySticker = new SendSticker();
+                            bdaySticker.setChatId(user.chatId.toString());
+                            bdaySticker.setSticker(FileResource.getBirthdaySticker());
+                            super.getBot().execute(bdaySticker);
                             message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
                             super.getBot().execute(message);
                         }
@@ -89,7 +97,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 }
 
                 psql.closeConnection();
-            } catch (SQLException | URISyntaxException | TelegramApiException e) {
+            } catch (SQLException | URISyntaxException | TelegramApiException | InterruptedException | IOException e) {
                 e.printStackTrace();
             }
         };
