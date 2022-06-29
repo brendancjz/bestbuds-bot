@@ -13,6 +13,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLOutput;
 
 public class FileResource {
 
@@ -67,6 +68,8 @@ public class FileResource {
     }
 
     private static String getFile(String filePath) {
-        return "https://api.telegram.org/file/bot" + System.getenv("BOT_TOKEN") + "/" + filePath;
+        String url = "https://api.telegram.org/file/bot" + System.getenv("BOT_TOKEN") + "/" + filePath;
+        System.out.println(url);
+        return url;
     }
 }
