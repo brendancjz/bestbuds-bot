@@ -45,9 +45,10 @@ public class TestCommand extends Command {
 
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
-            String url = text.split(" ")[1];
-            Integer messageId = Integer.valueOf(text.split(" ")[2]);
-            super.getPSQL().addFile(url, messageId);
+            String type = text.split(" ")[1];
+            String url = text.split(" ")[2];
+            Integer messageId = Integer.valueOf(text.split(" ")[3]);
+            super.getPSQL().addFile(type, url, messageId);
         } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }

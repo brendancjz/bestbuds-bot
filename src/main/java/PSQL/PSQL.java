@@ -235,13 +235,14 @@ public class PSQL {
         return false;
     }
 
-    public Boolean addFile(String filePath, Integer messageId) throws SQLException {
-        String sql = "INSERT INTO Files (message_id,file_path,created_on) VALUES (?, ?,?)";
+    public Boolean addFile(String fileType, String filePath, Integer messageId) throws SQLException {
+        String sql = "INSERT INTO Files (message_id,file_type,file_path,created_on) VALUES (?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         preparedStatement.setInt(1, messageId);
-        preparedStatement.setString(2, filePath);
-        preparedStatement.setDate(3, Date.valueOf(LocalDate.now()));
+        preparedStatement.setString(2, fileType);
+        preparedStatement.setString(3, filePath);
+        preparedStatement.setDate(4, Date.valueOf(LocalDate.now()));
 
         int rowsInserted = preparedStatement.executeUpdate();
         if (rowsInserted > 0) {
@@ -779,6 +780,7 @@ public class PSQL {
     private File convertResultSetToFile(ResultSet resultSet) throws SQLException {
         File file = new File();
         file.id = resultSet.getInt("file_id");
+        file.type = resultSet.getString("file_type");
         file.path = resultSet.getString("file_path");
         file.createdOn = resultSet.getDate("created_on");
 

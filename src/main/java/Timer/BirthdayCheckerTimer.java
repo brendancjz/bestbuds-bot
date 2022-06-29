@@ -5,10 +5,7 @@ import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import resource.Entity.BirthdayManagement;
-import resource.Entity.Group;
-import resource.Entity.Message;
-import resource.Entity.User;
+import resource.Entity.*;
 import resource.FileResource;
 
 import java.io.IOException;
@@ -80,6 +77,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         for (Message msg : messages) {
                             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
                             super.getBot().execute(message);
+                            for (File file : msg.files) {
+                                FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+                            }
                             psql.updateUserMessageToSent(msg.id);
                         }
 

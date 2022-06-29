@@ -18,9 +18,9 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
-import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.File;
 import resource.FileResource;
 
 import java.io.*;
@@ -86,11 +86,32 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 String filePath = FileResource.getFilePathOfUploadedFileByUser(FileResource.getFileIdFromUpdate(update));
 
                 //TODO Save this filePath and match this to the user on his birthday
-                FileResource.sendFileToUser(this, update, filePath);
+                String chatId = update.getMessage().getChatId().toString();
+                String fileType = getFileType(update);
+                FileResource.sendFileToUser(this, chatId, fileType, filePath);
             }
         } catch (SQLException | URISyntaxException | IOException | InterruptedException | TelegramApiException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private String getFileType(Update update) {
+        String fileId = "";
+        if (update.getMessage().hasDocument()) {
+            System.out.println("onUpdateReceived.hasDocument()");
+            fileId = File.DOCUMENT;
+        } else if (update.getMessage().hasPhoto()) {
+            System.out.println("onUpdateReceived.hasPhoto()");
+            fileId = File.PHOTO;
+        } else if (update.getMessage().hasVideo()) {
+            System.out.println("onUpdateReceived.hasVideo()");
+            fileId = File.VIDEO;
+        } else if (update.getMessage().hasSticker()) {
+            System.out.println("onUpdateReceived.hasSticker()");
+            fileId = File.STICKER;
+        }
+
+        return fileId;
     }
 
     private void groupChatCallback(Update update, Integer chatId, PSQL psql) {

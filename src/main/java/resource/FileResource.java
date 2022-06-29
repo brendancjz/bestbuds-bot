@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.File;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -113,30 +114,30 @@ public class FileResource {
         return fileId;
     }
 
-    public static void sendFileToUser(BestBudsBot bot, Update update, String filePath) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
-        if (update.getMessage().hasDocument()) {
+    public static void sendFileToUser(BestBudsBot bot, String chatId, String fileType, String filePath) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        if (fileType.equals(File.DOCUMENT)) {
             System.out.println("onUpdateReceived.hasDocument()");
             SendDocument doc = new SendDocument();
-            doc.setChatId(String.valueOf(update.getMessage().getChatId()));
+            doc.setChatId(String.valueOf(chatId));
             doc.setDocument(FileResource.getInputFile(filePath));
             bot.execute(doc);
             //
-        } else if (update.getMessage().hasPhoto()) {
+        } else if (fileType.equals(File.PHOTO)) {
             System.out.println("onUpdateReceived.hasPhoto()");
             SendPhoto photo = new SendPhoto();
-            photo.setChatId(String.valueOf(update.getMessage().getChatId()));
+            photo.setChatId(String.valueOf(chatId));
             photo.setPhoto(FileResource.getInputFile(filePath));
             bot.execute(photo);
-        } else if (update.getMessage().hasVideo()) {
+        } else if (fileType.equals(File.VIDEO)) {
             System.out.println("onUpdateReceived.hasVideo()");
             SendVideo vid = new SendVideo();
-            vid.setChatId(String.valueOf(update.getMessage().getChatId()));
+            vid.setChatId(String.valueOf(chatId));
             vid.setVideo(FileResource.getInputFile(filePath));
             bot.execute(vid);
-        } else if (update.getMessage().hasSticker()) {
+        } else if (fileType.equals(File.STICKER)) {
             System.out.println("onUpdateReceived.hasSticker()");
             SendSticker stick = new SendSticker();
-            stick.setChatId(String.valueOf(update.getMessage().getChatId()));
+            stick.setChatId(String.valueOf(chatId));
             stick.setSticker(FileResource.getInputFile(filePath));
             bot.execute(stick);
         }
