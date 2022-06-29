@@ -52,7 +52,8 @@ public class FileResource {
 
         java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
         InputStream inputStream = res.body();
-        java.io.File file = new java.io.File(filePath);
+        System.out.println("InputStream FileSize: " + inputStream.readAllBytes().length);
+        java.io.File file = new java.io.File("BestBudsBot_Logo.png");
         try {
             try(OutputStream outputStream = new FileOutputStream(file)){
                 IOUtils.copy(inputStream, outputStream);
