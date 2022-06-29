@@ -64,7 +64,7 @@ public class SendFileCommand extends Command {
         msg += "Sorry, please send your pictures and videos ONLY after sending a birthday message to a bestbud. " +
                 "This allows the bot to map your media files to that birthday message.\n\n" +
                 "To send media files along with your birthday message, send the text message first with this command:" +
-                "<pre>  /send <user_code> <message></pre>" +
+                "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>" +
                 "Next, send your media files immediately after.";
 
         return msg;
