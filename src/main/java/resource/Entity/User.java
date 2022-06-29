@@ -12,6 +12,7 @@ public class User {
     public String code;
     public String desc;
     public Date dob;
+    public String latestText;
     public List<Group> groups;
 
     public User() {
@@ -20,15 +21,7 @@ public class User {
         this.code = "null";
         this.desc = "null";
         this.dob = null;
-        this.groups = new ArrayList<>();
-    }
-
-    public User(String name, String code, String desc, Date dob) {
-        this.chatId = null;
-        this.name = name;
-        this.code = code;
-        this.desc = desc;
-        this.dob = dob;
+        this.latestText = "null";
         this.groups = new ArrayList<>();
     }
 

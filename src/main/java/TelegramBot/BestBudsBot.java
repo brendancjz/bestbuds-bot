@@ -199,23 +199,30 @@ public class BestBudsBot extends TelegramLongPollingBot {
     private void personalChatMessage(SendMessage message, Update update, PSQL psql) {
         try {
             String text = update.getMessage().getText().trim();
+
+            //Store text into db of this user if he is registered.
+            Integer chatId = Integer.parseInt(update.getMessage().getChatId().toString());
+            psql.updateUserLatestText(chatId, text);
+
             Command command;
             //Universal Commands. No need to update Query and check User.
+            if (text.startsWith("/start")) {
+                System.out.println("=== Start Event Called === ");
+                command = new StartCommand(this, update, psql);
+                command.runCommand();
+                return;
+            }
+
             if (text.startsWith("/test")) {
                 System.out.println("=== Testing Event Called ===");
                 command = new TestCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
+
             if (text.startsWith("/user_analytics")) {
                 System.out.println("=== Analytics Event Called ===");
                 command = new UserAnalyticsCommand(this, update, psql);
-                command.runCommand();
-                return;
-            }
-            if (text.startsWith("/start")) {
-                System.out.println("=== Start Event Called === ");
-                command = new StartCommand(this, update, psql);
                 command.runCommand();
                 return;
             }

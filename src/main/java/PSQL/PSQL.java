@@ -448,6 +448,24 @@ public class PSQL {
         return false;
     }
 
+    public void updateUserLatestText(Integer chatId, String text) throws SQLException {
+        boolean userExists = isUserRegistered(chatId);
+        if (!userExists) return;
+
+        String sql = "UPDATE Users SET latest_text=? WHERE chat_id=? ";
+        PreparedStatement statement= connection.prepareStatement(sql);
+        statement.setString(1, text);
+        statement.setInt(2, chatId);
+        int rowsInserted = statement.executeUpdate();
+
+        if ((rowsInserted > 0)) {
+            System.out.println("[Latest Text] Update query successful.");
+        } else {
+            System.out.println("[Latest Text] Update query failed.");
+        }
+
+    }
+
     public void updateUserDOB(int chatId, String text) throws SQLException {
         String sql = "UPDATE Users SET dob=? WHERE chat_id=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
@@ -807,6 +825,7 @@ public class PSQL {
         user.code = resultSet.getString("code");
         user.dob = resultSet.getDate("dob");
         user.desc = resultSet.getString("description");
+        user.latestText = resultSet.getString("latest_text");
         user.groups = this.getGroupsFromUser(user.chatId);
 
         return user;
@@ -956,4 +975,5 @@ public class PSQL {
         }
 
     }
+
 }

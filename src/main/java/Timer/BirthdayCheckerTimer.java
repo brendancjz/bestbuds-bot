@@ -58,42 +58,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
                     //Today is birthday
                     if (birthday.equals(dateNow)) {
-                        System.out.println("User " + user.name + " birthday is today, " + birthday.toString());
-                        SendMessage message = new SendMessage();
-                        message.setChatId(user.chatId.toString());
-                        message.enableHtml(true);
-
-                        List<Message> messages = psql.getUserMessages(user.code);
-                        if (messages.size() > 0) {
-                            //Send happy birthday sticker
-                            SendSticker bdaySticker = new SendSticker();
-                            bdaySticker.setChatId(user.chatId.toString());
-                            bdaySticker.setSticker(FileResource.getBirthdaySticker());
-                            super.getBot().execute(bdaySticker);
-                            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
-                            super.getBot().execute(message);
-                        }
-
-                        for (Message msg : messages) {
-                            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-                            super.getBot().execute(message);
-                            for (File file : msg.files) {
-                                FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
-                            }
-                            psql.updateUserMessageToSent(msg.id);
-                        }
-
-                        //Send a message to other bestbuds to inform them that today is who's birthday
-                        for (Group group : user.groups) {
-                            List<User> otherUsers = psql.getUsersFromGroupExceptUser(group.code, user.chatId);
-                            for (User otherUser : otherUsers) {
-                                SendMessage userBdayTdyMsg = new SendMessage();
-                                userBdayTdyMsg.setChatId(otherUser.chatId.toString());
-                                userBdayTdyMsg.enableHtml(true);
-                                userBdayTdyMsg.setText("Hi, today is " + user.name + " from " + group.name + " birthday!");
-                                super.getBot().execute(userBdayTdyMsg);
-                            }
-                        }
+                        runBirthdayEvent(user, psql, birthday);
                     }
                 }
 
@@ -149,6 +114,45 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 e.printStackTrace();
             }
         };
+    }
+
+    private void runBirthdayEvent(User user, PSQL psql, Date birthday) throws SQLException, InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        System.out.println("User " + user.name + " birthday is today, " + birthday.toString());
+        SendMessage message = new SendMessage();
+        message.setChatId(user.chatId.toString());
+        message.enableHtml(true);
+
+        List<Message> messages = psql.getUserMessages(user.code);
+        if (messages.size() > 0) {
+            //Send happy birthday sticker
+            SendSticker bdaySticker = new SendSticker();
+            bdaySticker.setChatId(user.chatId.toString());
+            bdaySticker.setSticker(FileResource.getBirthdaySticker());
+            super.getBot().execute(bdaySticker);
+            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+            super.getBot().execute(message);
+        }
+
+        for (Message msg : messages) {
+            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+            super.getBot().execute(message);
+            for (File file : msg.files) {
+                FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+            }
+            psql.updateUserMessageToSent(msg.id);
+        }
+
+        //Send a message to other bestbuds to inform them that today is who's birthday
+        for (Group group : user.groups) {
+            List<User> otherUsers = psql.getUsersFromGroupExceptUser(group.code, user.chatId);
+            for (User otherUser : otherUsers) {
+                SendMessage userBdayTdyMsg = new SendMessage();
+                userBdayTdyMsg.setChatId(otherUser.chatId.toString());
+                userBdayTdyMsg.enableHtml(true);
+                userBdayTdyMsg.setText("Hi, today is " + user.name + " from " + group.name + " birthday!");
+                super.getBot().execute(userBdayTdyMsg);
+            }
+        }
     }
 
     private void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException {

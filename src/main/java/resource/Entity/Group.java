@@ -25,16 +25,6 @@ public class Group {
         this.users = new ArrayList<>();
     }
 
-    public Group(String name, String code, String createdBy, Date createdOn, String description) {
-        this.id = null;
-        this.name = name;
-        this.code = code;
-        this.createdBy = createdBy;
-        this.createdOn = createdOn;
-        this.description = description;
-        this.users = new ArrayList<>();
-    }
-
     public String getName() {
         return this.name;
     }
