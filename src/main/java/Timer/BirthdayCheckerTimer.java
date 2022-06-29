@@ -155,6 +155,34 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
+    public void runBirthdayEventForBirthdayUserOnly(User user, PSQL psql, Date birthday) throws SQLException, InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        System.out.println("BirthdayCheckerTimer.runBirthdayEventForBirthdayUserOnly()");
+        System.out.println("User " + user.name + " birthday is today, " + birthday.toString());
+        SendMessage message = new SendMessage();
+        message.setChatId(user.chatId.toString());
+        message.enableHtml(true);
+
+        List<Message> messages = psql.getUserMessages(user.code);
+        if (messages.size() > 0) {
+            //Send happy birthday sticker
+            SendSticker bdaySticker = new SendSticker();
+            bdaySticker.setChatId(user.chatId.toString());
+            bdaySticker.setSticker(FileResource.getBirthdaySticker());
+            super.getBot().execute(bdaySticker);
+            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+            super.getBot().execute(message);
+        }
+
+        for (Message msg : messages) {
+            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+            super.getBot().execute(message);
+            for (File file : msg.files) {
+                FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+            }
+            psql.updateUserMessageToSent(msg.id);
+        }
+    }
+
     private void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException {
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {

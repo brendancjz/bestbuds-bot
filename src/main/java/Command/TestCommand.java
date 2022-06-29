@@ -2,6 +2,7 @@ package Command;
 
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
+import Timer.BirthdayCheckerTimer;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.File;
@@ -44,14 +45,17 @@ public class TestCommand extends Command {
             message.setText("Testing...");
 
             super.getBot().execute(message);
-            //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
-            String type = text.split(" ")[1];
-            String url = text.split(" ")[2];
-            Integer messageId = Integer.valueOf(text.split(" ")[3]);
-            super.getPSQL().addFile(type, url, messageId);
-        } catch (TelegramApiException | SQLException throwables) {
+
+            runBirthdayTest();
+
+        } catch (TelegramApiException | SQLException | URISyntaxException | InterruptedException | IOException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
+        BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
+        timer.runBirthdayEventForBirthdayUserOnly(super.getPSQL().getUserDataResultSet(super.getChatId()), super.getPSQL(), Date.valueOf(LocalDate.now()));
     }
 
     private String sendMsg() {
