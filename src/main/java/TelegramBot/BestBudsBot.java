@@ -112,7 +112,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 System.out.println("Chosen File Size: " + chosenFileSize);
                 String filePath = FileResource.getFilePathOfUploadedFileByUser(chosenFileId);
-                System.out.printf("Chosen File Path: " + filePath);
+                filePath = "photos/file_24.jpg";
+                System.out.println("Chosen File Path: " + filePath);
                 SendPhoto photo = new SendPhoto();
                 photo.setChatId(String.valueOf(update.getMessage().getChatId()));
                 photo.setPhoto(FileResource.getInputFile(filePath));
