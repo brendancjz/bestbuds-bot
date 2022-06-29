@@ -38,7 +38,9 @@ public class FileResource {
 
     private static String getURLForFilePath(String fileId) {
         System.out.println("FileResource.getURLForFilePath()");
-        return "https://api.telegram.org/bot" + System.getenv("BOT_TOKEN") + "/getFile?file_id=" + fileId;
+        String url = "https://api.telegram.org/bot" + System.getenv("BOT_TOKEN") + "/getFile?file_id=" + fileId;;
+        System.out.println(url.replace(System.getenv("BOT_TOKEN"), "<bot_token>"));
+        return url;
     }
 
     public static InputFile getInputFile(String filePath) throws URISyntaxException, IOException, InterruptedException {
@@ -59,8 +61,6 @@ public class FileResource {
                 System.out.println("File Size after converting: " + file.length());
             }
         } catch (IOException e) {
-            // handle exception here
-            System.out.println("IOEXCEPTION");
             System.out.println(e.getMessage());
         }
         InputFile inputFile = new InputFile();
@@ -71,7 +71,7 @@ public class FileResource {
 
     private static String getFile(String filePath) {
         String url = "https://api.telegram.org/file/bot" + System.getenv("BOT_TOKEN") + "/" + filePath;
-        System.out.println(url);
+        System.out.println(url.replace(System.getenv("BOT_TOKEN"), "<bot_token>"));
         return url;
     }
 }

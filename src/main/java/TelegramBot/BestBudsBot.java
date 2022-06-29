@@ -15,13 +15,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
+import org.telegram.telegrambots.meta.api.methods.send.*;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.File;
+import org.telegram.telegrambots.meta.api.objects.stickers.Sticker;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.FileResource;
 
@@ -84,7 +82,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 psql.closeConnection();
             } else if (update.hasEditedMessage()) {
                 System.out.println("onUpdateReceived.hasEditedMessage()");
-            } else if (update.hasMessage() && update.getMessage().hasDocument()) {
+            } else if (doesMessageContainsFile(update)) {
                 System.out.println("onUpdateReceived.hasDocument()");
 
                 Document document = update.getMessage().getDocument();
@@ -134,10 +132,26 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
                 System.out.println("onUpdateReceived.hasSticker()");
+
+                Sticker sticker = update.getMessage().getSticker();
+
+                String filePath = FileResource.getFilePathOfUploadedFileByUser(sticker.getFileId());
+
+                SendSticker stick = new SendSticker();
+                stick.setChatId(String.valueOf(update.getMessage().getChatId()));
+                stick.setSticker(FileResource.getInputFile(filePath));
+                execute(stick);
             }
         } catch (SQLException | URISyntaxException | IOException | InterruptedException | TelegramApiException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    private boolean doesMessageContainsFile(Update update) {
+        return update.hasMessage() && update.getMessage().hasDocument() ||
+                update.hasMessage() && update.getMessage().hasPhoto() ||
+                update.hasMessage() && update.getMessage().hasVideo();
+
     }
 
     private void groupChatCallback(Update update, Integer chatId, PSQL psql) {
