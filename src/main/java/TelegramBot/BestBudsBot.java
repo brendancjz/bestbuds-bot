@@ -18,6 +18,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.api.objects.File;
@@ -92,12 +93,12 @@ public class BestBudsBot extends TelegramLongPollingBot {
 
                 //TODO Save this filePath and match this to the user on his birthday
 
-
-                SendDocument doc = new SendDocument();
-                doc.setChatId(String.valueOf(update.getMessage().getChatId()));
-                doc.setDocument(FileResource.getInputFile(filePath));
-
-                execute(doc);
+// TO BE DONE WHEN USER"S BIRTHDAY
+//                SendDocument doc = new SendDocument();
+//                doc.setChatId(String.valueOf(update.getMessage().getChatId()));
+//                doc.setDocument(FileResource.getInputFile(filePath));
+//
+//                execute(doc);
 
             } else if (update.hasMessage() && update.getMessage().hasPhoto()) {
                 System.out.println("onUpdateReceived.hasPhoto()");
@@ -110,19 +111,31 @@ public class BestBudsBot extends TelegramLongPollingBot {
                     if (chosenFileSize.equals(photo.getFileSize())) chosenFileId = photo.getFileId();
                 }
 
-                System.out.println("Chosen File Size: " + chosenFileSize);
                 String filePath = FileResource.getFilePathOfUploadedFileByUser(chosenFileId);
-                System.out.println("Chosen File Path: " + filePath);
-                SendPhoto photo = new SendPhoto();
-                photo.setChatId(String.valueOf(update.getMessage().getChatId()));
-                photo.setPhoto(FileResource.getInputFile(filePath));
-                execute(photo);
+
+                //TODO Save this filePath and match this to the user on his birthday
+
+                // TO BE DONE WHEN USER"S BIRTHDAY
+//                SendPhoto photo = new SendPhoto();
+//                photo.setChatId(String.valueOf(update.getMessage().getChatId()));
+//                photo.setPhoto(FileResource.getInputFile(filePath));
+//                execute(photo);
             } else if (update.hasMessage() && update.getMessage().hasVideo()) {
                 System.out.println("onUpdateReceived.hasVideo()");
+
+                Video video = update.getMessage().getVideo();
+
+                String filePath = FileResource.getFilePathOfUploadedFileByUser(video.getFileId());
+
+                SendVideo vid = new SendVideo();
+                vid.setChatId(String.valueOf(update.getMessage().getChatId()));
+                vid.setVideo(FileResource.getInputFile(filePath));
+                execute(vid);
+
             } else if (update.hasMessage() && update.getMessage().hasSticker()) {
                 System.out.println("onUpdateReceived.hasSticker()");
             }
-        } catch (SQLException | URISyntaxException | TelegramApiException | IOException | InterruptedException throwables) {
+        } catch (SQLException | URISyntaxException | IOException | InterruptedException | TelegramApiException throwables) {
             throwables.printStackTrace();
         }
     }
