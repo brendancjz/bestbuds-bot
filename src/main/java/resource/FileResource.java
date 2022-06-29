@@ -19,6 +19,7 @@ public class FileResource {
 
 
     public static String getFilePathOfUploadedFileByUser(String fileId) throws IOException, URISyntaxException, InterruptedException {
+        System.out.println("FileResource.getFilePathOfUploadedFileByUser()");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(getURLForFilePath(fileId)))
                 .version(HttpClient.Version.HTTP_2)
@@ -50,8 +51,8 @@ public class FileResource {
                 .build();
 
         java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
-
         InputStream inputStream = res.body();
+        System.out.println("InputStream: " + inputStream.available());
         java.io.File file = new java.io.File(filePath);
         try {
             try(OutputStream outputStream = new FileOutputStream(file)){
