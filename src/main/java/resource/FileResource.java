@@ -56,9 +56,11 @@ public class FileResource {
         try {
             try(OutputStream outputStream = new FileOutputStream(file)){
                 IOUtils.copy(inputStream, outputStream);
+                System.out.println("File Size after converting: " + file.length());
             }
         } catch (IOException e) {
             // handle exception here
+            System.out.println("IOEXCEPTION");
             System.out.println(e.getMessage());
         }
         InputFile inputFile = new InputFile();
