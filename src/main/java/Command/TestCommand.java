@@ -45,8 +45,9 @@ public class TestCommand extends Command {
 
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
+            String url = text.split(" ")[1];
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI("https://api.telegram.org/file/bot5225985858:AAELHLAKvBfIDQuEKlNCCImrQFb_7ob7v7Y/documents/file_27.jpg"))
+                    .uri(new URI(url))
                     .version(HttpClient.Version.HTTP_2)
                     .GET()
                     .build();
