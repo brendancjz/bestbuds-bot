@@ -101,7 +101,8 @@ public class MessageComand extends Command {
         instruction += "<b>BestBuds Message Commands</b>\n";
         instruction += "<em>If you're on mobile, tap on the command to copy the text.</em>\n\n";
         instruction += "<em>Send Message to BestBud</em>\n";
-        instruction += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>\n\n\n";
+        instruction += "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>\n\n";
+        instruction += "You can send images/videos/documents and even stickers over BUT send them only after sending the /send message above!\n\n";
         instruction += "<em>Each user has its own unique code. This code is used BestBud identification during the messaging process.</em>";
 
         return instruction;
