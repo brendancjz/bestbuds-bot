@@ -1,8 +1,16 @@
 package resource;
 
+import TelegramBot.BestBudsBot;
 import org.apache.commons.io.IOUtils;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.PhotoSize;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +22,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLOutput;
+import java.util.List;
 
 public class FileResource {
 
@@ -78,5 +87,58 @@ public class FileResource {
     public static InputFile getBirthdaySticker() throws InterruptedException, IOException, URISyntaxException {
         String bdayStickerBlueBird = "stickers/file_35.webp";
         return getInputFile(bdayStickerBlueBird);
+    }
+
+    public static String getFileIdFromUpdate(Update update) {
+        String fileId = "";
+        if (update.getMessage().hasDocument()) {
+            System.out.println("onUpdateReceived.hasDocument()");
+            fileId = update.getMessage().getDocument().getFileId();
+        } else if (update.getMessage().hasPhoto()) {
+            System.out.println("onUpdateReceived.hasPhoto()");
+            List<PhotoSize> photos = update.getMessage().getPhoto();
+            Integer chosenFileSize = -1;
+            for (PhotoSize photo : photos) {
+                chosenFileSize = Math.max(photo.getFileSize(), chosenFileSize);
+                if (chosenFileSize.equals(photo.getFileSize())) fileId = photo.getFileId();
+            }
+        } else if (update.getMessage().hasVideo()) {
+            System.out.println("onUpdateReceived.hasVideo()");
+            fileId = update.getMessage().getVideo().getFileId();
+        } else if (update.getMessage().hasSticker()) {
+            System.out.println("onUpdateReceived.hasSticker()");
+            fileId = update.getMessage().getSticker().getFileId();
+        }
+
+        return fileId;
+    }
+
+    public static void sendFileToUser(BestBudsBot bot, Update update, String filePath) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        if (update.getMessage().hasDocument()) {
+            System.out.println("onUpdateReceived.hasDocument()");
+            SendDocument doc = new SendDocument();
+            doc.setChatId(String.valueOf(update.getMessage().getChatId()));
+            doc.setDocument(FileResource.getInputFile(filePath));
+            bot.execute(doc);
+            //
+        } else if (update.getMessage().hasPhoto()) {
+            System.out.println("onUpdateReceived.hasPhoto()");
+            SendPhoto photo = new SendPhoto();
+            photo.setChatId(String.valueOf(update.getMessage().getChatId()));
+            photo.setPhoto(FileResource.getInputFile(filePath));
+            bot.execute(photo);
+        } else if (update.getMessage().hasVideo()) {
+            System.out.println("onUpdateReceived.hasVideo()");
+            SendVideo vid = new SendVideo();
+            vid.setChatId(String.valueOf(update.getMessage().getChatId()));
+            vid.setVideo(FileResource.getInputFile(filePath));
+            bot.execute(vid);
+        } else if (update.getMessage().hasSticker()) {
+            System.out.println("onUpdateReceived.hasSticker()");
+            SendSticker stick = new SendSticker();
+            stick.setChatId(String.valueOf(update.getMessage().getChatId()));
+            stick.setSticker(FileResource.getInputFile(filePath));
+            bot.execute(stick);
+        }
     }
 }

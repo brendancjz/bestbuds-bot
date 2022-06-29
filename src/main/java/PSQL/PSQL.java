@@ -1,10 +1,7 @@
 package PSQL;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
-import resource.Entity.BirthdayManagement;
-import resource.Entity.Group;
-import resource.Entity.Message;
-import resource.Entity.User;
+import resource.Entity.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -236,6 +233,25 @@ public class PSQL {
         }
 
         return false;
+    }
+
+    public Boolean addFile(String filePath, Integer messageId) throws SQLException {
+        String sql = "INSERT INTO Files (message_id,file_path,created_on) VALUES (?, ?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setInt(1, messageId);
+        preparedStatement.setString(2, filePath);
+        preparedStatement.setDate(3, Date.valueOf(LocalDate.now()));
+
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful adding entry to Files");
+            return true;
+        } else {
+            System.out.println("Unsuccessful entry in Files.");
+            return false;
+        }
+
     }
 
     private boolean hasUserAlreadySentBirthdayMessage(String receiverCode, String senderCode) throws SQLException {
@@ -473,21 +489,6 @@ public class PSQL {
         }
     }
 
-    public void updateUserNameAndDOB(int chatId, String firstName, String dob) throws SQLException {
-        String sql = "UPDATE Users SET name=?,dob=? WHERE chat_id=? ";
-        PreparedStatement statement= connection.prepareStatement(sql);
-        statement.setString(1, firstName);
-        statement.setDate(2, Date.valueOf(dob));
-        statement.setInt(3, chatId);
-        int rowsInserted = statement.executeUpdate();
-
-        if ((rowsInserted > 0)) {
-            System.out.println("[Name & DOB] Update query successful.");
-        } else {
-            System.out.println("[Name & DOB] Update query failed.");
-        }
-    }
-
     public void updateGroupDesc(String groupCode, String desc) throws SQLException {
         String sql = "UPDATE Groups SET description=? WHERE code=? ";
         PreparedStatement statement= connection.prepareStatement(sql);
@@ -516,17 +517,17 @@ public class PSQL {
         }
     }
 
-    public void updateUserMessageToSent(Integer id) throws SQLException {
+    public void updateUserMessageToSent(Integer messageId) throws SQLException {
         String sql = "UPDATE Messages SET message_sent = ? WHERE message_id = ?";
         PreparedStatement statement= connection.prepareStatement(sql);
         statement.setBoolean(1, true);
-        statement.setInt(2, id);
+        statement.setInt(2, messageId);
         int rowsInserted = statement.executeUpdate();
 
         if ((rowsInserted > 0)) {
-            System.out.println("[Messages for " + id + "] Update query successful.");
+            System.out.println("[Messages for " + messageId + "] Update query successful.");
         } else {
-            System.out.println("[Messages for " + id + "] Update query failed.");
+            System.out.println("[Messages for " + messageId + "] Update query failed.");
         }
     }
 
@@ -757,6 +758,33 @@ public class PSQL {
         return messages;
     }
 
+    public List<File> getFilesFromMessage(Integer messageId) throws SQLException {
+        System.out.println("PSQL.getFilesFromMessage()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Files WHERE message_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, messageId);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<File> files = new ArrayList<>();
+
+        while (resultSet.next()) {
+            File file = this.convertResultSetToFile(resultSet);
+            files.add(file);
+        }
+
+        return files;
+    }
+
+    private File convertResultSetToFile(ResultSet resultSet) throws SQLException {
+        File file = new File();
+        file.id = resultSet.getInt("file_id");
+        file.path = resultSet.getString("file_path");
+        file.createdOn = resultSet.getDate("created_on");
+
+        return file;
+    }
+
     private Message convertResultSetToMessage(ResultSet resultSet) throws SQLException {
         Message message = new Message();
         message.id = resultSet.getInt("message_id");
@@ -765,6 +793,7 @@ public class PSQL {
         message.createdOn = resultSet.getDate("created_on");
         message.userFrom = this.getUserDataResultSet(resultSet.getString("user_code_from"));
         message.userTo = this.getUserDataResultSet(resultSet.getString("user_code_to"));
+        message.files = this.getFilesFromMessage(message.id);
 
         return message;
     }

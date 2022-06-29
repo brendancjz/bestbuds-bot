@@ -1,6 +1,8 @@
 package resource.Entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Message {
     public String message;
@@ -9,6 +11,7 @@ public class Message {
     public User userFrom;
     public Boolean hasSent;
     public Date createdOn;
+    public List<File> files;
 
     public Message() {
         message = "";
@@ -17,6 +20,7 @@ public class Message {
         userFrom = null;
         hasSent = false;
         createdOn = null;
+        files = new ArrayList<>();
     }
 
     public static Boolean isNull(Message message) {

@@ -46,23 +46,10 @@ public class TestCommand extends Command {
             super.getBot().execute(message);
             //runSendMessageToAdminsEvent(birthdayUser, super.getPSQL());
             String url = text.split(" ")[1];
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(url))
-                    .version(HttpClient.Version.HTTP_2)
-                    .GET()
-                    .build();
-
-            java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
-            InputStream inputStream = res.body();
-            System.out.println("InputStream.readAllBytes: " + inputStream.readAllBytes().length);
-        } catch (TelegramApiException | URISyntaxException throwables) {
+            Integer messageId = Integer.valueOf(text.split(" ")[2]);
+            super.getPSQL().addFile(url, messageId);
+        } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
-        } catch (InterruptedException e) {
-            System.out.println("InterruptedException Called");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("IOException Called");
-            e.printStackTrace();
         }
     }
 

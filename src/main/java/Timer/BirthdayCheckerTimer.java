@@ -80,6 +80,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         for (Message msg : messages) {
                             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
                             super.getBot().execute(message);
+                            psql.updateUserMessageToSent(msg.id);
                         }
 
                         //Send a message to other bestbuds to inform them that today is who's birthday
