@@ -35,10 +35,12 @@ public class FileResource {
     }
 
     private static String getURLForFilePath(String fileId) {
+        System.out.println("FileResource.getURLForFilePath()");
         return "https://api.telegram.org/bot" + System.getenv("BOT_TOKEN") + "/getFile?file_id=" + fileId;
     }
 
     public static InputFile getInputFile(String filePath) throws URISyntaxException, IOException, InterruptedException {
+        System.out.println("FileResource.getInputFile()");
         //Get File
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(getFile(filePath)))
