@@ -799,7 +799,7 @@ public class PSQL {
     public Message getMessageByMessageText(String receiverCode, String text) throws SQLException {
         System.out.println("PSQL.getMessageByMessageText()");
         // Obtaining user information from USERS
-        String sql = "SELECT * FROM Message WHERE user_code_to = ? AND message = ?";
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND message = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, receiverCode);
         statement.setString(2, text);
