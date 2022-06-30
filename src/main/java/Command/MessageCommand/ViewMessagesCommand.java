@@ -54,6 +54,7 @@ public class ViewMessagesCommand extends Command {
             String year = arr[1];
             try {
                 LocalDate date = LocalDate.of(Integer.parseInt(year), 1, 0);
+                System.out.println(date.toString());
                 return true;
             } catch (DateTimeException e) {
                 return false;
