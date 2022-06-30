@@ -758,7 +758,7 @@ public class PSQL {
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, userCode);
         statement.setString(2, "year");
-        statement.setString(3, year);
+        statement.setInt(3, Integer.parseInt(year));
 
         ResultSet resultSet = statement.executeQuery();
         List<Message> messages = new ArrayList<>();
