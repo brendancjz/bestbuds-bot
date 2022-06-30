@@ -751,6 +751,25 @@ public class PSQL {
         return messages;
     }
 
+    public List<Message> getUserMessagesForYear(String userCode, String year) throws SQLException {
+        System.out.println("PSQL.getUserMessages()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND date_part('year',created_on) = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, userCode);
+        statement.setString(2, year);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<Message> messages = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Message message = this.convertResultSetToMessage(resultSet);
+            messages.add(message);
+        }
+
+        return messages;
+    }
+
     public List<Message> getUserMessagesFromUsersOfGroup(String bdayUserCode, String groupCode) throws SQLException {
         //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
         System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");

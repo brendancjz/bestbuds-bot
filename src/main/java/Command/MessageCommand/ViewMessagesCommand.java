@@ -43,10 +43,11 @@ public class ViewMessagesCommand extends Command {
             }
 
             if (validateText(text)) {
+                String year = text.split(" ")[1];
                 User user = super.getPSQL().getUserDataResultSet(super.getChatId());
-                List<Message> messages = super.getPSQL().getUserMessages(user.code);
+                List<Message> messages = super.getPSQL().getUserMessagesForYear(user.code, year);
                 if (messages.size() > 1) {
-                    message.setText("Viewing birthday messages received in " + text.split(" ")[1]);
+                    message.setText("Viewing birthday messages received in " + year);
                     super.getBot().execute(message);
 
                     SendMessage message1 = new SendMessage();
@@ -60,7 +61,7 @@ public class ViewMessagesCommand extends Command {
                         }
                     }
                 } else {
-                    message.setText("Sorry, you do not have any birthday messages in " + text.split(" ")[1]);
+                    message.setText("Sorry, you do not have any birthday messages in " + year);
                     super.getBot().execute(message);
                 }
             } else {
