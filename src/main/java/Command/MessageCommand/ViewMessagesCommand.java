@@ -53,7 +53,7 @@ public class ViewMessagesCommand extends Command {
         if (arr.length >= 2) {
             String year = arr[1];
             try {
-                LocalDate date = LocalDate.of(Integer.parseInt(year), 0, 0);
+                LocalDate date = LocalDate.of(Integer.parseInt(year), 1, 0);
                 return true;
             } catch (DateTimeException e) {
                 return false;
