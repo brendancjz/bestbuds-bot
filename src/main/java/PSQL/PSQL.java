@@ -754,10 +754,11 @@ public class PSQL {
     public List<Message> getUserMessagesForYear(String userCode, String year) throws SQLException {
         System.out.println("PSQL.getUserMessages()");
         // Obtaining user information from USERS
-        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND date_part('year',created_on) = ?";
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND date_part(?,created_on) = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, userCode);
-        statement.setString(2, year);
+        statement.setString(2, "year");
+        statement.setString(3, year);
 
         ResultSet resultSet = statement.executeQuery();
         List<Message> messages = new ArrayList<>();
