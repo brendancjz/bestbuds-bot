@@ -752,7 +752,7 @@ public class PSQL {
     }
 
     public List<Message> getUserMessagesForYear(String userCode, String year) throws SQLException {
-        System.out.println("PSQL.getUserMessages()");
+        System.out.println("PSQL.getUserMessagesForYear()");
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND date_part(?,created_on) = ?";
         PreparedStatement statement = connection.prepareStatement(sql);
