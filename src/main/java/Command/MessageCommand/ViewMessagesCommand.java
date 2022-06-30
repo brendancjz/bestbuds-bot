@@ -46,7 +46,6 @@ public class ViewMessagesCommand extends Command {
                 String year = text.split(" ")[1];
                 User user = super.getPSQL().getUserDataResultSet(super.getChatId());
                 List<Message> messages = super.getPSQL().getUserMessagesForYear(user.code, year);
-                System.out.println("Code");
                 if (messages.size() > 1) {
                     message.setText("Viewing birthday messages received in " + year);
                     super.getBot().execute(message);
@@ -62,15 +61,13 @@ public class ViewMessagesCommand extends Command {
                         }
                     }
                 } else {
-                    System.out.println("Code1");
                     message.setText("Sorry, you do not have any birthday messages in " + year);
                     super.getBot().execute(message);
                 }
             } else {
-                message.setText("Not good");
+                message.setText("Sorry, incorrect format received. Try again with: /view_messages yyyy");
+                super.getBot().execute(message);
             }
-
-            super.getBot().execute(message);
         } catch (TelegramApiException | SQLException | URISyntaxException | IOException | InterruptedException throwables) {
             throwables.printStackTrace();
         }
