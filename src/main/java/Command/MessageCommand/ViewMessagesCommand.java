@@ -7,12 +7,18 @@ import com.google.api.client.util.DateTime;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.File;
+import resource.Entity.Message;
+import resource.Entity.User;
+import resource.FileResource;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ViewMessagesCommand extends Command {
     public static final String COMMAND = "viewMessages";
@@ -37,13 +43,32 @@ public class ViewMessagesCommand extends Command {
             }
 
             if (validateText(text)) {
-                message.setText("Its good.");
+                User user = super.getPSQL().getUserDataResultSet(super.getChatId());
+                List<Message> messages = super.getPSQL().getUserMessages(user.code);
+                if (messages.size() > 1) {
+                    message.setText("Viewing birthday messages received in " + text.split(" ")[1]);
+                    super.getBot().execute(message);
+
+                    SendMessage message1 = new SendMessage();
+                    message1.setChatId(super.getChatId().toString());
+                    message1.enableHtml(true);
+                    for (Message msg : messages) {
+                        message1.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+                        super.getBot().execute(message1);
+                        for (File file : msg.files) {
+                            FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+                        }
+                    }
+                } else {
+                    message.setText("Sorry, you do not have any birthday messages in " + text.split(" ")[1]);
+                    super.getBot().execute(message);
+                }
             } else {
                 message.setText("Not good");
             }
 
             super.getBot().execute(message);
-        } catch (TelegramApiException throwables) {
+        } catch (TelegramApiException | SQLException | URISyntaxException | IOException | InterruptedException throwables) {
             throwables.printStackTrace();
         }
     }
@@ -54,7 +79,6 @@ public class ViewMessagesCommand extends Command {
             String year = arr[1];
             try {
                 LocalDate date = LocalDate.of(Integer.parseInt(year), 1, 1);
-                System.out.println(date.toString());
                 return true;
             } catch (DateTimeException e) {
                 return false;
