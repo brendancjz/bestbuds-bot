@@ -6,6 +6,7 @@ import Command.GroupCommand.*;
 import Command.MessageCommand.MessageComand;
 import Command.MessageCommand.SendCommand;
 import Command.MessageCommand.SendFileCommand;
+import Command.MessageCommand.ViewMessagesCommand;
 import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
 import Command.UserCommand.ViewBestBudCommand;
@@ -295,6 +296,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
             else if (text.startsWith("/send")) {
                 System.out.println("=== Send Event Called === ");
                 command = new SendCommand(this, update, psql);
+                command.runCommand();
+            }
+            else if (text.startsWith("/view_messages")) {
+                System.out.println("=== View Messages Event Called === ");
+                command = new ViewMessagesCommand(this, update, psql);
                 command.runCommand();
             }
             else {
