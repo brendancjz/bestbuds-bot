@@ -6,6 +6,11 @@ It is a hassle to discreetly collate birthday messages for a friend in a group. 
 
 BestBudsBot helps to automate this process, ensuring everyone's birthday in the group is accounted for. Now, the birthday IC will not be left out too!
 
+## Features
+Automatic birthday message collection process
+Group management processes
+Messages can be stored as texts, images and videos. 
+
 ## Screenshots
 <div style="display: flex; align-items: center; justify-content: space-around;">
   <img src="https://raw.githubusercontent.com/brendancjz/bestbuds-bot/main/screenshots/Start-Screenshot.png" alt="start-screenshot" height="700">
