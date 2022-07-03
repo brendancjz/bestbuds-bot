@@ -16,8 +16,6 @@ public class Main {
 
             BirthdayCheckerTimer timer = new BirthdayCheckerTimer(bestBudsBot);
             timer.start();
-
-
         } catch (TelegramApiException | SQLException | URISyntaxException e) {
             e.printStackTrace();
         }

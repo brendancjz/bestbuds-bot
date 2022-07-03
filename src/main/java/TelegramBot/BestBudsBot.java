@@ -104,7 +104,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
     private void personalChatCallback(Update update, Integer chatId, PSQL psql) {
         try {
             String callData = update.getCallbackQuery().getData();
-            String prevMessage = update.getCallbackQuery().getMessage().getText();
             Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
 
             EditMessageText newMessage = new EditMessageText();
@@ -113,8 +112,8 @@ public class BestBudsBot extends TelegramLongPollingBot {
             newMessage.enableHtml(true);
 
             Command command = null;
-
             if (callData.startsWith("confirmation")) {
+                System.out.println("=== Confirmation Event Called === ");
                 String[] callBackArr = update.getCallbackQuery().getData().split("_");
                 String commandStr = callBackArr[1];
                 
@@ -131,6 +130,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 assert command != null;
                 command.runCallback();
             } else if (callData.startsWith("select_")) {
+                System.out.println("=== Select Event Called === ");
                 String[] callBackArr = update.getCallbackQuery().getData().split("_");
                 String commandStr = callBackArr[1];
 
@@ -173,7 +173,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
     private void groupChatMessage(SendMessage message) {
         try {
             message.setText("Sorry. This bot currently does not support group messaging.");
-
             execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
@@ -183,7 +182,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
     private void personalChatMessage(SendMessage message, Update update, PSQL psql) {
         try {
             String text = update.getMessage().getText().trim();
-
             //Store text into db of this user if he is registered.
             Integer chatId = Integer.parseInt(update.getMessage().getChatId().toString());
             psql.updateUserLatestText(chatId, text);
@@ -196,21 +194,18 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command.runCommand();
                 return;
             }
-
             if (text.startsWith("/test")) {
                 System.out.println("=== Testing Event Called ===");
                 command = new TestCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
-
             if (text.startsWith("/user_analytics")) {
                 System.out.println("=== Analytics Event Called ===");
                 command = new UserAnalyticsCommand(this, update, psql);
                 command.runCommand();
                 return;
             }
-
             if (text.startsWith("/help")) {
                 System.out.println("=== Help Event Called === ");
                 command = new HelpCommand(this, update, psql);
@@ -233,6 +228,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new MessageComand(this, update, psql);
                 command.runCommand();
             }
+            //Group Commands
             else if (text.startsWith("/create")) {
                 System.out.println("=== Create Event Called === ");
                 command = new CreateCommand(this, update, psql);
@@ -283,6 +279,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new UpdateDescriptionCommand(this, update, psql);
                 command.runCommand();
             }
+            //Profile Commands
             else if (text.startsWith("/update")) {
                 System.out.println("=== Update Event Called === ");
                 command = new UpdateCommand(this, update, psql);
@@ -293,6 +290,7 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new ViewBestBudCommand(this, update, psql);
                 command.runCommand();
             }
+            //Message Commands
             else if (text.startsWith("/send")) {
                 System.out.println("=== Send Event Called === ");
                 command = new SendCommand(this, update, psql);
@@ -318,7 +316,6 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 update.getMessage().hasPhoto() ||
                 update.getMessage().hasVideo() ||
                 update.getMessage().hasSticker());
-
     }
 
     private void executeMessage(SendMessage message) {

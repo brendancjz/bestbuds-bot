@@ -26,7 +26,6 @@ public class CreateCommand extends Command {
         try {
             System.out.println("CreateCommand.runCommand()");
             String text = super.getUpdate().getMessage().getText().trim();
-
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(false);
@@ -80,13 +79,17 @@ public class CreateCommand extends Command {
                 message2.setText(generateGroupDetails(newGroup));
                 super.getBot().execute(message2);
 
+                super.getUpdate().getMessage().setText("/share_code " + newGroup.code);
+                Command shareCommand = new ShareCodeCommand(super.getBot(), super.getUpdate(), super.getPSQL());
+                shareCommand.runCommand();
+
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");
                 super.getBot().execute(newMessage);
             }
 
             super.getBot().execute(newMessage);
-        } catch (TelegramApiException | SQLException e) {
+        } catch (TelegramApiException | SQLException | URISyntaxException e) {
             e.printStackTrace();
         }
     }

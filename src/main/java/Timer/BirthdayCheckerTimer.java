@@ -163,15 +163,8 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         message.enableHtml(true);
 
         List<Message> messages = psql.getUserMessages(user.code);
-        if (messages.size() > 0) {
-            //Send happy birthday sticker
-            SendSticker bdaySticker = new SendSticker();
-            bdaySticker.setChatId(user.chatId.toString());
-            bdaySticker.setSticker(FileResource.getBirthdaySticker());
-            super.getBot().execute(bdaySticker);
-            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
-            super.getBot().execute(message);
-        }
+
+        doSendBirthdayMessageFromBotToUser(user, messages, message);
 
         for (Message msg : messages) {
             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
@@ -180,6 +173,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
             }
             psql.updateUserMessageToSent(msg.id);
+        }
+    }
+
+    private void doSendBirthdayMessageFromBotToUser(User user, List<Message> messages, SendMessage message) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        if (messages.size() > 0) {
+            //Send happy birthday sticker
+            SendSticker bdaySticker = new SendSticker();
+            bdaySticker.setChatId(user.chatId.toString());
+            bdaySticker.setSticker(FileResource.getBirthdaySticker());
+            super.getBot().execute(bdaySticker);
+            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+            super.getBot().execute(message);
         }
     }
 
@@ -196,7 +201,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
                 SendMessage message = new SendMessage();
                 message.setChatId(admin.chatId.toString());
-//                message.setChatId("107270014");
                 message.enableHtml(true);
                 message.setText(collateMessages(msges));
                 super.getBot().execute(message);
@@ -228,7 +232,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     //send a msg to these ppl to send a msg to the user chatId
                     SendMessage message = new SendMessage();
                     message.setChatId(otherUser.chatId.toString());
-    //                message.setChatId("107270014");
                     message.enableHtml(true);
                     message.setText(this.generateBirthdayReminder(bdayMgmt, group));
                     super.getBot().execute(message);
@@ -238,7 +241,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
         //Update has_sent_initial to true
         if (!bdayMgmt.hasSentInitialMessage) psql.updateHasSentInitialBirthdayManagement(user.chatId, true);
-
     }
 
     private Runnable checkBirthDateHasBeenUpdated() {
@@ -251,7 +253,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 for (User user : users) {
                     if (user.getDob().equals("null")) {
                         SendMessage message = new SendMessage();
-//                        message.setChatId(user.chatId.toString());
                         message.setChatId(user.chatId.toString());
                         message.enableHtml(true);
                         message.setText(this.generateSetBirthdayReminder(user));
@@ -274,11 +275,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         if (isBeforeChosenHour(chosenHour, hourNow)) { //Before timing
             long numOfHoursUntil12PM = (chosenHour - 1) - ((hourNow + 8) % 24);
             long numOfMinutesUntil12PM = 60 - minNow;
-
             return ONE_MINUTE * numOfMinutesUntil12PM + ONE_HOUR * numOfHoursUntil12PM;
         } else {
             long numOfHoursFrom12PM = ((hourNow + 8) % 24) - chosenHour;
-
             return ONE_DAY - (ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM);
         }
     }
@@ -287,21 +286,28 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         String msg = "";
         if (bdayMgmt.hasSentInitialMessage) {
             //Simple reminder
-            msg = "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her! " +
-                    "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+            msg = generateBirthdayReminderMessage(bdayMgmt, group);
         } else {
             //Sending it for the first time
             //TODO Replace this with a better msg
             int numOfDaysAway = bdayMgmt.birthday.toLocalDate().compareTo(LocalDate.now());
             System.out.println("Num of Days away: " + numOfDaysAway);
-
-            msg = "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> coming up on " + bdayMgmt.getBirthday() + "! please send a birthday message to him/her! " +
-                    "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+            msg = generateInitialBirthdayMessage(bdayMgmt, group);
         }
 
         msg += "\n<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
-
         return msg;
+    }
+
+    private String generateInitialBirthdayMessage(BirthdayManagement bdayMgmt, Group group) {
+        return "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> coming up on " + bdayMgmt.getBirthday() + "! please send a birthday message to him/her! " +
+                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+    }
+
+    private String generateBirthdayReminderMessage(BirthdayManagement bdayMgmt, Group group) {
+        return "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her! " +
+                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+
     }
 
     private String generateSetBirthdayReminder(User user) {

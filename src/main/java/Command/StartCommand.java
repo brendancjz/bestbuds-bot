@@ -38,7 +38,6 @@ public class StartCommand extends Command {
 
             message.setText(startMsg);
             super.getBot().execute(message);
-
         } catch (SQLException | TelegramApiException throwables) {
             System.out.println("Unexpected error occurred.");
             throwables.printStackTrace();
@@ -127,12 +126,8 @@ public class StartCommand extends Command {
         info += "<b>[STEP 1] Update your Personal Details</b>\n";
         info += "  Enter /profile for user commands.\n\n";
         info += "<b>[STEP 2] Create or Join a BestBuds Group</b>\n";
-//        info += "  - Group Name\n";
-//        info += "  - Group Code\n";
         info += "  Enter /subscribe for group commands.\n\n";
         info += "<b>[STEP 3] Send and Receive Birthday Messages</b>\n";
-//        info += "  - Outgoing Message\n";
-//        info += "  - Incoming Message\n";
         info += "  Enter /message for messaging commands\n\n\n";
         info += "Curious how the bot stores your data? Well, it uses PostgreSQL! It is an open-source database system with solid capabilities. PSQL is reliable and " +
                 "your data is stored in PSQL's encrypted databases, so nothing to worry about!\n\n";
