@@ -12,49 +12,49 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
 public class WriteDataToExcel {
+    public String fileName;
+    public List<String> headers;
+    public List<List<String>> content;
+
+    WriteDataToExcel(String fileName, List<String> headers, List<List<String>> content) {
+        this.fileName = fileName;
+        this.headers = headers;
+        this.content = content;
+    }
 
     // any exceptions need to be caught
-    public static File run() throws IOException {
+    public File run() throws IOException {
         // workbook object
         XSSFWorkbook workbook = new XSSFWorkbook();
 
         // spreadsheet object
         XSSFSheet spreadsheet
-                = workbook.createSheet(" Student Data ");
+                = workbook.createSheet(" BestBuds Messages ");
 
         // creating a row object
         XSSFRow row;
 
         // This data needs to be written (Object[])
-        Map<String, Object[]> studentData
+        Map<String, Object[]> messageData
                 = new TreeMap<String, Object[]>();
 
-        studentData.put(
-                "1",
-                new Object[] { "Roll No", "NAME", "Year" });
+        //Header
+        messageData.put("1", this.headers.toArray());
 
-        studentData.put("2", new Object[] { "128", "Aditya",
-                "2nd year" });
+        //Content
+        int count = 2;
+        for (List<String> contentRow : this.content) {
+            messageData.put(Integer.toString(count), contentRow.toArray());
+            count++;
+        }
 
-        studentData.put(
-                "3",
-                new Object[] { "129", "Narayana", "2nd year" });
-
-        studentData.put("4", new Object[] { "130", "Mohan",
-                "2nd year" });
-
-        studentData.put("5", new Object[] { "131", "Radha",
-                "2nd year" });
-
-        studentData.put("6", new Object[] { "132", "Gopal",
-                "2nd year" });
-
-        Set<String> keyid = studentData.keySet();
+        Set<String> keyid = messageData.keySet();
 
         int rowid = 0;
 
@@ -63,7 +63,7 @@ public class WriteDataToExcel {
         for (String key : keyid) {
 
             row = spreadsheet.createRow(rowid++);
-            Object[] objectArr = studentData.get(key);
+            Object[] objectArr = messageData.get(key);
             int cellid = 0;
 
             for (Object obj : objectArr) {
@@ -74,7 +74,7 @@ public class WriteDataToExcel {
 
         // .xlsx is the format for Excel Sheets...
         // writing the workbook into the file...
-        java.io.File file = new java.io.File("Sample_Excel.xlsx");
+        java.io.File file = new java.io.File(this.fileName);
         FileOutputStream out = new FileOutputStream(file);
 
         workbook.write(out);

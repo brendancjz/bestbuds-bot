@@ -158,11 +158,15 @@ public class FileResource {
 //        for (String rowData : feedbackFile){
 //            fileWriter.write(rowData);
 //        }
+        String fileName = receiver.name.replace(" ", "_") + "_BestBuds_Messages_" + year + ".xlsx";
+        List<String> headers = new ArrayList<>();
+        headers.add("Id"); headers.add("Sender Name"); headers.add("Message");headers.add("Date");
+        List<List<String>> content = psql.getAllMessagesForUserRows(receiver.code, groupCode);
+        WriteDataToExcel writer = new WriteDataToExcel(fileName, headers, content);
+
         InputFile inputFile = new InputFile();
-//        inputFile.setMedia(file);
-        inputFile.setMedia(WriteDataToExcel.run());
+        inputFile.setMedia(writer.run());
         sendDocument.setDocument(inputFile);
-//        fileWriter.close();
         bot.execute(sendDocument);
     }
 }
