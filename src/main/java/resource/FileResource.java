@@ -152,16 +152,17 @@ public class FileResource {
 
         int year = LocalDate.now().getYear();
 
-        java.io.File file = new java.io.File(receiver.name + "_BestBuds_Messages_" + year + ".csv");
-        FileWriter fileWriter = new FileWriter(file);
-        ArrayList<String> feedbackFile = psql.getAllMessagesForUserRows(receiver.code, groupCode);
-        for (String rowData : feedbackFile){
-            fileWriter.write(rowData);
-        }
-        InputFile inputFile = new InputFile(file);
-        inputFile.setMedia(file);
+//        java.io.File file = new java.io.File(receiver.name + "_BestBuds_Messages_" + year + ".csv");
+//        FileWriter fileWriter = new FileWriter(file);
+//        ArrayList<String> feedbackFile = psql.getAllMessagesForUserRows(receiver.code, groupCode);
+//        for (String rowData : feedbackFile){
+//            fileWriter.write(rowData);
+//        }
+        InputFile inputFile = new InputFile();
+//        inputFile.setMedia(file);
+        inputFile.setMedia(WriteDataToExcel.run());
         sendDocument.setDocument(inputFile);
-        fileWriter.close();
+//        fileWriter.close();
         bot.execute(sendDocument);
     }
 }
