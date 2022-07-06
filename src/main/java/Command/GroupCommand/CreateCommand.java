@@ -78,18 +78,12 @@ public class CreateCommand extends Command {
                 message2.enableHtml(true);
                 message2.setText(generateGroupDetails(newGroup));
                 super.getBot().execute(message2);
-
-                super.getUpdate().getMessage().setText("/share_code " + newGroup.code);
-                Command shareCommand = new ShareCodeCommand(super.getBot(), super.getUpdate(), super.getPSQL());
-                shareCommand.runCommand();
-
             } else { //NO
                 newMessage.setText("Cancelled BestBuds Group creation.");
                 super.getBot().execute(newMessage);
             }
-
             super.getBot().execute(newMessage);
-        } catch (TelegramApiException | SQLException | URISyntaxException e) {
+        } catch (TelegramApiException | SQLException e) {
             e.printStackTrace();
         }
     }

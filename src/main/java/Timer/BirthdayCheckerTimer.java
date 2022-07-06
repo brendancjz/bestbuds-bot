@@ -110,7 +110,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 }
 
                 psql.closeConnection();
-            } catch (SQLException | URISyntaxException | TelegramApiException e) {
+            } catch (SQLException | URISyntaxException | TelegramApiException | IOException e) {
                 e.printStackTrace();
             }
         };
@@ -188,7 +188,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    private void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException {
+    private void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException, IOException {
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
             List<User> admins = psql.getAdminsFromGroup(group.code);
@@ -204,6 +204,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 message.enableHtml(true);
                 message.setText(collateMessages(msges));
                 super.getBot().execute(message);
+
+                //Send excel sheet
+                //FileResource.generateMessageFile(super.getBot(), admin.chatId.toString(), group.code, user, psql);
             }
         }
     }

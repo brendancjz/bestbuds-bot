@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.Group;
 import resource.Entity.Message;
 import resource.Entity.User;
+import resource.FileResource;
 import resource.KeyboardMarkup;
 
 import java.io.IOException;
@@ -46,9 +47,12 @@ public class TestCommand extends Command {
 
             super.getBot().execute(message);
 
-            runBirthdayTest();
+            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
+            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-        } catch (TelegramApiException | SQLException | URISyntaxException | InterruptedException | IOException throwables) {
+            //runBirthdayTest();
+
+        } catch (TelegramApiException | SQLException | IOException throwables) {
             throwables.printStackTrace();
         }
     }

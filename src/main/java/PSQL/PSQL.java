@@ -953,6 +953,24 @@ public class PSQL {
         return Group.isNull(group);
     }
 
+    public ArrayList<String> getAllMessagesForUserRows(String receiverCode, String groupCode) throws SQLException {
+        String headersString = "message id, sender name, message\n";
+        ArrayList<String> feedbackData = new ArrayList<>();
+        feedbackData.add(headersString);
+
+        List<Message> messages = this.getUserMessagesFromUsersOfGroup(receiverCode, groupCode);
+        int count = 1;
+        for (Message msg : messages) {
+            String feedbackRow = "";
+            feedbackRow +=  count + "," + msg.userFrom.name
+                    + "," + msg.message  + "\n";
+
+            feedbackData.add(feedbackRow);
+        }
+
+        return feedbackData;
+    }
+
     private String getNewUserCode(String name) throws SQLException {
         String code = "";
 

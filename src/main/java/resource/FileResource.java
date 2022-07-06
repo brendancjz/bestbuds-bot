@@ -1,5 +1,6 @@
 package resource;
 
+import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.apache.commons.io.IOUtils;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
@@ -12,17 +13,18 @@ import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.File;
+import resource.Entity.User;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileResource {
@@ -141,5 +143,25 @@ public class FileResource {
             stick.setSticker(FileResource.getInputFile(filePath));
             bot.execute(stick);
         }
+    }
+
+    public static void generateMessageFile(BestBudsBot bot, String chatId, String groupCode, User receiver, PSQL psql) throws IOException, TelegramApiException, SQLException {
+        //Creating SendDocuments
+        SendDocument sendDocument = new SendDocument();
+        sendDocument.setChatId(String.valueOf(chatId));
+
+        int year = LocalDate.now().getYear();
+
+        java.io.File file = new java.io.File(receiver.name + "_BestBuds_Messages_" + year + ".csv");
+        FileWriter fileWriter = new FileWriter(file);
+        ArrayList<String> feedbackFile = psql.getAllMessagesForUserRows(receiver.code, groupCode);
+        for (String rowData : feedbackFile){
+            fileWriter.write(rowData);
+        }
+        InputFile inputFile = new InputFile(file);
+        inputFile.setMedia(file);
+        sendDocument.setDocument(inputFile);
+        fileWriter.close();
+        bot.execute(sendDocument);
     }
 }
