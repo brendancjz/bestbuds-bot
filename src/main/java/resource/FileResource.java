@@ -152,12 +152,6 @@ public class FileResource {
 
         int year = LocalDate.now().getYear();
 
-//        java.io.File file = new java.io.File(receiver.name + "_BestBuds_Messages_" + year + ".csv");
-//        FileWriter fileWriter = new FileWriter(file);
-//        ArrayList<String> feedbackFile = psql.getAllMessagesForUserRows(receiver.code, groupCode);
-//        for (String rowData : feedbackFile){
-//            fileWriter.write(rowData);
-//        }
         String fileName = receiver.name.replace(" ", "_") + "_BestBuds_Messages_" + year + ".xlsx";
         List<String> headers = new ArrayList<>();
         headers.add("Id"); headers.add("Sender Name"); headers.add("Message");headers.add("Date");

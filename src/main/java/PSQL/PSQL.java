@@ -966,11 +966,6 @@ public class PSQL {
             msgRow.add(msg.message);
             msgRow.add(msg.createdOn.toString());
             data.add(msgRow);
-            String feedbackRow = "";
-//            feedbackRow +=  count + "," + msg.userFrom.name
-//                    + "," + msg.message  + "\n";
-//
-//            feedbackData.add(feedbackRow);
             count ++;
         }
 

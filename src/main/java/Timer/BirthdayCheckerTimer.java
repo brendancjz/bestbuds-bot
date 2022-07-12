@@ -304,12 +304,12 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
     private String generateInitialBirthdayMessage(BirthdayManagement bdayMgmt, Group group) {
         return "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> coming up on " + bdayMgmt.getBirthday() + "! please send a birthday message to him/her! " +
-                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:";
     }
 
     private String generateBirthdayReminderMessage(BirthdayManagement bdayMgmt, Group group) {
         return "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her! " +
-                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>";
+                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:";
 
     }
 
