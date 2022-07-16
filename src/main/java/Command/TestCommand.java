@@ -47,19 +47,20 @@ public class TestCommand extends Command {
 
             super.getBot().execute(message);
 
-            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
-            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
+//            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
+//            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            //runBirthdayTest();
+            runBirthdayTest();
 
-        } catch (TelegramApiException | SQLException | IOException throwables) {
+        } catch (TelegramApiException | SQLException | IOException | URISyntaxException | InterruptedException throwables) {
             throwables.printStackTrace();
         }
     }
 
     private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
         BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
-        timer.runBirthdayEventForBirthdayUserOnly(super.getPSQL().getUserDataResultSet(super.getChatId()), super.getPSQL(), Date.valueOf(LocalDate.now()));
+        User des = super.getPSQL().getUserDataResultSet("Des1483");
+        timer.runSendMessageToAdminsEvent(des, super.getPSQL());
     }
 
     private String sendMsg() {

@@ -188,7 +188,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    private void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException, IOException {
+    public void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException, IOException {
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
             List<User> admins = psql.getAdminsFromGroup(group.code);
@@ -202,7 +202,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 SendMessage message = new SendMessage();
                 message.setChatId(admin.chatId.toString());
                 message.enableHtml(true);
-                message.setText(collateMessages(msges));
+                message.setText(collateMessages(msges, group, user));
                 super.getBot().execute(message);
 
                 //Send excel sheet
@@ -211,8 +211,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    private String collateMessages(List<Message> msges) {
+    private String collateMessages(List<Message> msges, Group group, User bdayUser) {
         String message = "";
+        message += "Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming in two days. Here are the collated birthday messages from the group.\n\n";
         for (Message msg : msges) {
             message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\n\n";
         }
