@@ -257,7 +257,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         if (!bdayMgmt.hasSentInitialMessage) psql.updateHasSentInitialBirthdayManagement(user.chatId, true);
     }
 
-    private void runBirthdayReminder(BirthdayManagement bdayMgmt, Group group, User otherUser) throws TelegramApiException {
+    public void runBirthdayReminder(BirthdayManagement bdayMgmt, Group group, User otherUser) throws TelegramApiException {
         SendMessage message = new SendMessage();
         message.setChatId(otherUser.chatId.toString());
         message.enableHtml(true);

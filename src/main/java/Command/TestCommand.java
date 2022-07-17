@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import resource.Entity.BirthdayManagement;
 import resource.Entity.Group;
 import resource.Entity.Message;
 import resource.Entity.User;
@@ -50,9 +51,9 @@ public class TestCommand extends Command {
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            //runBirthdayTest();
+            runBirthdayTest();
 
-        } catch (TelegramApiException throwables) {
+        } catch (TelegramApiException | URISyntaxException | SQLException | InterruptedException | IOException throwables) {
             throwables.printStackTrace();
         }
     }
@@ -60,7 +61,10 @@ public class TestCommand extends Command {
     private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
         BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
         User des = super.getPSQL().getUserDataResultSet("Des1483");
-        timer.runSendMessageToAdminsEvent(des, super.getPSQL());
+        User bernie = super.getPSQL().getUserDataResultSet("Bern9074");
+        Group chiaSeed = super.getPSQL().getGroupDataResultSet("ChiaSeeds");
+        BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(des.chatId);
+        timer.runBirthdayReminder(bdayMgmt, chiaSeed, bernie);
     }
 
     private String sendMsg() {
