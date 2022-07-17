@@ -46,14 +46,17 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
 
+            Message msg = super.getPSQL().getMessageByMessageText("Des1483", "NIL");
+            System.out.println(msg.id);
+            System.out.println(msg.isEmpty);
             super.getBot().execute(message);
 
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            runBirthdayTest();
+            //runBirthdayTest();
 
-        } catch (TelegramApiException | URISyntaxException | SQLException | InterruptedException | IOException throwables) {
+        } catch (TelegramApiException | SQLException throwables) {
             throwables.printStackTrace();
         }
     }

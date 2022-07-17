@@ -156,7 +156,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
 
         for (Message msg : messages) {
-            if (!msg.isEmpty) {
+            if (msg.isEmpty == null || !msg.isEmpty) {
                 message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
                 super.getBot().execute(message);
                 for (File file : msg.files) {
