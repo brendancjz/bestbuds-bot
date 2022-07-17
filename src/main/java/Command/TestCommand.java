@@ -53,7 +53,7 @@ public class TestCommand extends Command {
 
             //runBirthdayTest();
 
-        } catch (TelegramApiException | IOException | URISyntaxException | SQLException | InterruptedException throwables) {
+        } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         }
     }
