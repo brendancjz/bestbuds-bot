@@ -46,7 +46,7 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
 
-            Message msg = super.getPSQL().getMessageByMessageText("Des1483", "NIL");
+            Message msg = super.getPSQL().getMessageByMessageText("Des1483", "Happy Burthday papa :-) Thank you for all the durians n everything else! :D");
             System.out.println(msg.id);
             System.out.println(msg.isEmpty);
             super.getBot().execute(message);
