@@ -167,9 +167,9 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command.runCallback();
             } else if (callData.startsWith("bdayReminder")) {
                 System.out.println("=== View BestBuds Event Called === ");
-                BirthdayCheckerTimer.runTurnOffReminderEvent(callData);
+                BirthdayCheckerTimer.runTurnOffReminderEvent(this, update, psql);
             }
-        } catch (SQLException | URISyntaxException e) {
+        } catch (SQLException | URISyntaxException | TelegramApiException e) {
             e.printStackTrace();
         }
     }

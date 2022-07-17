@@ -4,6 +4,8 @@ import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.*;
 import resource.FileResource;
@@ -30,13 +32,22 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         super(bestBudsBot);
     }
 
-    public static void runTurnOffReminderEvent(String callData) throws SQLException, URISyntaxException {
+    public static void runTurnOffReminderEvent(BestBudsBot bot, Update update, PSQL psql) throws SQLException, URISyntaxException, TelegramApiException {
+        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        String callData = update.getCallbackQuery().getData();
         String[] arr = callData.split("_");
         String receiverCode = arr[1];
         Integer senderChatId = Integer.parseInt(arr[2]);
 
-        PSQL psql = new PSQL();
         psql.addEmptyMessage(receiverCode, senderChatId);
+
+        EditMessageText newMessage = new EditMessageText();
+        newMessage.setChatId(senderChatId.toString());
+        newMessage.setMessageId(messageId);
+        newMessage.enableHtml(true);
+        newMessage.setText("Birthday reminder has been turned off. If you changed your mind, send your message before the birthday with this: \n<pre>  /send " + receiverCode + " &lt;message&gt;</pre>");
+
+        bot.execute(newMessage);
         psql.closeConnection();
     }
 

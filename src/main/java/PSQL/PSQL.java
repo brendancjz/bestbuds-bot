@@ -192,24 +192,28 @@ public class PSQL {
 
         User user = getUserDataResultSet(chatId);
 
-        String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on, is_empty) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        if (!hasUserAlreadySentBirthdayMessage(receiverCode, user.code)) {
+            String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on, is_empty) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-        preparedStatement.setString(1, user.code);
-        preparedStatement.setString(2, otherUser.code);
-        preparedStatement.setString(3, "NIL");
-        preparedStatement.setBoolean(4, false);
-        preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
-        preparedStatement.setBoolean(6, true);
+            preparedStatement.setString(1, user.code);
+            preparedStatement.setString(2, otherUser.code);
+            preparedStatement.setString(3, "NIL");
+            preparedStatement.setBoolean(4, false);
+            preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+            preparedStatement.setBoolean(6, true);
 
-        int rowsInserted = preparedStatement.executeUpdate();
-        if (rowsInserted > 0) {
-            System.out.println("Successful adding entry to messages");
-            return true;
-        } else {
-            System.out.println("Unsuccessful entry in messages.");
-            return false;
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Successful adding entry to messages");
+                return true;
+            } else {
+                System.out.println("Unsuccessful entry in messages.");
+                return false;
+            }
         }
+
+        return false;
     }
 
     public Boolean addMessage(String receiverCode, Integer chatId, String senderMessage) throws SQLException {
