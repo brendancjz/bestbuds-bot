@@ -240,7 +240,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         String message = "";
         message += "Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming in two days. Here are the collated birthday messages from the group.\n\n";
         for (Message msg : msges) {
-            message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\n\n";
+            if (msg.isEmpty == null || !msg.isEmpty) {
+                message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\n\n";
+            }
         }
 
         return message;
