@@ -45,10 +45,10 @@ public class TestCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
             message.setText("Testing...");
-
-            Message msg = super.getPSQL().getMessageByMessageText("Des1483", "Happy Burthday papa :-) Thank you for all the durians n everything else! :D");
-            System.out.println(msg.id);
-            System.out.println(msg.isEmpty);
+            PSQL psql = new PSQL();
+            User des = super.getPSQL().getUserDataResultSet("Des1483");
+            BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(des.chatId);
+            System.out.println(psql.hasUserSentBdayMessageToUser("Bern9074", "Des1483", bdayMgmt));
             super.getBot().execute(message);
 
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
@@ -56,8 +56,12 @@ public class TestCommand extends Command {
 
             //runBirthdayTest();
 
-        } catch (TelegramApiException | SQLException throwables) {
+        } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 
