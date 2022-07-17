@@ -184,6 +184,34 @@ public class PSQL {
         }
     }
 
+    public Boolean addEmptyMessage(String receiverCode, Integer chatId) throws SQLException {
+        System.out.println("PSQL.addEmptyMessage()");
+        Boolean userExists = isUserRegistered(chatId);
+        User otherUser = getUserDataResultSet(receiverCode);
+        if (!userExists || User.isNull(otherUser)) return false;
+
+        User user = getUserDataResultSet(chatId);
+
+        String sql = "INSERT INTO Messages (user_code_from,user_code_to,message,message_sent,created_on, is_empty) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        preparedStatement.setString(1, user.code);
+        preparedStatement.setString(2, otherUser.code);
+        preparedStatement.setString(3, "NIL");
+        preparedStatement.setBoolean(4, false);
+        preparedStatement.setDate(5, Date.valueOf(LocalDate.now()));
+        preparedStatement.setBoolean(6, true);
+
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("Successful adding entry to messages");
+            return true;
+        } else {
+            System.out.println("Unsuccessful entry in messages.");
+            return false;
+        }
+    }
+
     public Boolean addMessage(String receiverCode, Integer chatId, String senderMessage) throws SQLException {
         System.out.println("PSQL.addMessage()");
         Boolean userExists = isUserRegistered(chatId);
@@ -195,13 +223,14 @@ public class PSQL {
         if (isUserAlreadyInBirthdayManagement(otherUser.chatId) && isUserSameGroupAsOtherUser(chatId, otherUser.chatId)) {
 
             if (hasUserAlreadySentBirthdayMessage(receiverCode, user.code)) {
-                String sql = "UPDATE Messages SET message = ? WHERE user_code_from = ? AND user_code_to = ? AND message_sent = ?";
+                String sql = "UPDATE Messages SET message = ?, is_empty = ? WHERE user_code_from = ? AND user_code_to = ? AND message_sent = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
                 preparedStatement.setString(1, senderMessage);
-                preparedStatement.setString(2, user.code);
-                preparedStatement.setString(3, otherUser.code);
-                preparedStatement.setBoolean(4, false);
+                preparedStatement.setBoolean(2, false);
+                preparedStatement.setString(3, user.code);
+                preparedStatement.setString(4, otherUser.code);
+                preparedStatement.setBoolean(5, false);
 
                 int rowsInserted = preparedStatement.executeUpdate();
                 if (rowsInserted > 0) {
@@ -849,6 +878,7 @@ public class PSQL {
         message.message = resultSet.getString("message");
         message.hasSent = resultSet.getBoolean("message_sent");
         message.createdOn = resultSet.getDate("created_on");
+        message.isEmpty = resultSet.getBoolean("is_empty");
         message.userFrom = this.getUserDataResultSet(resultSet.getString("user_code_from"));
         message.userTo = this.getUserDataResultSet(resultSet.getString("user_code_to"));
         message.files = this.getFilesFromMessage(message.id);

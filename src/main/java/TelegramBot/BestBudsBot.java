@@ -11,6 +11,7 @@ import Command.UserCommand.ProfileCommand;
 import Command.UserCommand.UpdateCommand;
 import Command.UserCommand.ViewBestBudCommand;
 import PSQL.*;
+import Timer.BirthdayCheckerTimer;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HeaderElement;
 import org.apache.http.client.methods.HttpGet;
@@ -164,6 +165,9 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 System.out.println("=== View BestBuds Event Called === ");
                 command = new ViewBestBudsCommand(this, update, psql);
                 command.runCallback();
+            } else if (callData.startsWith("bdayReminder")) {
+                System.out.println("=== View BestBuds Event Called === ");
+                BirthdayCheckerTimer.runTurnOffReminderEvent(callData);
             }
         } catch (SQLException | URISyntaxException e) {
             e.printStackTrace();

@@ -7,6 +7,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import resource.Entity.*;
 import resource.FileResource;
+import resource.KeyboardMarkup;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -27,6 +28,16 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
     public BirthdayCheckerTimer(BestBudsBot bestBudsBot) throws URISyntaxException, SQLException {
         super(bestBudsBot);
+    }
+
+    public static void runTurnOffReminderEvent(String callData) throws SQLException, URISyntaxException {
+        String[] arr = callData.split("_");
+        String receiverCode = arr[1];
+        Integer senderChatId = Integer.parseInt(arr[2]);
+
+        PSQL psql = new PSQL();
+        psql.addEmptyMessage(receiverCode, senderChatId);
+        psql.closeConnection();
     }
 
     @Override
@@ -134,11 +145,14 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
 
         for (Message msg : messages) {
-            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-            super.getBot().execute(message);
-            for (File file : msg.files) {
-                FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+            if (!msg.isEmpty) {
+                message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+                super.getBot().execute(message);
+                for (File file : msg.files) {
+                    FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+                }
             }
+
             psql.updateUserMessageToSent(msg.id);
         }
 
@@ -234,17 +248,54 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 boolean hasSentBdayMsg = psql.hasUserSentBdayMessageToUser(otherUser.code, user.code, bdayMgmt);
                 if (!hasSentBdayMsg) {
                     //send a msg to these ppl to send a msg to the user chatId
-                    SendMessage message = new SendMessage();
-                    message.setChatId(otherUser.chatId.toString());
-                    message.enableHtml(true);
-                    message.setText(this.generateBirthdayReminder(bdayMgmt, group));
-                    super.getBot().execute(message);
+                    this.runBirthdayReminder(bdayMgmt, group, otherUser);
                 }
             }
         }
 
         //Update has_sent_initial to true
         if (!bdayMgmt.hasSentInitialMessage) psql.updateHasSentInitialBirthdayManagement(user.chatId, true);
+    }
+
+    private void runBirthdayReminder(BirthdayManagement bdayMgmt, Group group, User otherUser) throws TelegramApiException {
+        SendMessage message = new SendMessage();
+        message.setChatId(otherUser.chatId.toString());
+        message.enableHtml(true);
+
+        String msg = "";
+        if (bdayMgmt.hasSentInitialMessage) {
+            //Simple reminder
+            msg = generateBirthdayReminderMessage(bdayMgmt, group);
+            message.setReplyMarkup(KeyboardMarkup.toggleBirthdayReminderKB(false, bdayMgmt.user.code, otherUser.chatId));
+        } else {
+            //Sending it for the first time
+            //TODO Replace this with a better msg
+            int numOfDaysAway = bdayMgmt.birthday.toLocalDate().compareTo(LocalDate.now());
+            System.out.println("Num of Days away: " + numOfDaysAway);
+            msg = generateInitialBirthdayMessage(bdayMgmt, group);
+        }
+
+        msg += "\n<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
+
+        message.setText(msg);
+        super.getBot().execute(message);
+    }
+
+    private String generateBirthdayReminder(BirthdayManagement bdayMgmt, Group group) {
+        String msg = "";
+        if (bdayMgmt.hasSentInitialMessage) {
+            //Simple reminder
+            msg = generateBirthdayReminderMessage(bdayMgmt, group);
+        } else {
+            //Sending it for the first time
+            //TODO Replace this with a better msg
+            int numOfDaysAway = bdayMgmt.birthday.toLocalDate().compareTo(LocalDate.now());
+            System.out.println("Num of Days away: " + numOfDaysAway);
+            msg = generateInitialBirthdayMessage(bdayMgmt, group);
+        }
+
+        msg += "\n<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
+        return msg;
     }
 
     private Runnable checkBirthDateHasBeenUpdated() {
@@ -284,23 +335,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             long numOfHoursFrom12PM = ((hourNow + 8) % 24) - chosenHour;
             return ONE_DAY - (ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM);
         }
-    }
-
-    private String generateBirthdayReminder(BirthdayManagement bdayMgmt, Group group) {
-        String msg = "";
-        if (bdayMgmt.hasSentInitialMessage) {
-            //Simple reminder
-            msg = generateBirthdayReminderMessage(bdayMgmt, group);
-        } else {
-            //Sending it for the first time
-            //TODO Replace this with a better msg
-            int numOfDaysAway = bdayMgmt.birthday.toLocalDate().compareTo(LocalDate.now());
-            System.out.println("Num of Days away: " + numOfDaysAway);
-            msg = generateInitialBirthdayMessage(bdayMgmt, group);
-        }
-
-        msg += "\n<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
-        return msg;
     }
 
     private String generateInitialBirthdayMessage(BirthdayManagement bdayMgmt, Group group) {

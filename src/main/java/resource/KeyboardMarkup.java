@@ -19,57 +19,6 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
-    public static InlineKeyboardMarkup deleteKBSecond(YearMonth currYearMonth) {
-
-        List<InlineKeyboardButton> row = new ArrayList<>();
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-
-        InlineKeyboardButton button1 = new InlineKeyboardButton();
-        button1.setText("Confirm");
-        button1.setCallbackData("del_confirm_" + currYearMonth.getYear() + "_" + currYearMonth.getMonthValue());
-        row.add(button1);
-
-        keyboard.add(row);
-
-        row = new ArrayList<>();
-
-        InlineKeyboardButton button2 = new InlineKeyboardButton();
-        button2.setText("Back");
-        button2.setCallbackData("del_cancel_" + currYearMonth.getYear() + "_" + currYearMonth.getMonthValue()); //direct back
-        row.add(button2);
-
-        keyboard.add(row);
-
-        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-        inlineKeyboard.setKeyboard(keyboard);
-        return inlineKeyboard;
-    }
-
-    //KeyboardMarkUps
-    public static InlineKeyboardMarkup entriesKB(YearMonth prevMonth, YearMonth nextMonth) {
-        List<InlineKeyboardButton> row = new ArrayList<>();
-
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-
-        InlineKeyboardButton button1 = new InlineKeyboardButton();
-        button1.setText("<");
-        button1.setCallbackData("entry_" + prevMonth.getYear() + "_" + prevMonth.getMonthValue()); //e.g. fin_2021_7
-        row.add(button1);
-
-        InlineKeyboardButton button2 = new InlineKeyboardButton();
-        button2.setText(">");
-        button2.setCallbackData("entry_" + nextMonth.getYear() + "_" + nextMonth.getMonthValue());
-        row.add(button2);
-
-        keyboard.add(row);
-        row = new ArrayList<>();
-
-        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
-        inlineKeyboard.setKeyboard(keyboard);
-        return inlineKeyboard;
-    }
-
-    //KeyboardMarkUps
     public static InlineKeyboardMarkup confirmationKB(String command, String callbackData) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
@@ -180,6 +129,24 @@ public class KeyboardMarkup {
         return inlineKeyboard;
     }
 
+    public static InlineKeyboardMarkup toggleBirthdayReminderKB(Boolean toggle, String receiverCode, Integer senderChatId) {
+        List<InlineKeyboardButton> row;
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        if (!toggle) {
+            row = new ArrayList<>();
+            InlineKeyboardButton button1 = new InlineKeyboardButton();
+            button1.setText("SWITCH OFF REMINDER");
+            button1.setCallbackData("bdayReminder_" + receiverCode + "_" + senderChatId);
+            row.add(button1);
+            keyboard.add(row);
+        }
+
+        InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
+        inlineKeyboard.setKeyboard(keyboard);
+        return inlineKeyboard;
+    }
+
     public static InlineKeyboardMarkup refreshNavigationKB(String groupSelection, String command, Integer currentPageNumber, Boolean isLastPage) {
         List<InlineKeyboardButton> row;
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
@@ -226,7 +193,7 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
-    public static InlineKeyboardMarkup financeKB(YearMonth prevMonth, YearMonth currMonth, YearMonth nextMonth) {
+    private static InlineKeyboardMarkup financeKB(YearMonth prevMonth, YearMonth currMonth, YearMonth nextMonth) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
 
@@ -263,7 +230,7 @@ public class KeyboardMarkup {
     }
 
     //KeyboardMarkUps
-    public static InlineKeyboardMarkup deleteKB(YearMonth prevMonth, YearMonth currMonth, YearMonth nextMonth) {
+    private static InlineKeyboardMarkup deleteKB(YearMonth prevMonth, YearMonth currMonth, YearMonth nextMonth) {
 
         List<InlineKeyboardButton> row = new ArrayList<>();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
@@ -293,7 +260,7 @@ public class KeyboardMarkup {
         return inlineKeyboard;
     }
 
-    public static ReplyKeyboardMarkup getEarnReplyKeyboardMarkup() {
+    private static ReplyKeyboardMarkup getEarnReplyKeyboardMarkup() {
         String[] eCategory = {"Allowance", "Income", "Investment", "Cancel"};
 
         KeyboardRow row = new KeyboardRow();
@@ -323,7 +290,7 @@ public class KeyboardMarkup {
         return markup;
     }
 
-    public static ReplyKeyboardMarkup getSpendReplyKeyboardMarkup() {
+    private static ReplyKeyboardMarkup getSpendReplyKeyboardMarkup() {
         String[] sCategory = {"Entertainment","Food","Gift","Shopping","Transport", "Utilities", "Cancel"};
 
 
@@ -354,7 +321,7 @@ public class KeyboardMarkup {
         return markup;
     }
 
-    public static ReplyKeyboardMarkup getDelReplyKeyboardMarkup() {
+    private static ReplyKeyboardMarkup getDelReplyKeyboardMarkup() {
         KeyboardRow row = new KeyboardRow();
 
         List<KeyboardRow> keyboard = new ArrayList<>();

@@ -11,6 +11,7 @@ public class Message {
     public User userFrom;
     public Boolean hasSent;
     public Date createdOn;
+    public Boolean isEmpty;
     public List<File> files;
 
     public Message() {
@@ -20,6 +21,7 @@ public class Message {
         userFrom = null;
         hasSent = false;
         createdOn = null;
+        isEmpty = null;
         files = new ArrayList<>();
     }
 
