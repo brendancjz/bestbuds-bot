@@ -45,33 +45,23 @@ public class TestCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
             message.setText("Testing...");
-            PSQL psql = new PSQL();
-            User des = super.getPSQL().getUserDataResultSet("Des1483");
-            BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(des.chatId);
-            System.out.println(psql.hasUserSentBdayMessageToUser("Bern9074", "Des1483", bdayMgmt));
+
             super.getBot().execute(message);
 
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            //runBirthdayTest();
+            runBirthdayTest();
 
-        } catch (TelegramApiException throwables) {
+        } catch (TelegramApiException | IOException | URISyntaxException | SQLException | InterruptedException throwables) {
             throwables.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 
     private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
         BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
         User des = super.getPSQL().getUserDataResultSet("Des1483");
-        User bernie = super.getPSQL().getUserDataResultSet("Bern9074");
-        Group chiaSeed = super.getPSQL().getGroupDataResultSet("ChiaSeeds");
-        BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(des.chatId);
-        timer.runBirthdayReminder(bdayMgmt, chiaSeed, bernie);
+        timer.runSendMessageToAdminsEvent(des, super.getPSQL());
     }
 
     private String sendMsg() {
