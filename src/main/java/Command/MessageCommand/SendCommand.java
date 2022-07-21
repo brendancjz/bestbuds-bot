@@ -51,7 +51,7 @@ public class SendCommand extends Command {
         String senderMessage = String.join(" ", Arrays.copyOfRange(arr, 2, arr.length));
 
         if (super.getPSQL().addMessage(receiverCode, super.getChatId(), senderMessage)) {
-            message.setText("Message sent! I'm sure your BestBud will appreciate this message: \n\n" + senderMessage);
+            message.setText("Message sent! I'm sure your BestBud will appreciate this message: \n\n" + senderMessage + "\n\nDo you have any pictures/videos of your BestBud? Please send them over! Stickers are welcome too. :)");
         } else {
             message.setText("Something went wrong in sending. Perhaps BestBud's birthday is not coming yet or y'all do not share the same BestBuds Group.");
         }
