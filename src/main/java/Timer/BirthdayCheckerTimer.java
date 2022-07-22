@@ -350,15 +350,14 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    private String generateInitialBirthdayMessage(BirthdayManagement bdayMgmt, Group group) {
+    public String generateInitialBirthdayMessage(BirthdayManagement bdayMgmt, Group group) {
         return "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> coming up on " + bdayMgmt.getBirthday() + "! please send a birthday message to him/her! " +
-                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:";
+                "Replace &lt;message&gt; with your birthday message to him/her.";
     }
 
-    private String generateBirthdayReminderMessage(BirthdayManagement bdayMgmt, Group group) {
+    public String generateBirthdayReminderMessage(BirthdayManagement bdayMgmt, Group group) {
         return "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her! " +
-                "You can send images/videos/documents and even stickers over BUT send them only after sending this /send message first:";
-
+                "Replace &lt;message&gt; with your birthday message to him/her.";
     }
 
     private String generateSetBirthdayReminder(User user) {

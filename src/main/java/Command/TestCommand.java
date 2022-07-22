@@ -46,22 +46,30 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
 
-            super.getBot().execute(message);
-
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            //runBirthdayTest();
-
+            message.setText(runBirthdayTest());
+            super.getBot().execute(message);
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
+    private String runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
         BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
-        User des = super.getPSQL().getUserDataResultSet("Des1483");
-        timer.runSendMessageToAdminsEvent(des, super.getPSQL());
+        User anna = super.getPSQL().getUserDataResultSet("anna5270");
+        BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(anna.chatId);
+        Group group = super.getPSQL().getGroupDataResultSet("StickyFaith");
+        return timer.generateBirthdayReminderMessage(bdayMgmt, group);
     }
 
     private String sendMsg() {
