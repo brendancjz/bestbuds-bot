@@ -51,11 +51,19 @@ public class SendCommand extends Command {
         String senderMessage = String.join(" ", Arrays.copyOfRange(arr, 2, arr.length));
 
         if (super.getPSQL().addMessage(receiverCode, super.getChatId(), senderMessage)) {
-            message.setText("Message sent! I'm sure your BestBud will appreciate this message: \n\n" + senderMessage + "\n\nDo you have any pictures/videos of your BestBud? Please send them over! Stickers are welcome too. :)");
+            message.setText(generateMessageSentText(senderMessage));
         } else {
             message.setText("Something went wrong in sending. Perhaps BestBud's birthday is not coming yet or y'all do not share the same BestBuds Group.");
         }
 
         super.getBot().execute(message);
+    }
+
+    public String generateMessageSentText(String senderMessage) {
+        String msg = "";
+        msg += "Message sent! I'm sure your BestBud will appreciate this message: \n\n" + senderMessage +
+                "\n\n\nDo you have any pictures/videos of your BestBud? Please send them over! Stickers are welcome too. If not, no additional response is required.";
+        msg += "\n\nIf you would like to update your birthday message, simple use the above /send command with your updated message.";
+        return msg;
     }
 }

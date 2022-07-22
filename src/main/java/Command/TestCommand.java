@@ -1,5 +1,6 @@
 package Command;
 
+import Command.MessageCommand.SendCommand;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import Timer.BirthdayCheckerTimer;
@@ -49,18 +50,15 @@ public class TestCommand extends Command {
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            message.setText(runBirthdayTest());
+            SendCommand send = new SendCommand(super.getBot(), super.getUpdate(), super.getPSQL());
+            message.setText(send.generateMessageSentText("Happy birthday bel! Look at you go working already. Thanks for the memories over the years and I hope to see you grow to be a strong and independent woman!! Continue to be a blessing to the people around you :)) God bless you and hope you have a great day on this special dayy."));
             super.getBot().execute(message);
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 
