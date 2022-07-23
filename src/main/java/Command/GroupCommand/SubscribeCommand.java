@@ -117,6 +117,10 @@ public class SubscribeCommand extends Command {
         instruction += "<pre>  /upgrade &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
         instruction += "<em>Downgrade a BestBud to Admin</em>\n";
         instruction += "<pre>  /downgrade &lt;user_code&gt; &lt;group_code&gt;</pre>\n\n";
+        instruction += "<b>Group Admin Commands</b> \n\n";
+        instruction += "<em>View BestBud Messages During Birthday Week</em>\n";
+        instruction += "<pre>  /view_bestbud_messages &lt;group_code&gt; &lt;user_code&gt;</pre>\n\n";
+
 
         return instruction;
     }

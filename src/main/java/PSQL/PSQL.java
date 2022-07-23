@@ -1075,6 +1075,9 @@ public class PSQL {
     public boolean isAdminInGroup(Integer chatId, String groupCode) throws SQLException {
         List<User> admins = this.getAdminsFromGroup(groupCode);
         User admin = this.getUserDataResultSet(chatId);
-        return admins.contains(admin);
+        for (User ad : admins) {
+            if (ad.chatId.equals(admin.chatId)) return true;
+        }
+        return false;
     }
 }
