@@ -3,7 +3,10 @@ package resource;
 import PSQL.PSQL;
 import TelegramBot.BestBudsBot;
 import org.apache.commons.io.IOUtils;
-import org.telegram.telegrambots.meta.api.methods.send.*;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
+import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
 import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
@@ -135,11 +138,9 @@ public class FileResource {
             bot.execute(vid);
         } else if (fileType.equals(File.STICKER)) {
             System.out.println("onUpdateReceived.hasSticker()");
-            SendAnimation stick = new SendAnimation();
+            SendSticker stick = new SendSticker();
             stick.setChatId(String.valueOf(chatId));
-            stick.setAnimation(FileResource.getInputFile(filePath));
-
-
+            stick.setSticker(FileResource.getInputFile(filePath));
             bot.execute(stick);
         }
     }
