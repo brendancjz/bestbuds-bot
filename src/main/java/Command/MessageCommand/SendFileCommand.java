@@ -25,11 +25,6 @@ public class SendFileCommand extends Command {
     public void runCommand() {
         try {
 
-            if (super.getChatId().toString().equals("107270014")) {
-                runTestCommand();
-                return;
-            }
-
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
@@ -60,6 +55,7 @@ public class SendFileCommand extends Command {
             if (filePath.contains(".tgs")) {
                 message.setText("Sorry, we do not support animated stickers at the moment. Please send a non-animated sticker instead.");
                 super.getBot().execute(message);
+                return;
             }
 
             super.getPSQL().addFile(getFileType(super.getUpdate()),filePath, msg.id);
@@ -70,19 +66,6 @@ public class SendFileCommand extends Command {
             e.printStackTrace();
         }
 
-    }
-
-    private void runTestCommand() throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
-        String filePath = FileResource.getFilePathOfUploadedFileByUser(FileResource.getFileIdFromUpdate(super.getUpdate()));
-        //NOTE: Code does not allow animated stickers with .tgs format at the moment
-        SendMessage message = new SendMessage();
-        message.setChatId(super.getChatId().toString());
-        message.enableHtml(true);
-        if (filePath.contains(".tgs")) {
-            message.setText("Sorry, we do not support animated stickers at the moment. Please send a non-animated sticker instead.");
-            super.getBot().execute(message);
-        }
-        FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"STICKER", filePath);
     }
 
     private String generateErrorMsg() {
