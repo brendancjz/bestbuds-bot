@@ -12,6 +12,7 @@ import resource.Entity.Message;
 import resource.Entity.User;
 import resource.KeyboardMarkup;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,6 +48,10 @@ public class ViewBestBudsMessagesCommand extends Command {
                 super.getBot().execute(message);
             }
         } catch (URISyntaxException | SQLException | TelegramApiException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

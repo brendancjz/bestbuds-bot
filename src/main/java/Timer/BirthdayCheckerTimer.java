@@ -132,7 +132,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 }
 
                 psql.closeConnection();
-            } catch (SQLException | URISyntaxException | TelegramApiException | IOException e) {
+            } catch (SQLException | URISyntaxException | TelegramApiException | IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         };
@@ -213,7 +213,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    public void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException, IOException {
+    public void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException, IOException, URISyntaxException, InterruptedException {
         //Get everyone from these groups except for the user himself
         for (Group group : user.groups) {
             List<User> admins = psql.getAdminsFromGroup(group.code);
@@ -232,25 +232,35 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    public void runSendMessageToAdminEvent(User admin, User bdayUser, Group group, List<Message> msges) throws TelegramApiException {
+    public void runSendMessageToAdminEvent(User admin, User bdayUser, Group group, List<Message> msges) throws TelegramApiException, InterruptedException, IOException, URISyntaxException {
         SendMessage message = new SendMessage();
         message.setChatId(admin.chatId.toString());
         message.enableHtml(true);
-        message.setText(collateMessages(msges, group, bdayUser));
+        message.setText("Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming up. Here are the collated birthday messages from the group.\n\n");
         super.getBot().execute(message);
-    }
 
-    private String collateMessages(List<Message> msges, Group group, User bdayUser) {
-        String message = "";
-        message += "Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming up. Here are the collated birthday messages from the group.\n\n";
         for (Message msg : msges) {
             if (msg.isEmpty == null || !msg.isEmpty) {
-                message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\nDate: " + msg.createdOn;
+                message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name + "\nDate: " + msg.createdOn);
+                super.getBot().execute(message);
+                for (File file : msg.files) {
+                    FileResource.sendFileToUser(super.getBot(), admin.chatId.toString(), file.type, file.path);
+                }
             }
         }
-
-        return message;
     }
+
+//    private String collateMessages(List<Message> msges, Group group, User bdayUser) {
+//        String message = "";
+//        message += "Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming up. Here are the collated birthday messages from the group.\n\n";
+//        for (Message msg : msges) {
+//            if (msg.isEmpty == null || !msg.isEmpty) {
+//                message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\nDate: " + msg.createdOn + "\n\n";
+//            }
+//        }
+//
+//        return message;
+//    }
 
     private void runReminderMessageEvent(User user, PSQL psql) throws SQLException, TelegramApiException {
         //Get has_sent_initial_msg
@@ -296,23 +306,6 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
         message.setText(msg);
         super.getBot().execute(message);
-    }
-
-    private String generateBirthdayReminder(BirthdayManagement bdayMgmt, Group group) {
-        String msg = "";
-        if (bdayMgmt.hasSentInitialMessage) {
-            //Simple reminder
-            msg = generateBirthdayReminderMessage(bdayMgmt, group);
-        } else {
-            //Sending it for the first time
-            //TODO Replace this with a better msg
-            int numOfDaysAway = bdayMgmt.birthday.toLocalDate().compareTo(LocalDate.now());
-            System.out.println("Num of Days away: " + numOfDaysAway);
-            msg = generateInitialBirthdayMessage(bdayMgmt, group);
-        }
-
-        msg += "\n<pre>  /send " + bdayMgmt.user.code + " &lt;message&gt;</pre>";
-        return msg;
     }
 
     private Runnable checkBirthDateHasBeenUpdated() {
