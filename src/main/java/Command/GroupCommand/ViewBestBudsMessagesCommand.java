@@ -55,6 +55,9 @@ public class ViewBestBudsMessagesCommand extends Command {
     private Boolean validateGroupCodeAndUserAndAdminInGroup(String text, Integer chatId) throws SQLException {
         String[] arr = text.split(" ");
 
+        System.out.println("CHECK1: " + !super.getPSQL().isGroupCodeUnique(arr[1]));
+        System.out.println("CHECK2: " + super.getPSQL().isUserInGroup(arr[2], arr[1]));
+        System.out.println("CHECK3: " + super.getPSQL().isAdminInGroup(chatId, arr[1]));
         return arr.length == 3 &&
                 !super.getPSQL().isGroupCodeUnique(arr[1]) &&
                 super.getPSQL().isUserInGroup(arr[2], arr[1]) &&
