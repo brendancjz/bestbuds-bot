@@ -253,6 +253,11 @@ public class BestBudsBot extends TelegramLongPollingBot {
                 command = new ViewGroupCommand(this, update, psql);
                 command.runCommand();
             }
+            else if (text.startsWith("/view_bestbuds_messages")) {
+                System.out.println("=== View BestBuds Messages Event Called === ");
+                command = new ViewBestBudsMessagesCommand(this, update, psql);
+                command.runCommand();
+            }
             else if (text.startsWith("/view_bestbuds")) {
                 System.out.println("=== View BestBuds Event Called === ");
                 command = new ViewBestBudsCommand(this, update, psql);

@@ -63,8 +63,8 @@ public class SendFileCommand extends Command {
         String msg = "";
         msg += "Sorry, please send your pictures and videos ONLY after sending a birthday message to a BestBud. " +
                 "This allows the bot to map your media files to that birthday message.\n\n" +
-                "To send media files along with your birthday message, send the text message first with this command:" +
-                "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>" +
+                "To send media files along with your birthday message, send the text message first with this command:\n" +
+                "<pre>  /send &lt;user_code&gt; &lt;message&gt;</pre>\n" +
                 "Next, send your media files immediately after.";
 
         return msg;

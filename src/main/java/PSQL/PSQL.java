@@ -435,6 +435,11 @@ public class PSQL {
         }
     }
 
+    public Boolean isUserInGroup(String userCode, String groupCode) throws SQLException {
+        User user = this.getUserDataResultSet(userCode);
+        return isUserInGroup(user.chatId, groupCode);
+    }
+
     public Boolean isUserInGroup(Integer chatId, String groupCode) throws SQLException {
         boolean userExists = isUserRegistered(chatId);
         System.out.println(userExists);
@@ -1065,5 +1070,11 @@ public class PSQL {
             e.printStackTrace();
         }
 
+    }
+
+    public boolean isAdminInGroup(Integer chatId, String groupCode) throws SQLException {
+        List<User> admins = this.getAdminsFromGroup(groupCode);
+        User admin = this.getUserDataResultSet(chatId);
+        return admins.contains(admin);
     }
 }

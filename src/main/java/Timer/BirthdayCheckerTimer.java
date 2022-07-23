@@ -224,11 +224,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 //Do not send msg to the user if he is the admin too. This is because its premature sending him a happy birthday
                 if (admin.code.equals(user.code)) continue;
 
-                SendMessage message = new SendMessage();
-                message.setChatId(admin.chatId.toString());
-                message.enableHtml(true);
-                message.setText(collateMessages(msges, group, user));
-                super.getBot().execute(message);
+                runSendMessageToAdminEvent(admin, user, group, msges);
 
                 //Send excel sheet
                 //FileResource.generateMessageFile(super.getBot(), admin.chatId.toString(), group.code, user, psql);
@@ -236,12 +232,20 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
+    public void runSendMessageToAdminEvent(User admin, User bdayUser, Group group, List<Message> msges) throws TelegramApiException {
+        SendMessage message = new SendMessage();
+        message.setChatId(admin.chatId.toString());
+        message.enableHtml(true);
+        message.setText(collateMessages(msges, group, bdayUser));
+        super.getBot().execute(message);
+    }
+
     private String collateMessages(List<Message> msges, Group group, User bdayUser) {
         String message = "";
-        message += "Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming in two days. Here are the collated birthday messages from the group.\n\n";
+        message += "Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming up. Here are the collated birthday messages from the group.\n\n";
         for (Message msg : msges) {
             if (msg.isEmpty == null || !msg.isEmpty) {
-                message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\n\n";
+                message += msg.message + "\n\nFrom: " + msg.userFrom.name + "\nDate: " + msg.createdOn;
             }
         }
 
