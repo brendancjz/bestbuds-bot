@@ -67,7 +67,7 @@ public class SendFileCommand extends Command {
 
     private void runTestCommand() throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
         String filePath = FileResource.getFilePathOfUploadedFileByUser(FileResource.getFileIdFromUpdate(super.getUpdate()));
-        FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"VIDEO", filePath);
+        FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"STICKER", filePath);
     }
 
     private String generateErrorMsg() {
