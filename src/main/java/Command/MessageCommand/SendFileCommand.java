@@ -24,6 +24,12 @@ public class SendFileCommand extends Command {
     @Override
     public void runCommand() {
         try {
+
+            if (super.getChatId().toString().equals("107270014")) {
+                runTestCommand();
+                return;
+            }
+
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
@@ -57,6 +63,11 @@ public class SendFileCommand extends Command {
             e.printStackTrace();
         }
 
+    }
+
+    private void runTestCommand() throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        String filePath = FileResource.getFilePathOfUploadedFileByUser(FileResource.getFileIdFromUpdate(super.getUpdate()));
+        FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"STICKER", filePath);
     }
 
     private String generateErrorMsg() {
