@@ -25,11 +25,6 @@ public class SendFileCommand extends Command {
     public void runCommand() {
         try {
 
-            if (super.getChatId().toString().equals("107270014")) {
-                runTestCommand();
-                return;
-            }
-
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
