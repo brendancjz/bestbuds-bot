@@ -69,7 +69,7 @@ public class TestCommand extends Command {
 //        User anna = super.getPSQL().getUserDataResultSet("anna5270");
 //        BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(anna.chatId);
 //        Group group = super.getPSQL().getGroupDataResultSet("StickyFaith");
-        timer.checkIncomingBirthdays();
+        timer.checkIncomingBirthdays().run();
     }
 
     private String sendMsg() {
