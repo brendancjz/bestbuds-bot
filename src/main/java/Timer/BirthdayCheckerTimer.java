@@ -235,7 +235,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
     public void runSendMessageToAdminEvent(User admin, User bdayUser, Group group, List<Message> msges) throws TelegramApiException, InterruptedException, IOException, URISyntaxException {
         SendMessage message = new SendMessage();
         message.setChatId(admin.chatId.toString());
-        message.enableHtml(true);
+        message.enableHtml(false);
         message.setText("Hello admin of " + group.name + ", your BestBud " + bdayUser.name + " with user_code " + bdayUser.code + " birthday is coming up. Here are the collated birthday messages from the group.\n\n");
         super.getBot().execute(message);
 
