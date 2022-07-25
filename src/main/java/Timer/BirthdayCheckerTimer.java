@@ -91,7 +91,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         };
     }
 
-    private Runnable checkIncomingBirthdays() {
+    public Runnable checkIncomingBirthdays() {
         return () -> {
             System.out.println("Checking Incoming User Birthdays.");
             try {
@@ -142,7 +142,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         System.out.println("User " + user.name + " birthday is today, " + birthday.toString());
         SendMessage message = new SendMessage();
         message.setChatId(user.chatId.toString());
-        message.enableHtml(true);
+        message.enableHtml(false);
 
         List<Message> messages = psql.getUserMessages(user.code);
         if (messages.size() > 0) {
@@ -180,38 +180,38 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    public void runBirthdayEventForBirthdayUserOnly(User user, PSQL psql, Date birthday) throws SQLException, InterruptedException, IOException, URISyntaxException, TelegramApiException {
-        System.out.println("BirthdayCheckerTimer.runBirthdayEventForBirthdayUserOnly()");
-        System.out.println("User " + user.name + " birthday is today, " + birthday.toString());
-        SendMessage message = new SendMessage();
-        message.setChatId(user.chatId.toString());
-        message.enableHtml(true);
+//    public void runBirthdayEventForBirthdayUserOnly(User user, PSQL psql, Date birthday) throws SQLException, InterruptedException, IOException, URISyntaxException, TelegramApiException {
+//        System.out.println("BirthdayCheckerTimer.runBirthdayEventForBirthdayUserOnly()");
+//        System.out.println("User " + user.name + " birthday is today, " + birthday.toString());
+//        SendMessage message = new SendMessage();
+//        message.setChatId(user.chatId.toString());
+//        message.enableHtml(false);
+//
+//        List<Message> messages = psql.getUserMessages(user.code);
+//
+//        doSendBirthdayMessageFromBotToUser(user, messages, message);
+//
+//        for (Message msg : messages) {
+//            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+//            super.getBot().execute(message);
+//            for (File file : msg.files) {
+//                FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+//            }
+//            psql.updateUserMessageToSent(msg.id);
+//        }
+//    }
 
-        List<Message> messages = psql.getUserMessages(user.code);
-
-        doSendBirthdayMessageFromBotToUser(user, messages, message);
-
-        for (Message msg : messages) {
-            message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-            super.getBot().execute(message);
-            for (File file : msg.files) {
-                FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
-            }
-            psql.updateUserMessageToSent(msg.id);
-        }
-    }
-
-    private void doSendBirthdayMessageFromBotToUser(User user, List<Message> messages, SendMessage message) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
-        if (messages.size() > 0) {
-            //Send happy birthday sticker
-            SendSticker bdaySticker = new SendSticker();
-            bdaySticker.setChatId(user.chatId.toString());
-            bdaySticker.setSticker(FileResource.getBirthdaySticker());
-            super.getBot().execute(bdaySticker);
-            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
-            super.getBot().execute(message);
-        }
-    }
+//    private void doSendBirthdayMessageFromBotToUser(User user, List<Message> messages, SendMessage message) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+//        if (messages.size() > 0) {
+//            //Send happy birthday sticker
+//            SendSticker bdaySticker = new SendSticker();
+//            bdaySticker.setChatId(user.chatId.toString());
+//            bdaySticker.setSticker(FileResource.getBirthdaySticker());
+//            super.getBot().execute(bdaySticker);
+//            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+//            super.getBot().execute(message);
+//        }
+//    }
 
     public void runSendMessageToAdminsEvent(User user, PSQL psql) throws SQLException, TelegramApiException, IOException, URISyntaxException, InterruptedException {
         //Get everyone from these groups except for the user himself
@@ -262,7 +262,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 //        return message;
 //    }
 
-    private void runReminderMessageEvent(User user, PSQL psql) throws SQLException, TelegramApiException {
+    private void runReminderMessageEvent(User user, PSQL psql) throws SQLException {
         //Get has_sent_initial_msg
         BirthdayManagement bdayMgmt = psql.getBirthdayManagementDataResultSet(user.chatId);
 
@@ -275,7 +275,13 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 boolean hasSentBdayMsg = psql.hasUserSentBdayMessageToUser(otherUser.code, user.code, bdayMgmt);
                 if (!hasSentBdayMsg) {
                     //send a msg to these ppl to send a msg to the user chatId
-                    this.runBirthdayReminder(bdayMgmt, group, otherUser);
+                    try {
+                        this.runBirthdayReminder(bdayMgmt, group, otherUser);
+                    } catch (TelegramApiException e) {
+                        //If user blocked the bot, it will throw an error
+                        e.printStackTrace();
+                        continue;
+                    }
                 }
             }
         }
@@ -321,12 +327,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         message.setChatId(user.chatId.toString());
                         message.enableHtml(true);
                         message.setText(this.generateSetBirthdayReminder(user));
-                        super.getBot().execute(message);
+                        try {
+                            super.getBot().execute(message);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                            continue;
+                        }
+
                     }
                 }
 
                 psql.closeConnection();
-            } catch (TelegramApiException | SQLException | URISyntaxException e) {
+            } catch (SQLException | URISyntaxException e) {
                 e.printStackTrace();
             }
         };

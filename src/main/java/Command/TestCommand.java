@@ -46,7 +46,7 @@ public class TestCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
             message.setText("Testing...");
-
+            super.getBot().execute(message);
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
@@ -65,45 +65,11 @@ public class TestCommand extends Command {
     }
 
     private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
-//        BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
+        BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
 //        User anna = super.getPSQL().getUserDataResultSet("anna5270");
 //        BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(anna.chatId);
 //        Group group = super.getPSQL().getGroupDataResultSet("StickyFaith");
-//        return timer.generateBirthdayReminderMessage(bdayMgmt, group);
-
-        try {
-            PSQL psql = new PSQL();
-            List<User> users = psql.getAllUsers();
-
-            //Check if birthday is coming up
-            Date dateNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate());
-            Date dateOneWeekFromNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate().plusDays(7));
-            Date dateTwoDaysFromNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate().plusDays(2));
-
-            for (User user : users) {
-                if (user.getDob().equals("null")) continue;
-
-                //User birthday
-                Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
-                //Within 7 Days
-                if (birthday.after(dateNow) &&
-                        (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
-                    psql.addUserIntoBirthdayManagement(user.chatId, birthday);
-                    System.out.println("User " + user.name + " birthday is within the week.");
-
-                    //If birthday is two days from now, send the msges collated to all the admins.
-                    if (birthday.equals(dateTwoDaysFromNow)) {
-                        System.out.println("User " + user.name + " birthday is two days from now. Sending to admins.");
-                    }
-                    continue;
-                }
-
-            }
-
-            psql.closeConnection();
-        } catch (SQLException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+        timer.checkIncomingBirthdays();
     }
 
     private String sendMsg() {
