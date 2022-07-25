@@ -50,17 +50,9 @@ public class TestCommand extends Command {
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            runBirthdayTest();
+            //runBirthdayTest();
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
