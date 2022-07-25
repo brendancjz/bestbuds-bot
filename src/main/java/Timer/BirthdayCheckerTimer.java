@@ -349,12 +349,12 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
     public String generateInitialBirthdayMessage(BirthdayManagement bdayMgmt, Group group) {
         return "Hi, " + bdayMgmt.user.name + " from <em>" + group.name + "</em> coming up on " + bdayMgmt.getBirthday() + "! please send a birthday message to him/her! " +
-                "Replace &lt;message&gt; with your birthday message to him/her.";
+                "Replace \"&lt;message&gt;\" with your birthday message to him/her.";
     }
 
     public String generateBirthdayReminderMessage(BirthdayManagement bdayMgmt, Group group) {
         return "Hey, just a reminder that " + bdayMgmt.user.name + " from <em>" + group.name + "</em> is around the corner. please send a birthday message to him/her! " +
-                "Replace &lt;message&gt; with your birthday message to him/her.";
+                "Replace \"&lt;message&gt;\" with your birthday message to him/her.";
     }
 
     private String generateSetBirthdayReminder(User user) {
