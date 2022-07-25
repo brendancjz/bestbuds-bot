@@ -50,24 +50,60 @@ public class TestCommand extends Command {
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
-            SendCommand send = new SendCommand(super.getBot(), super.getUpdate(), super.getPSQL());
-            message.setText(send.generateMessageSentText("Happy birthday bel! Look at you go working already. Thanks for the memories over the years and I hope to see you grow to be a strong and independent woman!! Continue to be a blessing to the people around you :)) God bless you and hope you have a great day on this special dayy."));
-            super.getBot().execute(message);
+            runBirthdayTest();
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private String runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
-        BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
-        User anna = super.getPSQL().getUserDataResultSet("anna5270");
-        BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(anna.chatId);
-        Group group = super.getPSQL().getGroupDataResultSet("StickyFaith");
-        return timer.generateBirthdayReminderMessage(bdayMgmt, group);
+    private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
+//        BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
+//        User anna = super.getPSQL().getUserDataResultSet("anna5270");
+//        BirthdayManagement bdayMgmt = super.getPSQL().getBirthdayManagementDataResultSet(anna.chatId);
+//        Group group = super.getPSQL().getGroupDataResultSet("StickyFaith");
+//        return timer.generateBirthdayReminderMessage(bdayMgmt, group);
+
+        try {
+            PSQL psql = new PSQL();
+            List<User> users = psql.getAllUsers();
+
+            //Check if birthday is coming up
+            Date dateNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate());
+            Date dateOneWeekFromNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate().plusDays(7));
+            Date dateTwoDaysFromNow = Date.valueOf(LocalDateTime.now().plusHours(8).toLocalDate().plusDays(2));
+
+            for (User user : users) {
+                if (user.getDob().equals("null")) continue;
+
+                //User birthday
+                Date birthday = Date.valueOf(LocalDate.of(dateNow.toLocalDate().getYear(), user.dob.toLocalDate().getMonthValue(), user.dob.toLocalDate().getDayOfMonth()));
+                //Within 7 Days
+                if (birthday.after(dateNow) &&
+                        (birthday.before(dateOneWeekFromNow) || birthday.equals(dateOneWeekFromNow))) {
+                    psql.addUserIntoBirthdayManagement(user.chatId, birthday);
+                    System.out.println("User " + user.name + " birthday is within the week.");
+
+                    //If birthday is two days from now, send the msges collated to all the admins.
+                    if (birthday.equals(dateTwoDaysFromNow)) {
+                        System.out.println("User " + user.name + " birthday is two days from now. Sending to admins.");
+                    }
+                    continue;
+                }
+
+            }
+
+            psql.closeConnection();
+        } catch (SQLException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     private String sendMsg() {

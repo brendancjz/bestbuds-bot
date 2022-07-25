@@ -735,7 +735,6 @@ public class PSQL {
     }
 
     public List<Group> getGroupsFromUser(Integer chatId) throws SQLException {
-        System.out.println("PSQL.getGroupsFromUser()");
         // Obtaining user information from USERS
         String sql = "SELECT * FROM Groups WHERE code = ANY (SELECT group_code FROM GroupUsers WHERE chat_id = ?)";
         PreparedStatement statement = connection.prepareStatement(sql);
