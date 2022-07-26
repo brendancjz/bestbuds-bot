@@ -24,10 +24,15 @@ public class SendFileCommand extends Command {
     @Override
     public void runCommand() {
         try {
-
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
+
+            if (super.getChatId().toString().equals("107270014")) {
+                runTestCommand();
+                return;
+            }
+
 
             User user = super.getPSQL().getUserDataResultSet(super.getChatId());
             String text = user.latestText;
