@@ -49,10 +49,6 @@ public class ViewBestBudsMessagesCommand extends Command {
             }
         } catch (URISyntaxException | SQLException | TelegramApiException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
