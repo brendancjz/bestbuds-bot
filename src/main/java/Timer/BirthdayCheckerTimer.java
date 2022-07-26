@@ -158,9 +158,18 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         for (Message msg : messages) {
             if (msg.isEmpty == null || !msg.isEmpty) {
                 message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-                super.getBot().execute(message);
+                try {
+                    super.getBot().execute(message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
                 for (File file : msg.files) {
-                    FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+                    try {
+                        FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+                    } catch (InterruptedException | IOException | URISyntaxException | TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
 
