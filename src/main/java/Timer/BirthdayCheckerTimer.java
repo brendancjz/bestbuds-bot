@@ -232,7 +232,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         }
     }
 
-    public void runSendMessageToAdminEvent(User admin, User bdayUser, Group group, List<Message> msges) throws TelegramApiException, InterruptedException, IOException, URISyntaxException {
+    public void runSendMessageToAdminEvent(User admin, User bdayUser, Group group, List<Message> msges) throws TelegramApiException {
         SendMessage message = new SendMessage();
         message.setChatId(admin.chatId.toString());
         message.enableHtml(false);
@@ -244,7 +244,11 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                 message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name + "\nDate: " + msg.createdOn);
                 super.getBot().execute(message);
                 for (File file : msg.files) {
-                    FileResource.sendFileToUser(super.getBot(), admin.chatId.toString(), file.type, file.path);
+                    try {
+                        FileResource.sendFileToUser(super.getBot(), admin.chatId.toString(), file.type, file.path);
+                    } catch (InterruptedException | IOException | URISyntaxException | TelegramApiException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
