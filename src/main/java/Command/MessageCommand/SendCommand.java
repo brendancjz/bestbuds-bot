@@ -25,7 +25,7 @@ public class SendCommand extends Command {
 
             SendMessage message = new SendMessage();
             message.setChatId(super.getChatId().toString());
-            message.enableHtml(true);
+            message.enableHtml(false);
 
             if (text.equals("/send")) { //Bad command
                 missingArgumentsMessage(message);
