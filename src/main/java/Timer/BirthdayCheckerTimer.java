@@ -23,6 +23,7 @@ import java.util.concurrent.*;
 public class BirthdayCheckerTimer extends BestBudsTimer {
     private static final int NUM_OF_THREADS = 10;
     private static final int AFTERNOON = 12;
+    private static final int NIGHT = 21;
     private static final int MIDNIGHT = 0;
     private static final int ONE_MINUTE = 60;
     private static final int ONE_HOUR = 60 * 60;
@@ -59,7 +60,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(NUM_OF_THREADS);
         scheduler.scheduleAtFixedRate(checkBirthDateHasBeenUpdated(), setDelayTillNextChosenHour(AFTERNOON), ONE_DAY, TimeUnit.SECONDS);
         //Schedule a daily check if anyone's birthday is 1 week from current date. Add them into a new table.
-        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(AFTERNOON), ONE_DAY, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(checkIncomingBirthdays(), setDelayTillNextChosenHour(NIGHT), ONE_DAY, TimeUnit.SECONDS);
         //Schedule a daily check if anyone's birthday is today 12am.
         scheduler.scheduleAtFixedRate(checkBirthdayToday(), setDelayTillNextChosenHour(MIDNIGHT), ONE_DAY, TimeUnit.SECONDS);
     }
@@ -365,9 +366,9 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
         int minNow = dateNow.getMinute();
 
         if (isBeforeChosenHour(chosenHour, hourNow)) { //Before timing
-            long numOfHoursUntil12PM = (chosenHour - 1) - ((hourNow + 8) % 24);
-            long numOfMinutesUntil12PM = 60 - minNow;
-            return ONE_MINUTE * numOfMinutesUntil12PM + ONE_HOUR * numOfHoursUntil12PM;
+            long numOfHoursUntilChosenHour = (chosenHour - 1) - ((hourNow + 8) % 24);
+            long numOfMinutesUntilChosenHour = 60 - minNow;
+            return ONE_MINUTE * numOfMinutesUntilChosenHour + ONE_HOUR * numOfHoursUntilChosenHour;
         } else {
             long numOfHoursFrom12PM = ((hourNow + 8) % 24) - chosenHour;
             return ONE_DAY - (ONE_MINUTE * (long) minNow + ONE_HOUR * numOfHoursFrom12PM);
