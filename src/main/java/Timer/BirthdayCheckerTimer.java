@@ -151,27 +151,29 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             bdaySticker.setChatId(user.chatId.toString());
             bdaySticker.setSticker(FileResource.getBirthdaySticker());
             super.getBot().execute(bdaySticker);
-            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+//            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+            message.setText("Hi, today's your birthday! Happy birthday " + user.name + "!");
             super.getBot().execute(message);
         }
 
         for (Message msg : messages) {
-            if (msg.isEmpty == null || !msg.isEmpty) {
-                message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-                try {
-                    super.getBot().execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-                for (File file : msg.files) {
-                    try {
-                        FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
-                    } catch (InterruptedException | IOException | URISyntaxException | TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
+//            Commented out until files can be sent reliably
+//            if (msg.isEmpty == null || !msg.isEmpty) {
+//                message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+//                try {
+//                    super.getBot().execute(message);
+//                } catch (TelegramApiException e) {
+//                    e.printStackTrace();
+//                }
+//                for (File file : msg.files) {
+//                    try {
+//                        FileResource.sendFileToUser(super.getBot(), user.chatId.toString(), file.type, file.path);
+//                    } catch (InterruptedException | IOException | URISyntaxException | TelegramApiException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }
 
             psql.updateUserMessageToSent(msg.id);
         }
@@ -182,7 +184,7 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
             for (User otherUser : otherUsers) {
                 SendMessage userBdayTdyMsg = new SendMessage();
                 userBdayTdyMsg.setChatId(otherUser.chatId.toString());
-                userBdayTdyMsg.enableHtml(true);
+                userBdayTdyMsg.enableHtml(false);
                 userBdayTdyMsg.setText("Hi, today is " + user.name + " from " + group.name + " birthday!");
                 super.getBot().execute(userBdayTdyMsg);
             }

@@ -47,6 +47,12 @@ public class TestCommand extends Command {
             message.enableHtml(true);
             message.setText("Testing...");
             super.getBot().execute(message);
+
+            String http = text.split(" ")[1];
+
+
+
+
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
 //            FileResource.generateMessageFile(super.getBot(), super.getChatId().toString(), "Chia5976", mom, super.getPSQL());
 
