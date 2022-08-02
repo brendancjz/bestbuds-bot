@@ -812,13 +812,14 @@ public class PSQL {
         //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
         System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");
         // Obtaining user information from USERS
-        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND YEAR(created_on) = YEAR(?) and " +
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND date_part(?,created_on) = ? and " +
                 "user_code_from = ANY (SELECT code FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers " +
                 "WHERE group_code = ? AND chat_id = ANY (SELECT chat_id FROM Users " +
                 "WHERE code = ANY (SELECT user_code_from FROM Messages m WHERE user_code_to = ? AND message_sent = ?))))";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, bdayUserCode);
-        statement.setDate(2, Date.valueOf(LocalDate.now()));
+        System.out.println("Year: " + LocalDate.now().getYear());
+        statement.setInt(2, LocalDate.now().getYear());
         statement.setString(3, groupCode);
         statement.setString(4, bdayUserCode);
         statement.setBoolean(5, false);
