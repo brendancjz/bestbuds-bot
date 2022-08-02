@@ -48,8 +48,6 @@ public class TestCommand extends Command {
             message.setText("Testing...");
             super.getBot().execute(message);
 
-            String http = text.split(" ")[1];
-
             FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"DOCUMENT", "documents/file_43.jpg");
 
 
