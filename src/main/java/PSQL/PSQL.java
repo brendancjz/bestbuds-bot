@@ -832,7 +832,7 @@ public class PSQL {
             Message message = this.convertResultSetToMessage(resultSet);
             messages.add(message);
         }
-
+        System.out.println("Size of messages: " + messages.size());
         return messages;
     }
 
