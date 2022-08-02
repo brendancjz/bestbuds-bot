@@ -38,7 +38,7 @@ public class ViewBestBudsMessagesCommand extends Command {
                 User user = super.getPSQL().getUserDataResultSet(userCode);
                 User amin = super.getPSQL().getUserDataResultSet(super.getChatId());
                 BirthdayCheckerTimer timer = new BirthdayCheckerTimer(super.getBot());
-                List<Message> msges = super.getPSQL().getUserMessagesFromUsersOfGroupCommand(user.code, group.code);
+                List<Message> msges = super.getPSQL().getUserMessagesFromUsersOfGroup(user.code, group.code);
                 timer.runSendMessageToAdminEvent(amin, user, group, msges);
             } else {
                 SendMessage message = new SendMessage();
