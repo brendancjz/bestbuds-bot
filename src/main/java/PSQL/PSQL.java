@@ -819,10 +819,11 @@ public class PSQL {
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, bdayUserCode);
         System.out.println("Year: " + LocalDate.now().getYear());
-        statement.setInt(2, LocalDate.now().getYear());
-        statement.setString(3, groupCode);
-        statement.setString(4, bdayUserCode);
-        statement.setBoolean(5, false);
+        statement.setString(2, "year");
+        statement.setInt(3, LocalDate.now().getYear());
+        statement.setString(4, groupCode);
+        statement.setString(5, bdayUserCode);
+        statement.setBoolean(6, false);
 
         ResultSet resultSet = statement.executeQuery();
         List<Message> messages = new ArrayList<>();
