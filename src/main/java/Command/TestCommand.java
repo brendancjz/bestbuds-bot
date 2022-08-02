@@ -50,6 +50,7 @@ public class TestCommand extends Command {
 
             String http = text.split(" ")[1];
 
+            FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"DOCUMENT", "documents/file_43.jpg");
 
 
 
@@ -59,6 +60,12 @@ public class TestCommand extends Command {
             //runBirthdayTest();
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 

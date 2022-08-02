@@ -123,7 +123,6 @@ public class FileResource {
             doc.setChatId(String.valueOf(chatId));
             doc.setDocument(FileResource.getInputFile(filePath));
             bot.execute(doc);
-            //
         } else if (fileType.equals(File.PHOTO)) {
             System.out.println("onUpdateReceived.hasPhoto()");
             SendPhoto photo = new SendPhoto();
