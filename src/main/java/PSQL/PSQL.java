@@ -808,6 +808,32 @@ public class PSQL {
         return messages;
     }
 
+    public List<Message> getUserMessagesFromUsersOfGroupCommand(String bdayUserCode, String groupCode) throws SQLException {
+        //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
+        System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");
+        // Obtaining user information from USERS
+        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND WHERE YEAR(created_on) = YEAR(?) and " +
+                "user_code_from = ANY (SELECT code FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers " +
+                "WHERE group_code = ? AND chat_id = ANY (SELECT chat_id FROM Users " +
+                "WHERE code = ANY (SELECT user_code_from FROM Messages m WHERE user_code_to = ? AND message_sent = ?))))";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, bdayUserCode);
+        statement.setDate(2, Date.valueOf(LocalDate.now()));
+        statement.setString(3, groupCode);
+        statement.setString(4, bdayUserCode);
+        statement.setBoolean(5, false);
+
+        ResultSet resultSet = statement.executeQuery();
+        List<Message> messages = new ArrayList<>();
+
+        while (resultSet.next()) {
+            Message message = this.convertResultSetToMessage(resultSet);
+            messages.add(message);
+        }
+
+        return messages;
+    }
+
     public List<Message> getUserMessagesFromUsersOfGroup(String bdayUserCode, String groupCode) throws SQLException {
         //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
         System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");
