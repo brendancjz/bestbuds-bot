@@ -117,6 +117,7 @@ public class FileResource {
     }
 
     public static void sendFileToUser(BestBudsBot bot, String chatId, String fileType, String filePath) throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        System.out.println("FileResource.sendFileToUser() " + fileType);
         if (fileType.equals(File.DOCUMENT)) {
             System.out.println("onUpdateReceived.hasDocument()");
             SendDocument doc = new SendDocument();
