@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class PSQL {
     private final Connection connection;
@@ -809,32 +810,47 @@ public class PSQL {
     }
 
     public List<Message> getUserMessagesFromUsersOfGroupCommand(String bdayUserCode, String groupCode) throws SQLException {
-        //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
-        System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");
-        // Obtaining user information from USERS
-        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND date_part(?,created_on) = ? and " +
-                "user_code_from = ANY (SELECT code FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers " +
-                "WHERE group_code = ? AND chat_id = ANY (SELECT chat_id FROM Users " +
-                "WHERE code = ANY (SELECT user_code_from FROM Messages m WHERE user_code_to = ? AND message_sent = ?))))";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setString(1, bdayUserCode);
-        System.out.println("Year: " + LocalDate.now().getYear());
-        statement.setString(2, "year");
-        statement.setInt(3, LocalDate.now().getYear());
-        statement.setString(4, groupCode);
-        statement.setString(5, bdayUserCode);
-        statement.setBoolean(6, false);
-
-        ResultSet resultSet = statement.executeQuery();
-        List<Message> messages = new ArrayList<>();
-
-        while (resultSet.next()) {
-            Message message = this.convertResultSetToMessage(resultSet);
-            messages.add(message);
-        }
-        System.out.println("Size of messages: " + messages.size());
-        return messages;
+        List<Message> messages = this.getUserMessagesForYear(bdayUserCode, Integer.toString(LocalDate.now().getYear()));
+        return messages.stream().filter(msg -> doesUsersShareSameGroup(msg.userFrom, msg.userTo)).collect(Collectors.toList());
     }
+
+    private boolean doesUsersShareSameGroup(User userFrom, User userTo) {
+        for (Group group : userTo.groups) {
+            for (Group grp : userFrom.groups) {
+                if (group.code.equals(grp.code)) return true;
+            }
+        }
+
+        return false;
+    }
+
+//    public List<Message> getUserMessagesFromUsersOfGroupCommand(String bdayUserCode, String groupCode) throws SQLException {
+//        //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
+//        System.out.println("PSQL.getUserMessagesFromUsersOfGroup()");
+//        // Obtaining user information from USERS
+//        String sql = "SELECT * FROM Messages WHERE user_code_to = ? AND date_part(?,created_on) = ? and " +
+//                "user_code_from = ANY (SELECT code FROM Users WHERE chat_id = ANY (SELECT chat_id FROM GroupUsers " +
+//                "WHERE group_code = ? AND chat_id = ANY (SELECT chat_id FROM Users " +
+//                "WHERE code = ANY (SELECT user_code_from FROM Messages m WHERE user_code_to = ? AND message_sent = ?))))";
+//        PreparedStatement statement = connection.prepareStatement(sql);
+//        statement.setString(1, bdayUserCode);
+//        System.out.println("Year: " + LocalDate.now().getYear());
+//        statement.setString(2, "year");
+//        statement.setInt(3, LocalDate.now().getYear());
+//        statement.setString(4, groupCode);
+//        statement.setString(5, bdayUserCode);
+//        statement.setBoolean(6, false);
+//
+//        ResultSet resultSet = statement.executeQuery();
+//        List<Message> messages = new ArrayList<>();
+//
+//        while (resultSet.next()) {
+//            Message message = this.convertResultSetToMessage(resultSet);
+//            messages.add(message);
+//        }
+//        System.out.println("Size of messages: " + messages.size());
+//        return messages;
+//    }
 
     public List<Message> getUserMessagesFromUsersOfGroup(String bdayUserCode, String groupCode) throws SQLException {
         //Get messages where usercode to is usercode and the sender of that msg is in the same group as the user calling this function
