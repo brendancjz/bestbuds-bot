@@ -61,8 +61,8 @@ public class SendCommand extends Command {
 
     public String generateMessageSentText(String senderMessage) {
         String msg = "";
-        msg += "Message sent! I'm sure your BestBud will appreciate this message: \n\n" + senderMessage +
-                "\n\n\nDo you have any pictures/videos of your BestBud? Please send them over now! Stickers are welcome too. If not, no additional response is required.";
+        msg += "Message sent! I'm sure your BestBud will appreciate this message: \n\n" + senderMessage;
+//        msg += "\n\n\nDo you have any pictures/videos of your BestBud? Please send them over now! Stickers are welcome too. If not, no additional response is required.";
         msg += "\n\nIf you would like to update your birthday message, simple use the above /send command with your updated message.";
         return msg;
     }
