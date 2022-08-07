@@ -28,10 +28,10 @@ public class SendFileCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-            if (super.getChatId().toString().equals("107270014")) {
-                runTestCommand();
-                return;
-            }
+//            if (super.getChatId().toString().equals("107270014")) {
+//                runTestCommand();
+//                return;
+//            }
 
 
             User user = super.getPSQL().getUserDataResultSet(super.getChatId());
@@ -63,7 +63,7 @@ public class SendFileCommand extends Command {
                 return;
             }
 
-            super.getPSQL().addFile(getFileType(super.getUpdate()),filePath, msg.id);
+            super.getPSQL().addFile(getFileType(super.getUpdate()),filePath, FileResource.getFileIdFromUpdate(super.getUpdate()), msg.id);
 
             message.setText("Received your image/video/sticker! " + msg.userTo.name + " will definitely appreciate this!");
             super.getBot().execute(message);

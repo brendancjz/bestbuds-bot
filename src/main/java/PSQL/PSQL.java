@@ -269,14 +269,15 @@ public class PSQL {
         return false;
     }
 
-    public Boolean addFile(String fileType, String filePath, Integer messageId) throws SQLException {
-        String sql = "INSERT INTO Files (message_id,file_type,file_path,created_on) VALUES (?,?,?,?)";
+    public Boolean addFile(String fileType, String filePath, String telegramFileId, Integer messageId) throws SQLException {
+        String sql = "INSERT INTO Files (message_id,file_type,file_path,created_on,telegram_file_id) VALUES (?,?,?,?.?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         preparedStatement.setInt(1, messageId);
         preparedStatement.setString(2, fileType);
         preparedStatement.setString(3, filePath);
         preparedStatement.setDate(4, Date.valueOf(LocalDate.now()));
+        preparedStatement.setString(5, telegramFileId);
 
         int rowsInserted = preparedStatement.executeUpdate();
         if (rowsInserted > 0) {
@@ -920,6 +921,11 @@ public class PSQL {
         file.type = resultSet.getString("file_type");
         file.path = resultSet.getString("file_path");
         file.createdOn = resultSet.getDate("created_on");
+        try {
+            file.telegramFileId = resultSet.getString("telegram_file_id");
+        } catch (SQLException e) {
+            file.telegramFileId = null;
+        }
 
         return file;
     }

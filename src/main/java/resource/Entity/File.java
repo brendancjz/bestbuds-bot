@@ -11,4 +11,5 @@ public class File {
     public String type;
     public String path;
     public Date createdOn;
+    public String telegramFileId;
 }
