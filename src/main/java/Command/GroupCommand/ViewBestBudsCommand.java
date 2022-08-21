@@ -74,7 +74,7 @@ public class ViewBestBudsCommand extends Command {
             EditMessageText newMessage = new EditMessageText();
             newMessage.setChatId(super.getChatId().toString());
             newMessage.setMessageId(messageId);
-            newMessage.enableHtml(true);
+            newMessage.enableHtml(false);
 
             String callbackData = callData.split("_")[2];
             String groupSelection;
@@ -143,10 +143,10 @@ public class ViewBestBudsCommand extends Command {
     private String generateProfileDetails(User user) {
         String deeds = "";
 
-        deeds += "<em>Name:</em> " + user.name + "\n";
-        deeds += "<em>Code:</em>  " + user.code + "\n";
-        deeds += "<em>Birthday:</em> " + user.getBirthday() + "\n";
-        deeds += "<em>Description:</em> " + user.desc + "\n\n";
+        deeds += "Name: " + user.name + "\n";
+        deeds += "Code:  " + user.code + "\n";
+        deeds += "Birthday: " + user.getBirthday() + "\n";
+        deeds += "Description: " + user.desc + "\n\n";
 
 
         return deeds;
