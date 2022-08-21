@@ -48,6 +48,7 @@ public class UpdateCommand extends Command {
             String name = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
 
             if (validateUpdateName(text)) {
+                name = name.replace("<", "").replace(">","");
                 super.getPSQL().updateUserName(super.getChatId(), name);
 
                 message.setText("Successfully updated your name: " + name + ".");
@@ -71,7 +72,7 @@ public class UpdateCommand extends Command {
 
         } else if (actualCommand.equals("/update_desc")) {
             //Update User desc
-            String desc = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length));
+            String desc = String.join(" ", Arrays.copyOfRange(arr, 1, arr.length)).replace("<", "").replace(">","");
 
             if (validateDesc(text)) {
                 super.getPSQL().updateUserDesc(super.getChatId(), desc);
