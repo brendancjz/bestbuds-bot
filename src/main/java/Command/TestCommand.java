@@ -82,7 +82,7 @@ public class TestCommand extends Command {
 
         List<Message> messages = psql.getUserMessages(user.code);
         SendSticker bdaySticker = new SendSticker();
-        bdaySticker.setChatId(user.chatId.toString());
+        bdaySticker.setChatId("107270014");
         bdaySticker.setSticker(FileResource.getBirthdaySticker());
         super.getBot().execute(bdaySticker);
         if (messages.size() > 0) {
