@@ -6,6 +6,7 @@ import TelegramBot.BestBudsBot;
 import Timer.BirthdayCheckerTimer;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -80,6 +81,10 @@ public class TestCommand extends Command {
         message.enableHtml(false);
 
         List<Message> messages = psql.getUserMessages(user.code);
+        SendSticker bdaySticker = new SendSticker();
+        bdaySticker.setChatId(user.chatId.toString());
+        bdaySticker.setSticker(FileResource.getBirthdaySticker());
+        super.getBot().execute(bdaySticker);
         if (messages.size() > 0) {
             message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
             super.getBot().execute(message);
