@@ -48,8 +48,10 @@ public class TestCommand extends Command {
             message.setText("Testing...");
             super.getBot().execute(message);
 
-            FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"DOCUMENT", "documents/file_43.jpg");
-
+            // FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"DOCUMENT", "documents/file_43.jpg");
+            
+            User nicole = super.getPSQL().getUserDataResultSet("Nico8359");
+            runBirthdayEvent(nicole, super.getPSQL());
 
 
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
@@ -64,6 +66,38 @@ public class TestCommand extends Command {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    //Testing the run Birthday event, sending birthday messages to the user from users where the common group is allowed.
+    private void runBirthdayEvent(User user, PSQL psql)
+            throws SQLException, InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        SendMessage message = new SendMessage();
+        message.setChatId("107270014");
+        message.enableHtml(false);
+
+        List<Message> messages = psql.getUserMessages(user.code);
+        if (messages.size() > 0) {
+            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+            super.getBot().execute(message);
+
+            for (Message msg : messages) {
+                // Commented out until files can be sent reliably
+                if (msg.isEmpty == null || !msg.isEmpty) {
+                    message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+                    try {
+                        super.getBot().execute(message);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            message.setText("Hi, today's your birthday! Happy birthday " + user.name + "!");
+            super.getBot().execute(message);
         }
     }
 

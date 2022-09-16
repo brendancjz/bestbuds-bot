@@ -784,10 +784,23 @@ public class PSQL {
 
         while (resultSet.next()) {
             Message message = this.convertResultSetToMessage(resultSet);
-            messages.add(message);
+            if (shouldAddMessage(message, userCode)) messages.add(message);
         }
 
         return messages;
+    }
+
+    private boolean shouldAddMessage(Message message, String userCode) throws SQLException {
+        User userTo = this.getUserDataResultSet(userCode);
+        boolean shouldSend = false;
+        for (Group group : userTo.groups) {
+            for (Group grp : message.userFrom.groups) {
+                if (group.code.equals(grp.code) && group.usersReceiveMessages) {
+                    shouldSend = true;
+                }
+            }
+        }
+        return shouldSend;
     }
 
     public List<Message> getUserMessagesForYear(String userCode, String year) throws SQLException {
@@ -964,6 +977,7 @@ public class PSQL {
         group.createdBy = resultSet.getString("created_by");
         group.createdOn = resultSet.getDate("created_on");
         group.description = resultSet.getString("description");
+        group.usersReceiveMessages = resultSet.getBoolean("users_receive_messages");
 
         return group;
     }

@@ -14,6 +14,7 @@ public class Group {
     public Date createdOn;
     public String description;
     public List<User> users;
+    public Boolean usersReceiveMessages;
 
     public Group() {
         this.id = null;
@@ -23,6 +24,7 @@ public class Group {
         this.createdOn = null;
         this.description = "null";
         this.users = new ArrayList<>();
+        this.usersReceiveMessages = null;
     }
 
     public String getName() {
