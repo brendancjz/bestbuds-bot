@@ -160,11 +160,11 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
 
         List<Message> messages = psql.getUserMessages(user.code);
         if (messages.size() > 0) {
-            // Send happy birthday sticker
-            // SendSticker bdaySticker = new SendSticker();
-            // bdaySticker.setChatId(user.chatId.toString());
-            // bdaySticker.setSticker(FileResource.getBirthdaySticker());
-            // super.getBot().execute(bdaySticker);
+            //Send happy birthday sticker
+            SendSticker bdaySticker = new SendSticker();
+            bdaySticker.setChatId(user.chatId.toString());
+            bdaySticker.setSticker(FileResource.getBirthdaySticker());
+            super.getBot().execute(bdaySticker);
             message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
             super.getBot().execute(message);
 
