@@ -51,8 +51,8 @@ public class TestCommand extends Command {
 
             // FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"DOCUMENT", "documents/file_43.jpg");
             
-            User nicole = super.getPSQL().getUserDataResultSet("Nico8359");
-            runBirthdayEvent(nicole, super.getPSQL());
+            User andrew = super.getPSQL().getUserDataResultSet("AC9754");
+            runBirthdayEvent(andrew, super.getPSQL());
 
 
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
