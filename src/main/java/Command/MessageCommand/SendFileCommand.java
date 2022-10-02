@@ -28,10 +28,10 @@ public class SendFileCommand extends Command {
             message.setChatId(super.getChatId().toString());
             message.enableHtml(true);
 
-//            if (super.getChatId().toString().equals("107270014")) {
-//                runTestCommand();
-//                return;
-//            }
+           if (super.getChatId().toString().equals("107270014")) {
+               runTestCommand();
+               return;
+           }
 
 
             User user = super.getPSQL().getUserDataResultSet(super.getChatId());
