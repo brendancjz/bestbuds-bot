@@ -26,6 +26,7 @@ import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileResource {
 
@@ -66,11 +67,16 @@ public class FileResource {
 
         java.net.http.HttpResponse<InputStream> res = HttpClient.newHttpClient().send(request, java.net.http.HttpResponse.BodyHandlers.ofInputStream());
         InputStream inputStream = res.body();
+        
         java.io.File file = new java.io.File("BestBudsBot_Logo.png");
         try {
             try(OutputStream outputStream = new FileOutputStream(file)){
                 IOUtils.copy(inputStream, outputStream);
                 System.out.println("File Size after converting: " + file.length());
+                
+                String result = new BufferedReader(new InputStreamReader(inputStream))
+                .lines().collect(Collectors.joining("\n"));
+                System.out.println(result);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
