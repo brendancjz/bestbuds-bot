@@ -85,25 +85,25 @@ public class TestCommand extends Command {
         bdaySticker.setChatId("107270014");
         bdaySticker.setSticker(FileResource.getBirthdaySticker());
         super.getBot().execute(bdaySticker);
-        // if (messages.size() > 0) {
-        //     message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
-        //     super.getBot().execute(message);
+        if (messages.size() > 0) {
+            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+            super.getBot().execute(message);
 
-        //     for (Message msg : messages) {
-        //         // Commented out until files can be sent reliably
-        //         if (msg.isEmpty == null || !msg.isEmpty) {
-        //             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-        //             try {
-        //                 super.getBot().execute(message);
-        //             } catch (TelegramApiException e) {
-        //                 e.printStackTrace();
-        //             }
-        //         }
-        //     }
-        // } else {
-        //     message.setText("Hi, today's your birthday! Happy birthday " + user.name + "!");
-        //     super.getBot().execute(message);
-        // }
+            for (Message msg : messages) {
+                // Commented out until files can be sent reliably
+                if (msg.isEmpty == null || !msg.isEmpty) {
+                    message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+                    try {
+                        super.getBot().execute(message);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            message.setText("Hi, today's your birthday! Happy birthday " + user.name + "!");
+            super.getBot().execute(message);
+        }
     }
 
     private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {

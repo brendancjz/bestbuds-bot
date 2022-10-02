@@ -73,10 +73,6 @@ public class FileResource {
             try(OutputStream outputStream = new FileOutputStream(file)){
                 IOUtils.copy(inputStream, outputStream);
                 System.out.println("File Size after converting: " + file.length());
-                
-                String result = new BufferedReader(new InputStreamReader(inputStream))
-                .lines().collect(Collectors.joining("\n"));
-                System.out.println(result);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
