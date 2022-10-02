@@ -51,8 +51,8 @@ public class TestCommand extends Command {
 
             // FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"DOCUMENT", "documents/file_43.jpg");
             
-            User andrew = super.getPSQL().getUserDataResultSet("AC9754");
-            runBirthdayEvent(andrew, super.getPSQL());
+            // User andrew = super.getPSQL().getUserDataResultSet("AC9754");
+            // runBirthdayEvent(andrew, super.getPSQL());
 
 
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
@@ -61,16 +61,17 @@ public class TestCommand extends Command {
             //runBirthdayTest();
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // } catch (URISyntaxException e) {
+        //     e.printStackTrace();
+        // } catch (SQLException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
     }
 
     //Testing the run Birthday event, sending birthday messages to the user from users where the common group is allowed.
