@@ -94,8 +94,10 @@ public class FileResource {
     }
 
     public static InputFile getBirthdaySticker() throws InterruptedException, IOException, URISyntaxException {
-        String bdayStickerBlueBird = "stickers/file_35.webp";
-        return getInputFile(bdayStickerBlueBird);
+        String bdayStickerFileId = "CAACAgUAAxkBAAIUUGM5TvbdH8lWTnTz49gTL-q2-i50AAJgCAAC2W9VA_juYiWCxpELKgQ";
+        String filePath = getFilePathOfUploadedFileByUser(bdayStickerFileId);
+        // String bdayStickerBlueBird = "stickers/file_35.webp";
+        return getInputFile(filePath);
     }
 
     public static String getFileIdFromUpdate(Update update) {
