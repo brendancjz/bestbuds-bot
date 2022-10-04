@@ -51,8 +51,8 @@ public class TestCommand extends Command {
 
             // FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"DOCUMENT", "documents/file_43.jpg");
             
-            // User andrew = super.getPSQL().getUserDataResultSet("AC9754");
-            // runBirthdayEvent(andrew, super.getPSQL());
+            User andrew = super.getPSQL().getUserDataResultSet("AC9754");
+            runBirthdayEvent(andrew, super.getPSQL());
 
 
 //            User mom = super.getPSQL().getUserDataResultSet("Bern9074");
@@ -61,17 +61,16 @@ public class TestCommand extends Command {
             //runBirthdayTest();
         } catch (TelegramApiException throwables) {
             throwables.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // } catch (URISyntaxException e) {
-        //     e.printStackTrace();
-        // } catch (SQLException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
     }
 
     //Testing the run Birthday event, sending birthday messages to the user from users where the common group is allowed.
@@ -86,25 +85,26 @@ public class TestCommand extends Command {
         bdaySticker.setChatId("107270014");
         bdaySticker.setSticker(FileResource.getBirthdaySticker());
         super.getBot().execute(bdaySticker);
-        if (messages.size() > 0) {
-            message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
-            super.getBot().execute(message);
+        
+        // if (messages.size() > 0) {
+        //     message.setText("Hi, today's your birthday! Here's what your BestBuds have to say about ya!");
+        //     super.getBot().execute(message);
 
-            for (Message msg : messages) {
-                // Commented out until files can be sent reliably
-                if (msg.isEmpty == null || !msg.isEmpty) {
-                    message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
-                    try {
-                        super.getBot().execute(message);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            message.setText("Hi, today's your birthday! Happy birthday " + user.name + "!");
-            super.getBot().execute(message);
-        }
+        //     for (Message msg : messages) {
+        //         // Commented out until files can be sent reliably
+        //         if (msg.isEmpty == null || !msg.isEmpty) {
+        //             message.setText(msg.message + "\n\nFrom: " + msg.userFrom.name);
+        //             try {
+        //                 super.getBot().execute(message);
+        //             } catch (TelegramApiException e) {
+        //                 e.printStackTrace();
+        //             }
+        //         }
+        //     }
+        // } else {
+        //     message.setText("Hi, today's your birthday! Happy birthday " + user.name + "!");
+        //     super.getBot().execute(message);
+        // }
     }
 
     private void runBirthdayTest() throws URISyntaxException, SQLException, InterruptedException, TelegramApiException, IOException {
