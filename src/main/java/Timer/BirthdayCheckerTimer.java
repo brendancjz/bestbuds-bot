@@ -178,16 +178,16 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
-                    // for (File file : msg.files) {
-                    // try {
-                    // FileResource.sendFileToUser(super.getBot(), user.chatId.toString(),
-                    // file.type, file.path);
-                    // } catch (InterruptedException | IOException | URISyntaxException |
-                    // TelegramApiException e) {
-                    // e.printStackTrace();
-                    // }
-                    //
-                    // }
+                    for (File file : msg.files) {
+                    try {
+                    FileResource.sendFileToUser(super.getBot(), user.chatId.toString(),
+                    file.type, file.telegramFileId);
+                    } catch (InterruptedException | IOException | URISyntaxException |
+                    TelegramApiException e) {
+                    e.printStackTrace();
+                    }
+                    
+                    }
                 }
 
                 psql.updateUserMessageToSent(msg.id);

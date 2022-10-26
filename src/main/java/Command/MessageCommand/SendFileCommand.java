@@ -74,6 +74,7 @@ public class SendFileCommand extends Command {
     }
 
     private void runTestCommand() throws InterruptedException, IOException, URISyntaxException, TelegramApiException {
+        String fileId = FileResource.getFileIdFromUpdate(super.getUpdate());
         String filePath = FileResource.getFilePathOfUploadedFileByUser(FileResource.getFileIdFromUpdate(super.getUpdate()));
         //NOTE: Code does not allow animated stickers with .tgs format at the moment
         SendMessage message = new SendMessage();
@@ -84,7 +85,7 @@ public class SendFileCommand extends Command {
             super.getBot().execute(message);
             return;
         }
-        FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"STICKER", filePath);
+        FileResource.sendFileToUser(super.getBot(),super.getChatId().toString(),"STICKER", fileId);
     }
 
     private String generateErrorMsg() {
