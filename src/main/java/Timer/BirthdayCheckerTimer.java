@@ -179,13 +179,13 @@ public class BirthdayCheckerTimer extends BestBudsTimer {
                         e.printStackTrace();
                     }
                     for (File file : msg.files) {
-                    try {
-                    FileResource.sendFileToUser(super.getBot(), user.chatId.toString(),
-                    file.type, file.telegramFileId);
-                    } catch (InterruptedException | IOException | URISyntaxException |
-                    TelegramApiException e) {
-                    e.printStackTrace();
-                    }
+                        try {
+                            FileResource.sendFileToUser(super.getBot(), user.chatId.toString(),
+                            file.type, file.telegramFileId);
+                        } catch (InterruptedException | IOException | URISyntaxException |
+                        TelegramApiException e) {
+                            e.printStackTrace();
+                        }
                     
                     }
                 }
