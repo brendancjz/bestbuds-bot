@@ -270,7 +270,7 @@ public class PSQL {
     }
 
     public Boolean addFile(String fileType, String filePath, String telegramFileId, Integer messageId) throws SQLException {
-        String sql = "INSERT INTO Files (message_id,file_type,file_path,created_on,telegram_file_id) VALUES (?,?,?,?.?)";
+        String sql = "INSERT INTO Files (message_id,file_type,file_path,created_on,telegram_file_id) VALUES (?,?,?,?,?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         preparedStatement.setInt(1, messageId);
